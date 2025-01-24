@@ -2,7 +2,7 @@
 
 {% block main %}
 
-<div class="container ">
+<div class="container">
     <div class="row my-5">
         <div class="col-12">
             <h2>カート</h2>
@@ -26,7 +26,9 @@
                         <td>{{object.price}}</td>
                         <td>{{object.quantity}}</td>
                         <td>{{object.subtotal}}</td>
-                        <td><a href="/cart/remove/{{object.pk}}/" class="my-auto btn btn-danger btn-sm">削除</a></td>
+                        <td>
+                            <a href="/cart/remove/{{object.pk}}/" class="my-auto btn btn-danger btn-sm">削除</a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -45,7 +47,6 @@
             {% endif %}
         </div>
     </div>
-
     <h2>おすすめ</h2>
     <div class="row mb-5">
         {% for object in ADDTIONAL_ITEMS %}
@@ -54,7 +55,18 @@
         </div>
         {% endfor %}
     </div>
-
 </div>
 
+<!-- ブラウザバックへの対応 -->
+<script>
+    document.addEventListener(
+        "visibilitychange",
+        () => {
+            if (document.visibilityState === "visible") {
+                window.location = "/pay/cancel/";
+            }
+        },
+        false
+    );
+</script>
 {% endblock %}
