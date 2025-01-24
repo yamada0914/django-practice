@@ -7,8 +7,10 @@ def custom_timestamp_id():
     dt = datetime.datetime.now()
     return dt.strftime('%Y%m%d%H%M%S%f')
 
+
 class Order(models.Model):
-    id = models.CharField(default=custom_timestamp_id,editable=False, primary_key=True, max_length=50)
+    id = models.CharField(default=custom_timestamp_id,
+                          editable=False, primary_key=True, max_length=50)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     uid = models.CharField(editable=False, max_length=50)
     is_confirmed = models.BooleanField(default=False)

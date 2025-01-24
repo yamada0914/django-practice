@@ -10,6 +10,11 @@ class CartListView(LoginRequiredMixin, ListView):
     model = Item
     template_name = 'pages/cart.html'
 
+    def __init__(self, item: Item, quantity: int):
+        self.item = item
+        self.quantity = quantity
+        self.subtotal = int(item.price * quantity)
+
     def get_queryset(self):
         cart = self.request.session.get('cart', None)
         if cart is None or len(cart) == 0:
@@ -57,6 +62,7 @@ class AddCartView(LoginRequiredMixin, View):
             cart['items'][item_pk] = quantity
         request.session['cart'] = cart
         return redirect('/cart/')
+
 
 def remove_from_cart(request, pk):
     cart = request.session.get('cart', None)
