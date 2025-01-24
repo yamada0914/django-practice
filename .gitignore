@@ -1,0 +1,27 @@
+# Pythonキャッシュファイル
+*.pyc
+__pycache__/
+
+# 仮想環境
+venv/
+.venv/
+
+# 環境変数ファイル
+.env
+
+# SQLiteデータベース
+db.sqlite3
+
+# 静的ファイルとメディアファイル
+static/
+media/
+
+# ログファイル
+*.log
+
+# マイグレーションの一時ファイル
+migrations/*~
+
+.env*
+
+settings.json
