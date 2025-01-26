@@ -3,17 +3,14 @@ from django.conf import settings
 from django.views.generic import View, ListView
 from base.models import Item
 from collections import OrderedDict
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
 class CartListView(LoginRequiredMixin, ListView):
     model = Item
     template_name = 'pages/cart.html'
-
-    def __init__(self, item: Item, quantity: int):
-        self.item = item
-        self.quantity = quantity
-        self.subtotal = int(item.price * quantity)
 
     def get_queryset(self):
         cart = self.request.session.get('cart', None)
@@ -64,6 +61,7 @@ class AddCartView(LoginRequiredMixin, View):
         return redirect('/cart/')
 
 
+@login_required
 def remove_from_cart(request, pk):
     cart = request.session.get('cart', None)
     if cart is not None:
