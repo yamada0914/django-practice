@@ -153,4 +153,4 @@ MESSAGE_TAGS = {
 }
 
 # custom_context_processors
-TITLE = 'VegeKet'
+TITLE = 'ポケカ通販'
