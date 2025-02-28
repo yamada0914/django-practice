@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from base.models import Profile
 from base.forms import UserCreationForm
 from django.contrib import messages
+from django.shortcuts import redirect
 
 
 class SignUpView(CreateView):
@@ -36,9 +37,26 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
     success_url = '/account/'
 
     def get_object(self):
-        # URL変数ではなく、現在のユーザーから直接pkを取得
         self.kwargs['pk'] = self.request.user.pk
         return super().get_object()
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+
+        # プロフィール情報の更新
+        profile = self.request.user.profile
+        profile.name = self.request.POST.get('name')
+        profile.zipcode = self.request.POST.get('zipcode')
+        profile.prefecture = self.request.POST.get('prefecture')
+        profile.city = self.request.POST.get('city')
+        profile.address1 = self.request.POST.get('address1')
+        profile.address2 = self.request.POST.get('address2')
+        profile.tel = self.request.POST.get('tel')
+        profile.save()
+
+        user.save()
+        messages.success(self.request, 'アカウント情報を更新しました。')
+        return super().form_valid(form)
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
