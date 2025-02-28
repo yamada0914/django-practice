@@ -4,24 +4,68 @@
 
 {% include 'snippets/headline.html' %}
 
-<div class="container px-5" style="max-width:100%">
+<div class="container py-5">
+  <!-- 人気商品セクション -->
+  <section class="mb-5">
+    <h2 class="section-title mb-4">人気商品</h2>
+    <div class="row g-4">
+      {% for object in POPULAR_ITEMS %}
+      {% if forloop.counter < 4 %} <div class="col-12 col-md-6 col-lg-4">
+        <div class="position-relative">
+          <div class="popular-badge">
+            <span class="badge bg-danger">{{ forloop.counter }}番人気</span>
+          </div>
+          {% include 'snippets/item_box.html' %}
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+</section>
 
-  <div class="row my-5">
-    {% for object in POPULAR_ITEMS %}
-    {% if forloop.counter < 4 %} <div class="col-12 col-lg-4 my-3">
-      <button type="button" class="btn btn-danger rounded-0">{{ forloop.counter }}番人気</button>
+<!-- 全商品セクション -->
+<section>
+  <h2 class="section-title mb-4">全商品</h2>
+  <div class="row g-4">
+    {% for object in object_list %}
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
       {% include 'snippets/item_box.html' %}
+    </div>
+    {% endfor %}
   </div>
-  {% endif %}
-  {% endfor %}
+</section>
 </div>
 
-<div class="row my-5">
-  {% for object in object_list %}
-  <div class="col-12 col-lg-3 my-3">
-    {% include 'snippets/item_box.html' %}
-  </div>
-  {% endfor %}
-</div>
-</div>
+<style>
+  .section-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #333;
+    position: relative;
+    padding-bottom: 0.5rem;
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background: #0d6efd;
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+  }
+
+  .popular-badge .badge {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+  }
+</style>
 {% endblock %}

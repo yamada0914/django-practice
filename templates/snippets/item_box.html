@@ -1,10 +1,55 @@
-<a href="/items/{{object.pk}}/">
-  <div class="border">
-    <img src="/{{object.image}}" width="100%" class=" bg-white">
-    <div class="bg-light text-center text-secondary overflow-hidden">
-      <div class="my-2 py-2">
-        <h2 class="lead">{{object.name}} - ¥{{object.price}}</h2>
-      </div>
+<a href="/items/{{object.pk}}/" class="text-decoration-none">
+  <div class="card h-100 item-card">
+    <div class="card-img-wrapper">
+      <img src="/{{object.image}}" class="card-img-top" alt="{{object.name}}">
+    </div>
+    <div class="card-body">
+      <h5 class="card-title text-dark mb-2">{{object.name}}</h5>
+      <p class="card-text text-primary fw-bold mb-0">¥{{object.price}}</p>
     </div>
   </div>
 </a>
+
+<style>
+  .item-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-img-wrapper {
+    position: relative;
+    padding-top: 100%;
+    /* 1:1 アスペクト比 */
+    background: #f8f9fa;
+  }
+
+  .card-img-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 1rem;
+  }
+
+  .card-body {
+    background: white;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    line-height: 1.4;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+</style>
