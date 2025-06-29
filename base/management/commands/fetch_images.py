@@ -74,7 +74,7 @@ class Command(BaseCommand):
                 # Djangoモデルに画像を登録
                 with open(save_path, 'rb') as f:
                     Item.objects.create(
-                        name=img_name, image=save_path, is_published=True)
+                        name=img_name, image=save_path, is_published=True, stock=100, price=200)
 
                 self.stdout.write(self.style.SUCCESS(
                     f"Downloaded and saved image: {img_name}"))
