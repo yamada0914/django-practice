@@ -1,95 +1,40 @@
-<div class="hero-section position-relative overflow-hidden">
-  <div class="container">
-    <div class="row min-vh-50 align-items-center py-5">
-      <div class="col-lg-6 text-center text-lg-start">
-        <h1 class="display-4 fw-bold mb-4">{{ TITLE }}</h1>
-        <p class="lead">ポケモンカードの取引を、より安全に、より便利に。<br>信頼できる取引プラットフォームで、あなたの大切なカードを売買しましょう。</p>
-      </div>
-      <div class="col-lg-6 d-none d-lg-block">
-        <div class="hero-image-container">
-          <div class="floating-cards">
-            <!-- カードの装飾的な要素 -->
-            <div class="card-decoration card-1"></div>
-            <div class="card-decoration card-2"></div>
-            <div class="card-decoration card-3"></div>
+<div class="relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+  <div class="container mx-auto px-4">
+    <div class="min-h-[50vh] flex items-center py-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <!-- テキストセクション -->
+        <div class="text-center lg:text-left">
+          <h1
+            class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-500 to-cyan-500 bg-clip-text text-transparent">
+            {{ TITLE }}
+          </h1>
+          <p class="text-lg text-gray-600 leading-relaxed">
+            ポケモンカードの取引を、より安全に、より便利に。<br>
+            信頼できる取引プラットフォームで、あなたの大切なカードを売買しましょう。
+          </p>
+        </div>
+
+        <!-- カードアニメーション -->
+        <div class="hidden lg:block relative h-[400px]">
+          <div class="relative h-full group">
+            <!-- カード1 -->
+            <div class="absolute w-48 h-64 rounded-xl bg-gradient-to-br from-red-400 to-pink-500 shadow-lg
+                       top-[20%] left-[10%] -rotate-15 z-30
+                       transition-transform duration-300 group-hover:-rotate-[20deg] group-hover:-translate-y-2">
+            </div>
+            <!-- カード2 -->
+            <div class="absolute w-48 h-64 rounded-xl bg-gradient-to-br from-blue-400 to-primary-500 shadow-lg
+                       top-[10%] left-[30%] rotate-5 z-20
+                       transition-transform duration-300 group-hover:rotate-10 group-hover:-translate-y-1">
+            </div>
+            <!-- カード3 -->
+            <div class="absolute w-48 h-64 rounded-xl bg-gradient-to-br from-green-400 to-green-600 shadow-lg
+                       top-[30%] left-[20%] -rotate-5 z-10
+                       transition-transform duration-300 group-hover:-rotate-10 group-hover:-translate-y-2">
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<style>
-  .hero-section {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .min-vh-50 {
-    min-height: 50vh;
-  }
-
-  .hero-image-container {
-    position: relative;
-    height: 100%;
-  }
-
-  .floating-cards {
-    position: relative;
-    height: 400px;
-  }
-
-  .card-decoration {
-    position: absolute;
-    width: 200px;
-    height: 280px;
-    border-radius: 10px;
-    background: white;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-  }
-
-  .card-1 {
-    top: 20%;
-    left: 10%;
-    transform: rotate(-15deg);
-    z-index: 3;
-    background: linear-gradient(45deg, #ff6b6b, #f06595);
-  }
-
-  .card-2 {
-    top: 10%;
-    left: 30%;
-    transform: rotate(5deg);
-    z-index: 2;
-    background: linear-gradient(45deg, #4dabf7, #228be6);
-  }
-
-  .card-3 {
-    top: 30%;
-    left: 20%;
-    transform: rotate(-5deg);
-    z-index: 1;
-    background: linear-gradient(45deg, #51cf66, #37b24d);
-  }
-
-  .floating-cards:hover .card-1 {
-    transform: rotate(-20deg) translateY(-10px);
-  }
-
-  .floating-cards:hover .card-2 {
-    transform: rotate(10deg) translateY(-5px);
-  }
-
-  .floating-cards:hover .card-3 {
-    transform: rotate(-10deg) translateY(-8px);
-  }
-
-  .display-4 {
-    font-weight: 700;
-    background: linear-gradient(45deg, #228be6, #15aabf);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-</style>

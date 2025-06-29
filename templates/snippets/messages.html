@@ -1,7 +1,15 @@
 {% for msg in messages %}
-<nav class="py-2 mb-0 {{ msg.tags }}">
-    <div class="container">
-        {{ msg }}
+{% with msg_class=msg.tags|default:"info" %}
+<div
+    class="w-full {% if msg_class == 'success' %}bg-green-50{% elif msg_class == 'error' %}bg-red-50{% elif msg_class == 'warning' %}bg-yellow-50{% else %}bg-blue-50{% endif %} py-3">
+    <div class="container mx-auto px-4">
+        <div
+            class="flex items-center {% if msg_class == 'success' %}text-green-800{% elif msg_class == 'error' %}text-red-800{% elif msg_class == 'warning' %}text-yellow-800{% else %}text-blue-800{% endif %}">
+            <i
+                class="{% if msg_class == 'success' %}fas fa-check-circle{% elif msg_class == 'error' %}fas fa-exclamation-circle{% elif msg_class == 'warning' %}fas fa-exclamation-triangle{% else %}fas fa-info-circle{% endif %} mr-2"></i>
+            <p class="text-sm font-medium">{{ msg }}</p>
+        </div>
     </div>
-</nav>
+</div>
+{% endwith %}
 {% endfor %}

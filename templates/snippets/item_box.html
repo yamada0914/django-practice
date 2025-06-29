@@ -1,55 +1,12 @@
-<a href="/items/{{object.pk}}/" class="text-decoration-none">
-  <div class="card h-100 item-card">
-    <div class="card-img-wrapper">
-      <img src="/{{object.image}}" class="card-img-top" alt="{{object.name}}">
+<a href="/items/{{object.pk}}/" class="block group">
+  <div
+    class="h-full bg-white rounded-md overflow-hidden shadow-sm transition-all duration-200 transform group-hover:-translate-y-1 group-hover:shadow-lg">
+    <div class="relative pt-[60%] bg-gray-50">
+      <img src="/{{object.image}}" class="absolute inset-0 w-full h-full object-contain p-1.5" alt="{{object.name}}">
     </div>
-    <div class="card-body">
-      <h5 class="card-title text-dark mb-2">{{object.name}}</h5>
-      <p class="card-text text-primary fw-bold mb-0">¥{{object.price}}</p>
+    <div class="p-2">
+      <h5 class="text-gray-800 text-xs leading-tight mb-1 line-clamp-2">{{object.name}}</h5>
+      <p class="text-primary-500 font-bold text-sm">¥{{object.price}}</p>
     </div>
   </div>
 </a>
-
-<style>
-  .item-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: none;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  .item-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  }
-
-  .card-img-wrapper {
-    position: relative;
-    padding-top: 100%;
-    /* 1:1 アスペクト比 */
-    background: #f8f9fa;
-  }
-
-  .card-img-top {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 1rem;
-  }
-
-  .card-body {
-    background: white;
-  }
-
-  .card-title {
-    font-size: 1rem;
-    line-height: 1.4;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-</style>

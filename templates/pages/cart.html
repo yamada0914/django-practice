@@ -1,59 +1,96 @@
 {% extends 'base.html' %}
 
 {% block main %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-5xl mx-auto">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">カート</h2>
 
-<div class="container">
-    <div class="row my-5">
-        <div class="col-12">
-            <h2>カート</h2>
-            {% if object_list|length != 0 %}
-            <table class="table mb-5 text-right">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">品名</th>
-                        <th scope="col">単価</th>
-                        <th scope="col">個数</th>
-                        <th scope="col">計</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for object in object_list %}
-                    <tr>
-                        <td>No.{{forloop.counter}}</td>
-                        <td>{{object.name}}</td>
-                        <td>{{object.price}}</td>
-                        <td>{{object.quantity}}</td>
-                        <td>{{object.subtotal}}</td>
-                        <td>
-                            <a href="/cart/remove/{{object.pk}}/" class="my-auto btn btn-danger btn-sm">削除</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <p class="lead text-right">小計 - ¥{{total}}</p>
-            <p class="lead text-right">税込計 - ¥{{tax_included_total}}</p>
+        {% if object_list|length != 0 %}
+        <!-- カートアイテム一覧 -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                品名</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                単価</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                個数</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                計</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for object in object_list %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">No.{{forloop.counter}}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{object.name}}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-right">¥{{object.price}}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-right">{{object.quantity}}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-right">
+                                ¥{{object.subtotal}}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right">
+                                <a href="/cart/remove/{{object.pk}}/"
+                                    class="inline-flex items-center px-3 py-1 border border-red-500 text-red-500 hover:bg-red-50 rounded-lg text-sm transition-colors">
+                                    削除
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-            <!-- Checkoutボタン -->
-            <form action="/pay/checkout/" method="POST" class="text-right">
+        <!-- 合計金額 -->
+        <div class="space-y-2 text-right mb-8">
+            <p class="text-lg text-gray-600">小計 - <span class="font-medium text-gray-800">¥{{total}}</span></p>
+            <p class="text-xl font-medium text-gray-800">税込計 - <span
+                    class="font-bold text-primary-500">¥{{tax_included_total}}</span></p>
+        </div>
+
+        <!-- Checkoutボタン -->
+        <div class="text-right mb-12">
+            <form action="/pay/checkout/" method="POST">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-info">Checkout</button>
+                <button type="submit"
+                    class="px-8 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-colors">
+                    レジに進む
+                </button>
             </form>
+        </div>
 
-            {% else %}
-            <p class="">ショッピングカートにアイテムがありません。</p>
-            {% endif %}
+        {% else %}
+        <div class="bg-white rounded-xl shadow-sm p-8 text-center mb-12">
+            <p class="text-gray-600">ショッピングカートにアイテムがありません。</p>
         </div>
-    </div>
-    <h2>おすすめ</h2>
-    <div class="row mb-5">
-        {% for object in ADDTIONAL_ITEMS %}
-        <div class="col-12 col-lg-3 my-3">
-            {% include 'snippets/item_add_box.html' %}
+        {% endif %}
+
+        <!-- おすすめ商品 -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">おすすめ</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                {% for object in ADDTIONAL_ITEMS %}
+                <div>
+                    {% include 'snippets/item_add_box.html' %}
+                </div>
+                {% endfor %}
+            </div>
         </div>
-        {% endfor %}
     </div>
 </div>
 

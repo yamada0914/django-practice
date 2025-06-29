@@ -1,29 +1,31 @@
-<div class="border">
-    <img src="/{{object.image}}" width="100%" class="bg-white" />
-    <div class="bg-light text-center text-secondary overflow-hidden">
-        <div class="my-2 py-2">
-            <h2 class="lead">{{object.name}} - ¥{{object.price}}</h2>
-            <form action="/cart/add/" method="POST" class="p-2">
-                {% csrf_token %}
-                <input type="hidden" name="item_pk" value="{{object.pk}}" />
-                <div class="form-row align-items-center">
-                    <div class="col-md-7">
-                        <input type="number" class="form-control form-control-sm" name="quantity" value="1"
-                            max="{{object.stock}}" />
-                    </div>
-                    <div class="col-md-5">
-                        {% if object.stock == 0 %}
-                        <button type="submit" class="btn btn-sm btn-outline-warning" disabled>
-                            売り切れ
-                        </button>
-                        {% else %}
-                        <button type="submit" class="btn btn-sm btn-outline-success">
-                            Add to cart
-                        </button>
-                        {% endif %}
-                    </div>
+<div class="border border-gray-200 rounded-lg overflow-hidden">
+    <img src="/{{object.image}}" class="w-full bg-white object-contain" width="50%" alt="{{object.name}}">
+    <div class="bg-gray-50 p-4">
+        <h2 class="text-lg text-gray-600 mb-4">{{object.name}} - ¥{{object.price}}</h2>
+        <form action="/cart/add/" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="item_pk" value="{{object.pk}}">
+            <div class="flex flex-col sm:flex-row gap-3">
+                <div class="flex-grow">
+                    <input type="number"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                        name="quantity" value="1" max="{{object.stock}}">
                 </div>
-            </form>
-        </div>
+                <div class="flex-shrink-0">
+                    {% if object.stock == 0 %}
+                    <button type="submit"
+                        class="w-full sm:w-auto px-6 py-2 bg-yellow-100 text-yellow-800 rounded-lg cursor-not-allowed opacity-75"
+                        disabled>
+                        売り切れ
+                    </button>
+                    {% else %}
+                    <button type="submit"
+                        class="w-full sm:w-auto px-6 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors">
+                        カートに追加
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
     </div>
 </div>

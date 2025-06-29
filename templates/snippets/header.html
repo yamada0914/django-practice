@@ -1,107 +1,84 @@
-<nav class="navbar navbar-expand-lg sticky-top">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="/">
-      <i class="fas fa-cards me-2"></i>{{ TITLE }}
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item">
-          <a class="nav-link" href="/orders/">
-            <i class="fas fa-box me-1"></i>注文履歴
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/account/">
-            <i class="fas fa-user me-1"></i>アカウント
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link position-relative" href="/cart/">
-            <i class="fas fa-shopping-cart me-1"></i>カート
-            {% if request.session.cart and request.session.cart.items|length != 0 %}
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              {{request.session.cart.items|length}}
-            </span>
-            {% endif %}
-          </a>
-        </li>
+<nav class="sticky top-0 bg-white/95 backdrop-blur-md shadow-sm py-4">
+  <div class="container mx-auto">
+    <div class="flex items-center justify-between">
+      <a class="text-2xl font-bold text-gray-800 flex items-center" href="/">
+        <i class="fas fa-cards mr-2"></i>{{ TITLE }}
+      </a>
+
+      <!-- モバイルメニューボタン -->
+      <button class="lg:hidden text-gray-600 hover:text-gray-800 focus:outline-none" type="button"
+        data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+
+      <!-- ナビゲーションメニュー -->
+      <div class="hidden lg:flex items-center space-x-6" id="navbarNav">
+        <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/orders/">
+          <i class="fas fa-box mr-1"></i>注文履歴
+        </a>
+        <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/account/">
+          <i class="fas fa-user mr-1"></i>アカウント
+        </a>
+        <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center relative" href="/cart/">
+          <i class="fas fa-shopping-cart mr-1"></i>カート
+          {% if request.session.cart and request.session.cart.items|length != 0 %}
+          <span
+            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+            {{request.session.cart.items|length}}
+          </span>
+          {% endif %}
+        </a>
         {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="/logout/">
-            <i class="fas fa-sign-out-alt me-1"></i>ログアウト
-          </a>
-        </li>
+        <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/logout/">
+          <i class="fas fa-sign-out-alt mr-1"></i>ログアウト
+        </a>
         {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="/login/">
-            <i class="fas fa-sign-in-alt me-1"></i>ログイン
-          </a>
-        </li>
-        <li class="nav-item ms-2">
-          <a class="nav-link nav-btn" href="/signup/">新規登録</a>
-        </li>
+        <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/login/">
+          <i class="fas fa-sign-in-alt mr-1"></i>ログイン
+        </a>
+        <a class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-2 rounded-full transition-all transform hover:-translate-y-0.5"
+          href="/signup/">
+          新規登録
+        </a>
         {% endif %}
-      </ul>
+      </div>
+
+      <!-- モバイルメニュー -->
+      <div class="lg:hidden collapse" id="navbarNav">
+        <div class="fixed inset-0 bg-gray-800/50 z-40"></div>
+        <div class="fixed right-0 top-0 h-full w-64 bg-white shadow-lg z-50 p-6 transform transition-transform">
+          <div class="flex flex-col space-y-4">
+            <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/orders/">
+              <i class="fas fa-box mr-2"></i>注文履歴
+            </a>
+            <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/account/">
+              <i class="fas fa-user mr-2"></i>アカウント
+            </a>
+            <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center relative" href="/cart/">
+              <i class="fas fa-shopping-cart mr-2"></i>カート
+              {% if request.session.cart and request.session.cart.items|length != 0 %}
+              <span
+                class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {{request.session.cart.items|length}}
+              </span>
+              {% endif %}
+            </a>
+            {% if user.is_authenticated %}
+            <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/logout/">
+              <i class="fas fa-sign-out-alt mr-2"></i>ログアウト
+            </a>
+            {% else %}
+            <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/login/">
+              <i class="fas fa-sign-in-alt mr-2"></i>ログイン
+            </a>
+            <a class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-2 rounded-full text-center transition-all transform hover:-translate-y-0.5"
+              href="/signup/">
+              新規登録
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
-
-<style>
-  .navbar {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    padding: 1rem 0;
-  }
-
-  .navbar-brand {
-    font-size: 1.4rem;
-    color: #333;
-  }
-
-  .nav-link {
-    color: #666;
-    font-size: 0.95rem;
-    padding: 0.5rem 1rem;
-    transition: color 0.2s ease;
-  }
-
-  .nav-link:hover {
-    color: #333;
-  }
-
-  .nav-btn {
-    background: #228be6;
-    color: white !important;
-    border-radius: 25px;
-    padding: 0.5rem 1.5rem;
-    transition: all 0.2s ease;
-  }
-
-  .nav-btn:hover {
-    background: #1c7ed6;
-    transform: translateY(-1px);
-  }
-
-  @media (max-width: 991.98px) {
-    .navbar-collapse {
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      margin-top: 1rem;
-    }
-
-    .nav-item {
-      margin: 0.5rem 0;
-    }
-
-    .nav-btn {
-      display: inline-block;
-      margin-top: 0.5rem;
-    }
-  }
-</style>
