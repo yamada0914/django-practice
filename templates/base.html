@@ -30,14 +30,16 @@
             },
         }
     </script>
+    <!-- Alpine.js -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
-<body class="font-sans min-h-screen flex flex-col">
-    <header>
+<body class="font-sans min-h-screen">
+    <header class="sticky top-0 bg-red-600 shadow-lg backdrop-blur-md z-50 h-[55px] flex items-center">
         {% block header %}
         {% include 'snippets/messages.html' %}
         {% include 'snippets/header.html' %}

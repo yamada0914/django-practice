@@ -1,83 +1,80 @@
-<nav class="sticky top-0 bg-white/95 backdrop-blur-md shadow-sm py-4">
-  <div class="container mx-auto">
-    <div class="flex items-center justify-between">
-      <a class="text-2xl font-bold text-gray-800 flex items-center" href="/">
-        <i class="fas fa-cards mr-2"></i>{{ TITLE }}
-      </a>
-
-      <!-- モバイルメニューボタン -->
-      <button class="lg:hidden text-gray-600 hover:text-gray-800 focus:outline-none" type="button"
-        data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <i class="fas fa-bars text-xl"></i>
+<nav class="h-full">
+  <div class="flex items-center h-full w-full">
+    <!-- 左 -->
+    <div class="flex items-center h-full w-80 flex-shrink-0 relative" x-data="{ open: false }">
+      <button class="text-white text-4xl p-2 focus:outline-none" @click="open = !open" @mouseenter="open = true"
+        @mouseleave="open = false" type="button">
+        <i class="fas fa-bars"></i>
       </button>
-
-      <!-- ナビゲーションメニュー -->
-      <div class="hidden lg:flex items-center space-x-6" id="navbarNav">
-        <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/orders/">
-          <i class="fas fa-box mr-1"></i>注文履歴
+      <!-- ドロップダウンメニュー -->
+      <div x-show="open" x-transition:enter="transition ease-out duration-100"
+        x-transition:enter-start="opacity-0 -translate-y-12" x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-75" x-transition:leave-start="opacity-100 translate-y-0"
+        x-transition:leave-end="opacity-0 -translate-y-12" @mouseenter="open = true" @mouseleave="open = false"
+        class="absolute left-0 top-[55px] bg-white shadow-lg rounded w-56 z-50 border" style="display: none;">
+        <ul class="py-2">
+          <li><a href="/" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
+                class="fas fa-home mr-2"></i>ショップ</a></li>
+          <li><a href="/pages/buying" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
+                class="fas fa-yen-sign mr-2"></i>店頭買取</a></li>
+          <li><a href="https://www.hare2buy.com/" target="_blank"
+              class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
+                class="fa fa-credit-card mr-2"></i>ネット買取</a></li>
+          <li><a href="/pages/store" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
+                class="fa fa-building mr-2"></i>店舗 - 秋葉原本店</a></li>
+          <li><a href="/pages/store_namba" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
+                class="fa fa-building mr-2"></i>店舗 - なんば店</a></li>
+          <li><a href="/pages/events" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
+                class="fa fa-trophy mr-2"></i>イベント</a></li>
+          <li><a href="/pages/help" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
+                class="far fa-question-circle mr-2"></i>ヘルプ</a></li>
+          <li><a href="/pages/contact" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
+                class="fa fa-envelope mr-2"></i>お問い合わせ</a></li>
+        </ul>
+      </div>
+      <div class="w-px h-11 bg-white mx-3"></div>
+      <a href="/" class="flex items-center w-full">
+        <img src="https://hareruya2-filepool.s3.amazonaws.com/banner/hareruya2logo.png" alt="晴れる屋2" class="h-11">
+      </a>
+    </div>
+    <!-- 中央＋右：まとめて右寄せ -->
+    <div class="flex items-center ml-auto">
+      <form class="flex items-center">
+        <input type="text"
+          class="w-96 bg-white text-gray-500 placeholder-gray-400 placeholder:text-sm rounded px-2 py-2 h-7"
+          placeholder="商品名、キーワードを入力してください">
+        <button type="submit" class="flex items-center bg-gray-200 text-gray-700 rounded px-3 h-7 ml-2">
+          <i class="fas fa-search mr-1"></i>
+          <span class="text-xs font-bold">検索</span>
+        </button>
+      </form>
+      <!-- 右 -->
+      <div class="flex items-center h-full flex-shrink-0 ml-20">
+        <a href="/help"
+          class="border-2 border-white text-white text-xs flex items-center rounded px-2 h-7 ml-3 hover:bg-white hover:text-[#e60012] transitio font-bold">
+          <i class="fas fa-question-circle mr-1"></i>ヘルプ
         </a>
-        <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/account/">
-          <i class="fas fa-user mr-1"></i>アカウント
+        {% if user.is_authenticated %}
+        <a href="/logout"
+          class="border-2 border-white text-white text-xs flex items-center rounded px-2 h-7 ml-3 hover:bg-white hover:text-[#e60012] transition font-bold">
+          <i class="fas fa-sign-out-alt mr-1"></i>ログアウト
         </a>
-        <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center relative" href="/cart/">
+        {% else %}
+        <a href="/login"
+          class="border-2 border-white text-white text-xs flex items-center rounded px-2 h-7 ml-3 hover:bg-white hover:text-[#e60012] transition font-bold">
+          <i class="fas fa-user mr-1"></i>ログイン
+        </a>
+        {% endif %}
+        <a href="/cart"
+          class="border-2 border-white text-white text-xs flex items-center rounded px-2 h-7 ml-3 hover:bg-white hover:text-[#e60012] transition relative font-bold">
           <i class="fas fa-shopping-cart mr-1"></i>カート
           {% if request.session.cart and request.session.cart.items|length != 0 %}
           <span
-            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+            class="absolute -top-2 -right-2 bg-white text-[#e60012] text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
             {{request.session.cart.items|length}}
           </span>
           {% endif %}
         </a>
-        {% if user.is_authenticated %}
-        <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/logout/">
-          <i class="fas fa-sign-out-alt mr-1"></i>ログアウト
-        </a>
-        {% else %}
-        <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/login/">
-          <i class="fas fa-sign-in-alt mr-1"></i>ログイン
-        </a>
-        <a class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-2 rounded-full transition-all transform hover:-translate-y-0.5"
-          href="/signup/">
-          新規登録
-        </a>
-        {% endif %}
-      </div>
-
-      <!-- モバイルメニュー -->
-      <div class="lg:hidden collapse" id="navbarNav">
-        <div class="fixed inset-0 bg-gray-800/50 z-40"></div>
-        <div class="fixed right-0 top-0 h-full w-64 bg-white shadow-lg z-50 p-6 transform transition-transform">
-          <div class="flex flex-col space-y-4">
-            <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/orders/">
-              <i class="fas fa-box mr-2"></i>注文履歴
-            </a>
-            <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/account/">
-              <i class="fas fa-user mr-2"></i>アカウント
-            </a>
-            <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center relative" href="/cart/">
-              <i class="fas fa-shopping-cart mr-2"></i>カート
-              {% if request.session.cart and request.session.cart.items|length != 0 %}
-              <span
-                class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {{request.session.cart.items|length}}
-              </span>
-              {% endif %}
-            </a>
-            {% if user.is_authenticated %}
-            <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/logout/">
-              <i class="fas fa-sign-out-alt mr-2"></i>ログアウト
-            </a>
-            {% else %}
-            <a class="text-gray-600 hover:text-gray-800 transition-colors flex items-center" href="/login/">
-              <i class="fas fa-sign-in-alt mr-2"></i>ログイン
-            </a>
-            <a class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-2 rounded-full text-center transition-all transform hover:-translate-y-0.5"
-              href="/signup/">
-              新規登録
-            </a>
-            {% endif %}
-          </div>
-        </div>
       </div>
     </div>
   </div>
