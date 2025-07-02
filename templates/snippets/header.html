@@ -1,8 +1,8 @@
 <nav class="h-full">
-  <div class="flex items-center h-full w-full">
+  <div class="flex h-full w-full items-center">
     <!-- 左 -->
-    <div class="flex items-center h-full w-80 flex-shrink-0 relative" x-data="{ open: false }">
-      <button class="text-white text-4xl p-2 focus:outline-none" @click="open = !open" @mouseenter="open = true"
+    <div class="relative flex h-full w-80 flex-shrink-0 items-center" x-data="{ open: false }">
+      <button class="p-2 text-4xl text-white focus:outline-none" @click="open = !open" @mouseenter="open = true"
         @mouseleave="open = false" type="button">
         <i class="fas fa-bars"></i>
       </button>
@@ -11,66 +11,82 @@
         x-transition:enter-start="opacity-0 -translate-y-12" x-transition:enter-end="opacity-100 translate-y-0"
         x-transition:leave="transition ease-in duration-75" x-transition:leave-start="opacity-100 translate-y-0"
         x-transition:leave-end="opacity-0 -translate-y-12" @mouseenter="open = true" @mouseleave="open = false"
-        class="absolute left-0 top-[55px] bg-white shadow-lg rounded w-56 z-50 border" style="display: none;">
+        class="absolute left-0 top-[55px] z-50 w-56 rounded border bg-white shadow-lg" style="display: none">
         <ul class="py-2">
-          <li><a href="/" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
-                class="fas fa-home mr-2"></i>ショップ</a></li>
-          <li><a href="/pages/buying" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
-                class="fas fa-yen-sign mr-2"></i>店頭買取</a></li>
-          <li><a href="https://www.hare2buy.com/" target="_blank"
-              class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
-                class="fa fa-credit-card mr-2"></i>ネット買取</a></li>
-          <li><a href="/pages/store" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
-                class="fa fa-building mr-2"></i>店舗 - 秋葉原本店</a></li>
-          <li><a href="/pages/store_namba" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
-                class="fa fa-building mr-2"></i>店舗 - なんば店</a></li>
-          <li><a href="/pages/events" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
-                class="fa fa-trophy mr-2"></i>イベント</a></li>
-          <li><a href="/pages/help" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
-                class="far fa-question-circle mr-2"></i>ヘルプ</a></li>
-          <li><a href="/pages/contact" class="flex items-center px-4 py-2 hover:bg-gray-100 text-[#e60012]"><i
-                class="fa fa-envelope mr-2"></i>お問い合わせ</a></li>
+          <li>
+            <a href="/" class="flex items-center px-4 py-2 text-[#e60012] hover:bg-gray-100"><i
+                class="fas fa-home mr-2"></i>ショップ</a>
+          </li>
+          <li>
+            <a href="/pages/buying" class="flex items-center px-4 py-2 text-[#e60012] hover:bg-gray-100"><i
+                class="fas fa-yen-sign mr-2"></i>店頭買取</a>
+          </li>
+          <li>
+            <a href="https://www.hare2buy.com/" target="_blank"
+              class="flex items-center px-4 py-2 text-[#e60012] hover:bg-gray-100"><i
+                class="fa fa-credit-card mr-2"></i>ネット買取</a>
+          </li>
+          <li>
+            <a href="/pages/store" class="flex items-center px-4 py-2 text-[#e60012] hover:bg-gray-100"><i
+                class="fa fa-building mr-2"></i>店舗 - 秋葉原本店</a>
+          </li>
+          <li>
+            <a href="/pages/store_namba" class="flex items-center px-4 py-2 text-[#e60012] hover:bg-gray-100"><i
+                class="fa fa-building mr-2"></i>店舗 - なんば店</a>
+          </li>
+          <li>
+            <a href="/pages/events" class="flex items-center px-4 py-2 text-[#e60012] hover:bg-gray-100"><i
+                class="fa fa-trophy mr-2"></i>イベント</a>
+          </li>
+          <li>
+            <a href="/pages/help" class="flex items-center px-4 py-2 text-[#e60012] hover:bg-gray-100"><i
+                class="far fa-question-circle mr-2"></i>ヘルプ</a>
+          </li>
+          <li>
+            <a href="/pages/contact" class="flex items-center px-4 py-2 text-[#e60012] hover:bg-gray-100"><i
+                class="fa fa-envelope mr-2"></i>お問い合わせ</a>
+          </li>
         </ul>
       </div>
-      <div class="w-px h-11 bg-white mx-3"></div>
-      <a href="/" class="flex items-center w-full">
-        <img src="https://hareruya2-filepool.s3.amazonaws.com/banner/hareruya2logo.png" alt="晴れる屋2" class="h-11">
+      <div class="mx-3 h-11 w-px bg-white"></div>
+      <a href="/" class="flex w-full items-center">
+        <img src="https://hareruya2-filepool.s3.amazonaws.com/banner/hareruya2logo.png" alt="晴れる屋2" class="h-11" />
       </a>
     </div>
     <!-- 中央＋右：まとめて右寄せ -->
-    <div class="flex items-center ml-auto">
+    <div class="ml-auto flex items-center">
       <form class="flex items-center">
         <input type="text"
-          class="w-96 bg-white text-gray-500 placeholder-gray-400 placeholder:text-sm rounded px-2 py-2 h-7"
-          placeholder="商品名、キーワードを入力してください">
-        <button type="submit" class="flex items-center bg-gray-200 text-gray-700 rounded px-3 h-7 ml-2">
+          class="h-7 w-96 rounded bg-white px-2 py-2 text-gray-500 placeholder-gray-400 placeholder:text-sm"
+          placeholder="商品名、キーワードを入力してください" />
+        <button type="submit" class="ml-2 flex h-7 items-center rounded bg-gray-200 px-3 text-gray-700">
           <i class="fas fa-search mr-1"></i>
           <span class="text-xs font-bold">検索</span>
         </button>
       </form>
       <!-- 右 -->
-      <div class="flex items-center h-full flex-shrink-0 ml-20">
+      <div class="ml-20 flex h-full flex-shrink-0 items-center">
         <a href="/help"
-          class="border-2 border-white text-white text-xs flex items-center rounded px-2 h-7 ml-3 hover:bg-white hover:text-[#e60012] transitio font-bold">
+          class="transitio ml-3 flex h-7 items-center rounded border-2 border-white px-2 text-xs font-bold text-white hover:bg-white hover:text-[#e60012]">
           <i class="fas fa-question-circle mr-1"></i>ヘルプ
         </a>
         {% if user.is_authenticated %}
         <a href="/logout"
-          class="border-2 border-white text-white text-xs flex items-center rounded px-2 h-7 ml-3 hover:bg-white hover:text-[#e60012] transition font-bold">
+          class="ml-3 flex h-7 items-center rounded border-2 border-white px-2 text-xs font-bold text-white transition hover:bg-white hover:text-[#e60012]">
           <i class="fas fa-sign-out-alt mr-1"></i>ログアウト
         </a>
         {% else %}
         <a href="/login"
-          class="border-2 border-white text-white text-xs flex items-center rounded px-2 h-7 ml-3 hover:bg-white hover:text-[#e60012] transition font-bold">
+          class="ml-3 flex h-7 items-center rounded border-2 border-white px-2 text-xs font-bold text-white transition hover:bg-white hover:text-[#e60012]">
           <i class="fas fa-user mr-1"></i>ログイン
         </a>
         {% endif %}
         <a href="/cart"
-          class="border-2 border-white text-white text-xs flex items-center rounded px-2 h-7 ml-3 hover:bg-white hover:text-[#e60012] transition relative font-bold">
-          <i class="fas fa-shopping-cart mr-1"></i>カート
-          {% if request.session.cart and request.session.cart.items|length != 0 %}
+          class="relative ml-3 flex h-7 items-center rounded border-2 border-white px-2 text-xs font-bold text-white transition hover:bg-white hover:text-[#e60012]">
+          <i class="fas fa-shopping-cart mr-1"></i>カート {% if
+          request.session.cart and request.session.cart.items|length != 0 %}
           <span
-            class="absolute -top-2 -right-2 bg-white text-[#e60012] text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+            class="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-[#e60012]">
             {{request.session.cart.items|length}}
           </span>
           {% endif %}

@@ -1,56 +1,58 @@
-{% extends 'base.html' %}
-
-{% block main %}
+{% extends 'base.html' %} {% block main %}
 <div class="container mx-auto px-4 py-8">
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
     <!-- 商品画像 -->
-    <div class="bg-white rounded-lg overflow-hidden shadow-sm">
-      <img src="/{{ object.image }}" class="w-full h-auto object-contain aspect-square p-4" alt="{{ object.name }}">
+    <div class="overflow-hidden rounded-lg bg-white shadow-sm">
+      <img src="/{{ object.image }}" class="aspect-square h-auto w-full object-contain p-4" alt="{{ object.name }}" />
     </div>
 
     <!-- 商品情報 -->
-    <div class="bg-white rounded-lg shadow-sm p-6">
-      <h2 class="text-2xl font-bold text-gray-800 mb-4">{{object.name}}</h2>
+    <div class="rounded-lg bg-white p-6 shadow-sm">
+      <h2 class="mb-4 text-2xl font-bold text-gray-800">{{object.name}}</h2>
       <div class="space-y-4">
         <!-- カテゴリーとタグ -->
         <div class="flex flex-wrap gap-2">
           <a href="/categories/{{object.category.slug}}/"
-            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+            class="inline-flex items-center rounded-full bg-yellow-100 px-3 py-1 text-sm font-medium text-yellow-800">
             {{object.category.name}}
           </a>
           {% for tag in object.tags.all %}
           <a href="/tags/{{tag.slug}}/"
-            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+            class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-800">
             #{{tag}}
           </a>
           {% endfor %}
         </div>
 
         <!-- 在庫と価格 -->
-        <p class="text-gray-600">残り <span class="font-medium text-gray-800">{{object.stock}}</span> 個</p>
-        <p class="text-xl font-bold text-primary-500">¥{{object.price}}<span
-            class="text-sm font-normal text-gray-600 ml-1">（税別）</span></p>
+        <p class="text-gray-600">
+          残り
+          <span class="font-medium text-gray-800">{{object.stock}}</span> 個
+        </p>
+        <p class="text-primary-500 text-xl font-bold">
+          ¥{{object.price}}<span class="ml-1 text-sm font-normal text-gray-600">（税別）</span>
+        </p>
         <p class="text-gray-600">{{object.description}}</p>
 
         <!-- カートに追加フォーム -->
         <form action="/cart/add/" method="POST" class="space-y-4">
           {% csrf_token %}
-          <input type="hidden" name="item_pk" value="{{object.pk}}">
+          <input type="hidden" name="item_pk" value="{{object.pk}}" />
           <div class="flex items-center space-x-2">
             <input type="number"
-              class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-              name="quantity" value="1" max="{{object.stock}}">
+              class="focus:ring-primary-500 focus:border-primary-500 w-24 rounded-lg border border-gray-300 px-3 py-2 transition-colors focus:ring-2"
+              name="quantity" value="1" max="{{object.stock}}" />
             <span class="text-gray-600">点</span>
           </div>
           {% if object.stock == 0 %}
           <button type="submit"
-            class="w-full sm:w-auto px-6 py-2 bg-yellow-100 text-yellow-800 rounded-lg cursor-not-allowed opacity-75"
+            class="w-full cursor-not-allowed rounded-lg bg-yellow-100 px-6 py-2 text-yellow-800 opacity-75 sm:w-auto"
             disabled>
             売り切れ
           </button>
           {% else %}
           <button type="submit"
-            class="w-full sm:w-auto px-6 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors">
+            class="bg-primary-500 hover:bg-primary-600 w-full rounded-lg px-6 py-2 text-white transition-colors sm:w-auto">
             カートに追加
           </button>
           {% endif %}
@@ -61,12 +63,10 @@
 
   <!-- おすすめ商品 -->
   <div class="mt-12">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">おすすめ</h2>
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    <h2 class="mb-6 text-2xl font-bold text-gray-800">おすすめ</h2>
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
       {% for object in ADDTIONAL_ITEMS %}
-      <div>
-        {% include 'snippets/item_add_box.html' %}
-      </div>
+      <div>{% include 'snippets/item_add_box.html' %}</div>
       {% endfor %}
     </div>
   </div>
