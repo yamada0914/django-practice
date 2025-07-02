@@ -1,70 +1,63 @@
-{% extends 'base.html' %}
-
-{% block main %}
-<div class="container my-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
-      <div class="card shadow-sm">
-        <div class="card-body p-4">
-          <div class="text-center mb-4">
-            <h2 class="fw-bold">
-              {% if 'login' in request.path %}
-              ログイン
-              {% elif 'signup' in request.path %}
-              新規会員登録
-              {% endif %}
-            </h2>
-            <p class="text-muted">
-              {% if 'login' in request.path %}
-              アカウントをお持ちの方はこちらからログイン
-              {% elif 'signup' in request.path %}
-              新規会員登録で便利にお買い物
-              {% endif %}
-            </p>
-          </div>
-
-          <form method="POST">
-            {% csrf_token %}
-            <div class="mb-3">
-              <label for="email" class="form-label">メールアドレス</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                <input type="email" class="form-control" id="email" name="username" placeholder="example@email.com"
-                  required>
-              </div>
-            </div>
-
-            <div class="mb-4">
-              <label for="password" class="form-label">パスワード</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                <input type="password" class="form-control" id="password" name="password" placeholder="8文字以上で入力"
-                  required>
-              </div>
-            </div>
-
-            <div class="d-grid gap-2">
-              <button class="btn btn-primary btn-lg" type="submit">
-                {% if 'login' in request.path %}
-                ログイン
-                {% elif 'signup' in request.path %}
-                アカウントを作成
-                {% endif %}
-              </button>
-            </div>
-
-            <div class="text-center mt-4">
-              {% if 'login' in request.path %}
-              <p class="mb-0">アカウントをお持ちでない方は<a href="/signup" class="text-primary text-decoration-none">新規会員登録</a></p>
-              {% elif 'signup' in request.path %}
-              <p class="mb-0">すでにアカウントをお持ちの方は<a href="/login" class="text-primary text-decoration-none">ログイン</a></p>
-              {% endif %}
-            </div>
-          </form>
+{% extends 'base.html' %} {% block main %}
+<div class="max-w-4xl mx-auto py-16 px-2">
+  <div class="flex flex-col mb-6 border-b-2 border-[#000000]">
+    <div class="flex items-center mb-6">
+      <i class="fas fa-user-circle text-[#e60012] text-4xl mr-2"></i>
+      <h2 class="text-2xl font-bold text-gray-800">ログイン</h2>
+    </div>
+  </div>
+  <div class="bg-white rounded">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- 会員の方 -->
+      <div>
+        <div class="flex items-center border mb-4 p-2">
+          <span class="inline-block w-1.5 h-4 bg-[#e60012] rounded-full mr-2"></span>
+          <span class="font-bold text-sm text-gray-800">会員の方</span>
         </div>
+        <p class="text-gray-700 mb-10">
+          メールアドレスとパスワードを入力してログインしてください。
+        </p>
+        <form method="POST" class="space-y-3">
+          {% csrf_token %}
+          <div>
+            <input type="email" name="username" placeholder="メール" required
+              class="block w-80 mx-auto bg-white border border-gray-300 text-base text-gray-700 px-3 py-2 mb-2 rounded focus:outline-none focus:ring-2 focus:ring-[#e60012] transition" />
+          </div>
+          <div>
+            <input type="password" name="password" placeholder="パスワード" required
+              class="block w-80 mx-auto bg-white border border-gray-300 text-base text-gray-700 px-3 py-2 mb-12 rounded focus:outline-none focus:ring-2 focus:ring-[#e60012] transition" />
+          </div>
+          <button type="submit"
+            class="w-32 mx-auto block bg-[#e60012] text-white py-2 rounded hover:bg-[#c20010] transition h-11">
+            ログイン
+          </button>
+        </form>
+        <div class="mt-3 text-center font-bold">
+          <a href="#" class="text-sm text-[#e60012] hover:underline">パスワードをお忘れですか？</a>
+        </div>
+      </div>
+      <!-- 初めての方 -->
+      <div>
+        <div class="flex items-center border mb-4 p-2">
+          <span class="inline-block w-1.5 h-4 bg-[#e60012] rounded-full mr-2"></span>
+          <span class="font-bold text-sm text-gray-800">初めてご利用の方</span>
+        </div>
+        <p class="text-gray-700 mb-12">
+          初めてご利用のお客様は、こちらから会員登録を行って下さい。<br />メールアドレスとパスワードを登録しておくと便利にお買い物ができるようになります。
+        </p>
+        <a href="/signup"
+          class="block w-56 h-11 bg-[#e60012] text-white py-2 rounded text-center hover:bg-[#c20010] transition justify-self-center content-center">アカウントを作成する</a>
       </div>
     </div>
   </div>
+  <div class="mt-10 text-gray-700">
+    <p class="mb-2 font-bold">
+      旧サイトで会員登録がお済みの方へ、アカウント有効化のお願い
+    </p>
+    <p>
+      システムの移行に伴い、新サイトに初めてログインする際には「アカウントの有効化」をお願いします。<br />
+      <a href="#" class="text-[#e60012] underline font-bold">アカウント有効化ページへ</a>
+    </p>
+  </div>
 </div>
-
 {% endblock %}
