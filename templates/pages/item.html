@@ -1,11 +1,13 @@
-{% extends 'base.html' %}
-
-{% block main %}
+{% extends 'base.html' %} {% block main %}
 <div class="container mx-auto px-4 py-8">
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     <!-- 商品画像 -->
     <div class="bg-white rounded-lg overflow-hidden shadow-sm">
-      <img src="/{{ object.image }}" class="w-full h-auto object-contain aspect-square p-4" alt="{{ object.name }}">
+      <img
+        src="/{{ object.image }}"
+        class="w-full h-auto object-contain aspect-square p-4"
+        alt="{{ object.name }}"
+      />
     </div>
 
     <!-- 商品情報 -->
@@ -14,43 +16,61 @@
       <div class="space-y-4">
         <!-- カテゴリーとタグ -->
         <div class="flex flex-wrap gap-2">
-          <a href="/categories/{{object.category.slug}}/"
-            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+          <a
+            href="/categories/{{object.category.slug}}/"
+            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800"
+          >
             {{object.category.name}}
           </a>
           {% for tag in object.tags.all %}
-          <a href="/tags/{{tag.slug}}/"
-            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+          <a
+            href="/tags/{{tag.slug}}/"
+            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800"
+          >
             #{{tag}}
           </a>
           {% endfor %}
         </div>
 
         <!-- 在庫と価格 -->
-        <p class="text-gray-600">残り <span class="font-medium text-gray-800">{{object.stock}}</span> 個</p>
-        <p class="text-xl font-bold text-primary-500">¥{{object.price}}<span
-            class="text-sm font-normal text-gray-600 ml-1">（税別）</span></p>
+        <p class="text-gray-600">
+          残り
+          <span class="font-medium text-gray-800">{{object.stock}}</span> 個
+        </p>
+        <p class="text-xl font-bold text-primary-500">
+          ¥{{object.price}}<span class="text-sm font-normal text-gray-600 ml-1"
+            >（税別）</span
+          >
+        </p>
         <p class="text-gray-600">{{object.description}}</p>
 
         <!-- カートに追加フォーム -->
         <form action="/cart/add/" method="POST" class="space-y-4">
           {% csrf_token %}
-          <input type="hidden" name="item_pk" value="{{object.pk}}">
+          <input type="hidden" name="item_pk" value="{{object.pk}}" />
           <div class="flex items-center space-x-2">
-            <input type="number"
+            <input
+              type="number"
               class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-              name="quantity" value="1" max="{{object.stock}}">
+              name="quantity"
+              value="1"
+              max="{{object.stock}}"
+            />
             <span class="text-gray-600">点</span>
           </div>
           {% if object.stock == 0 %}
-          <button type="submit"
+          <button
+            type="submit"
             class="w-full sm:w-auto px-6 py-2 bg-yellow-100 text-yellow-800 rounded-lg cursor-not-allowed opacity-75"
-            disabled>
+            disabled
+          >
             売り切れ
           </button>
           {% else %}
-          <button type="submit"
-            class="w-full sm:w-auto px-6 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors">
+          <button
+            type="submit"
+            class="w-full sm:w-auto px-6 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors"
+          >
             カートに追加
           </button>
           {% endif %}
@@ -64,9 +84,7 @@
     <h2 class="text-2xl font-bold text-gray-800 mb-6">おすすめ</h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       {% for object in ADDTIONAL_ITEMS %}
-      <div>
-        {% include 'snippets/item_add_box.html' %}
-      </div>
+      <div>{% include 'snippets/item_add_box.html' %}</div>
       {% endfor %}
     </div>
   </div>

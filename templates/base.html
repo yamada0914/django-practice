@@ -1,61 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ TITLE }}</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                        },
-                    },
-                },
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              },
             },
-        }
+          },
+        },
+      };
     </script>
     <!-- Alpine.js -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+      defer
+    ></script>
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-</head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<body class="font-sans min-h-screen">
-    <header class="sticky top-0 bg-red-600 shadow-lg backdrop-blur-md z-50 h-[55px] flex items-center">
-        {% block header %}
-        {% include 'snippets/messages.html' %}
-        {% include 'snippets/header.html' %}
-        {% endblock %}
+  <body class="font-sans min-h-screen">
+    <header
+      class="sticky top-0 bg-red-600 shadow-lg backdrop-blur-md z-50 h-[55px] flex items-center"
+    >
+      {% block header %} {% include 'snippets/messages.html' %} {% include
+      'snippets/header.html' %} {% endblock %}
     </header>
 
-    <main class="flex-grow">
-        {% block main %}
-        {% endblock %}
-    </main>
+    <main class="flex-grow">{% block main %} {% endblock %}</main>
 
     <footer>
-        {% block footer %}
-        {% include 'snippets/footer.html' %}
-        {% endblock %}
+      {% block footer %} {% include 'snippets/footer.html' %} {% endblock %}
     </footer>
-</body>
-
+  </body>
 </html>

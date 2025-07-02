@@ -1,40 +1,44 @@
 <nav class="flex justify-center mt-8">
-    <ul class="flex items-center space-x-1">
-        {% if page_obj.has_previous %}
-        <li>
-            <a href="?page={{ page_obj.previous_page_number }}"
-                class="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center">
-                <i class="fas fa-chevron-left text-sm mr-1"></i>
-                前へ
-            </a>
-        </li>
-        {% endif %}
-
-        {% for num in page_obj.paginator.page_range %}
-        {% if page_obj.number == num %}
-        <li>
-            <a href="#" class="px-4 py-2 text-white bg-primary-500 border border-primary-500 rounded-lg">
-                {{ num }}
-            </a>
-        </li>
-        {% else %}
-        <li>
-            <a href="?page={{ num }}"
-                class="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                {{ num }}
-            </a>
-        </li>
-        {% endif %}
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-        <li>
-            <a href="?page={{ page_obj.next_page_number }}"
-                class="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center">
-                次へ
-                <i class="fas fa-chevron-right text-sm ml-1"></i>
-            </a>
-        </li>
-        {% endif %}
-    </ul>
+  <ul class="flex items-center space-x-1">
+    {% if page_obj.has_previous %}
+    <li>
+      <a
+        href="?page={{ page_obj.previous_page_number }}"
+        class="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center"
+      >
+        <i class="fas fa-chevron-left text-sm mr-1"></i>
+        前へ
+      </a>
+    </li>
+    {% endif %} {% for num in page_obj.paginator.page_range %} {% if
+    page_obj.number == num %}
+    <li>
+      <a
+        href="#"
+        class="px-4 py-2 text-white bg-primary-500 border border-primary-500 rounded-lg"
+      >
+        {{ num }}
+      </a>
+    </li>
+    {% else %}
+    <li>
+      <a
+        href="?page={{ num }}"
+        class="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+      >
+        {{ num }}
+      </a>
+    </li>
+    {% endif %} {% endfor %} {% if page_obj.has_next %}
+    <li>
+      <a
+        href="?page={{ page_obj.next_page_number }}"
+        class="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center"
+      >
+        次へ
+        <i class="fas fa-chevron-right text-sm ml-1"></i>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
 </nav>
