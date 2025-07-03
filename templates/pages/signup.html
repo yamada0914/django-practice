@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block main %}
+<div class="mx-auto max-w-2xl px-2 py-12">
+    <h2 class="mb-6 text-2xl font-bold text-gray-800">アカウントを作成する</h2>
+    <div class="mb-8 rounded border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-gray-700">
+        会員登録にあたってはご本人様のお名前、住所、メールアドレス、電話番号等をご入力ください。虚偽の内容を入力した場合は会員資格の停止、あるいは取引が停止させて頂く場合がございます。
+    </div>
+    <form method="POST" class="space-y-6 rounded bg-white p-6 shadow">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+                <label class="mb-1 block text-sm font-bold text-gray-700">お名前 <span
+                        class="text-red-600">[必須]</span></label>
+                <input type="text" name="last_name" placeholder="姓" required
+                    class="mb-2 w-full rounded border border-gray-300 px-3 py-2" />
+            </div>
+            <div>
+                <label class="invisible mb-1 block text-sm font-bold text-gray-700">名</label>
+                <input type="text" name="first_name" placeholder="名" required
+                    class="mb-2 w-full rounded border border-gray-300 px-3 py-2" />
+            </div>
+            <div>
+                <label class="mb-1 block text-sm font-bold text-gray-700">お名前（フリガナ） <span
+                        class="text-red-600">[必須]</span></label>
+                <input type="text" name="last_name_kana" placeholder="姓（フリガナ）" required
+                    class="mb-2 w-full rounded border border-gray-300 px-3 py-2" />
+            </div>
+            <div>
+                <label class="invisible mb-1 block text-sm font-bold text-gray-700">名（フリガナ）</label>
+                <input type="text" name="first_name_kana" placeholder="名（フリガナ）" required
+                    class="mb-2 w-full rounded border border-gray-300 px-3 py-2" />
+            </div>
+        </div>
+        <div>
+            <label class="mb-1 block text-sm font-bold text-gray-700">会社名 ※法人の方のみ</label>
+            <input type="text" name="company" placeholder="会社名"
+                class="w-full rounded border border-gray-300 px-3 py-2" />
+        </div>
+        <div>
+            <label class="mb-1 block text-sm font-bold text-gray-700">メール <span class="text-red-600">[必須]</span></label>
+            <input type="email" name="email" placeholder="メール" required
+                class="w-full rounded border border-gray-300 px-3 py-2" />
+        </div>
+        <div>
+            <label class="mb-1 block text-sm font-bold text-gray-700">電話番号 <span
+                    class="text-red-600">[必須]</span></label>
+            <input type="tel" name="tel" placeholder="電話番号" required
+                class="w-full rounded border border-gray-300 px-3 py-2" />
+        </div>
+        <div>
+            <label class="mb-1 block text-sm font-bold text-gray-700">パスワード <span
+                    class="text-red-600">[必須]</span></label>
+            <input type="password" name="password" placeholder="パスワード" required
+                class="w-full rounded border border-gray-300 px-3 py-2" />
+        </div>
+        <div class="pt-4">
+            <button type="submit"
+                class="mx-auto block h-11 w-40 rounded bg-[#e60012] py-2 font-bold text-white transition hover:bg-[#c20010]">
+                作成する
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

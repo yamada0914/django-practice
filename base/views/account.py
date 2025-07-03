@@ -11,7 +11,7 @@ from django.shortcuts import redirect
 class SignUpView(CreateView):
     form_class = UserCreationForm
     success_url = '/login/'
-    template_name = 'pages/login_signup.html'
+    template_name = 'pages/signup.html'
 
     def form_valid(self, form):
         messages.success(self.request, '新規登録が完了しました。続けてログインしてください。')
