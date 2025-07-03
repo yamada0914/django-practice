@@ -39,12 +39,11 @@
 </head>
 
 <body class="min-h-screen font-sans">
-    <header class="sticky top-0 z-50 flex h-[55px] items-center bg-red-600 shadow-lg backdrop-blur-md">
-        {% block header %} {% include 'snippets/messages.html' %} {% include
-        'snippets/header.html' %} {% endblock %}
+    <header class="sticky top-0 z-50 h-14 bg-red-600 shadow-lg backdrop-blur-md">
+        {% block header %} {% include 'snippets/messages.html' %} {% include 'snippets/header.html' %} {% endblock %}
     </header>
 
-    <main class="flex-grow">{% block main %} {% endblock %}</main>
+    <main class="flex-grow max-w-4xl mx-auto">{% block main %} {% endblock %}</main>
 
     <footer>
         {% block footer %} {% include 'snippets/footer.html' %} {% endblock %}

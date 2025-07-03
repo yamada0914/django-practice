@@ -1,7 +1,7 @@
-<nav class="h-full">
-  <div class="flex h-full w-full items-center">
+<nav class="w-full">
+  <div class="flex w-full items-center">
     <!-- 左 -->
-    <div class="relative flex h-full w-80 flex-shrink-0 items-center" x-data="{ open: false }">
+    <div class="relative flex w-80 flex-shrink-0 items-center" x-data="{ open: false }">
       <button class="p-2 text-4xl text-white focus:outline-none" @click="open = !open" @mouseenter="open = true"
         @mouseleave="open = false" type="button">
         <i class="fas fa-bars"></i>
@@ -65,7 +65,7 @@
         </button>
       </form>
       <!-- 右 -->
-      <div class="ml-20 flex h-full flex-shrink-0 items-center">
+      <div class="ml-16 mr-6 flex flex-shrink-0 items-center">
         <a href="/help"
           class="transitio ml-3 flex h-7 items-center rounded border-2 border-white px-2 text-xs font-bold text-white hover:bg-white hover:text-[#e60012]">
           <i class="fas fa-question-circle mr-1"></i>ヘルプ
@@ -83,8 +83,8 @@
         {% endif %}
         <a href="/cart"
           class="relative ml-3 flex h-7 items-center rounded border-2 border-white px-2 text-xs font-bold text-white transition hover:bg-white hover:text-[#e60012]">
-          <i class="fas fa-shopping-cart mr-1"></i>カート {% if
-          request.session.cart and request.session.cart.items|length != 0 %}
+          <i class="fas fa-shopping-cart mr-1"></i>カート
+          {% if request.session.cart and request.session.cart.items|length != 0 %}
           <span
             class="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-[#e60012]">
             {{request.session.cart.items|length}}
