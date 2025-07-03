@@ -61,7 +61,7 @@
           placeholder="商品名、キーワードを入力してください" />
         <button type="submit" class="ml-2 flex h-7 items-center rounded bg-gray-200 px-3 text-gray-700">
           <i class="fas fa-search mr-1"></i>
-          <span class="text-xs font-bold">検索</span>
+          <span class="text-xs">検索</span>
         </button>
       </form>
       <!-- 右 -->
@@ -71,12 +71,12 @@
           <i class="fas fa-question-circle mr-1"></i>ヘルプ
         </a>
         {% if user.is_authenticated %}
-        <a href="/logout"
+        <a href="/account/logout"
           class="ml-3 flex h-7 items-center rounded border-2 border-white px-2 text-xs font-bold text-white transition hover:bg-white hover:text-[#e60012]">
           <i class="fas fa-sign-out-alt mr-1"></i>ログアウト
         </a>
         {% else %}
-        <a href="/login"
+        <a href="/account/login"
           class="ml-3 flex h-7 items-center rounded border-2 border-white px-2 text-xs font-bold text-white transition hover:bg-white hover:text-[#e60012]">
           <i class="fas fa-user mr-1"></i>ログイン
         </a>

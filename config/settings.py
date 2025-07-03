@@ -134,13 +134,13 @@ MY_URL = env.str('MY_URL')
 # カスタムユーザーモデル
 AUTH_USER_MODEL = 'base.User'
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/account/login/'
 
 LOGIN_REDIRECT_URL = '/'
 
-LOGOUT_URL = '/logout/'
+LOGOUT_URL = '/account/logout/'
 
-LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/account/login/'
 
 
 # messages
