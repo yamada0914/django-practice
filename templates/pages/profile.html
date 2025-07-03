@@ -8,22 +8,11 @@
         {% csrf_token %}
         <div class="form-group">
           <label>Name</label>
-<<<<<<< HEAD
           <input class="form-control" type="text" name="name" placeholder="name" value="{{user.profile.name}}" />
-=======
-          <input
-            class="form-control"
-            type="text"
-            name="name"
-            placeholder="name"
-            value="{{user.profile.name}}"
-          />
->>>>>>> f90f472f779ded703043cc530673e37325ac95f1
         </div>
         <div class="form-row">
           <div class="form-group col-md-2">
             <label>Zip</label>
-<<<<<<< HEAD
             <input class="form-control" type="text" name="zipcode" placeholder="zipcode"
               value="{{user.profile.zipcode}}" />
           </div>
@@ -35,40 +24,10 @@
           <div class="form-group col-md-6">
             <label>City</label>
             <input class="form-control" type="text" name="city" placeholder="city" value="{{user.profile.city}}" />
-=======
-            <input
-              class="form-control"
-              type="text"
-              name="zipcode"
-              placeholder="zipcode"
-              value="{{user.profile.zipcode}}"
-            />
-          </div>
-          <div class="form-group col-md-4">
-            <label>Prefecture</label>
-            <input
-              class="form-control"
-              type="text"
-              name="prefecture"
-              placeholder="prefecture"
-              value="{{user.profile.prefecture}}"
-            />
-          </div>
-          <div class="form-group col-md-6">
-            <label>City</label>
-            <input
-              class="form-control"
-              type="text"
-              name="city"
-              placeholder="city"
-              value="{{user.profile.city}}"
-            />
->>>>>>> f90f472f779ded703043cc530673e37325ac95f1
           </div>
         </div>
         <div class="form-group">
           <label>Address 1</label>
-<<<<<<< HEAD
           <input class="form-control" type="text" name="address1" placeholder="address1"
             value="{{user.profile.address1}}" />
         </div>
@@ -80,35 +39,6 @@
         <div class="form-group">
           <label>Tel</label>
           <input class="form-control" type="tel" name="tel" placeholder="tel" value="{{user.profile.tel}}" />
-=======
-          <input
-            class="form-control"
-            type="text"
-            name="address1"
-            placeholder="address1"
-            value="{{user.profile.address1}}"
-          />
-        </div>
-        <div class="form-group">
-          <label>Address 2</label>
-          <input
-            class="form-control"
-            type="text"
-            name="address2"
-            placeholder="address2"
-            value="{{user.profile.address2}}"
-          />
-        </div>
-        <div class="form-group">
-          <label>Tel</label>
-          <input
-            class="form-control"
-            type="tel"
-            name="tel"
-            placeholder="tel"
-            value="{{user.profile.tel}}"
-          />
->>>>>>> f90f472f779ded703043cc530673e37325ac95f1
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
       </form>

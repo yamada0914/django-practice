@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <nav class="mt-8 flex justify-center">
   <ul class="flex items-center space-x-1">
     {% if page_obj.has_previous %}
@@ -6,69 +5,31 @@
       <a href="?page={{ page_obj.previous_page_number }}"
         class="flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-600 transition-colors hover:bg-gray-50">
         <i class="fas fa-chevron-left mr-1 text-sm"></i>
-=======
-<nav class="flex justify-center mt-8">
-  <ul class="flex items-center space-x-1">
-    {% if page_obj.has_previous %}
-    <li>
-      <a
-        href="?page={{ page_obj.previous_page_number }}"
-        class="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center"
-      >
-        <i class="fas fa-chevron-left text-sm mr-1"></i>
->>>>>>> f90f472f779ded703043cc530673e37325ac95f1
         前へ
       </a>
     </li>
     {% endif %} {% for num in page_obj.paginator.page_range %} {% if
     page_obj.number == num %}
     <li>
-<<<<<<< HEAD
       <a href="#" class="bg-primary-500 border-primary-500 rounded-lg border px-4 py-2 text-white">
-=======
-      <a
-        href="#"
-        class="px-4 py-2 text-white bg-primary-500 border border-primary-500 rounded-lg"
-      >
->>>>>>> f90f472f779ded703043cc530673e37325ac95f1
         {{ num }}
       </a>
     </li>
     {% else %}
     <li>
-<<<<<<< HEAD
       <a href="?page={{ num }}"
         class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-600 transition-colors hover:bg-gray-50">
-=======
-      <a
-        href="?page={{ num }}"
-        class="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-      >
->>>>>>> f90f472f779ded703043cc530673e37325ac95f1
         {{ num }}
       </a>
     </li>
     {% endif %} {% endfor %} {% if page_obj.has_next %}
     <li>
-<<<<<<< HEAD
       <a href="?page={{ page_obj.next_page_number }}"
         class="flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-600 transition-colors hover:bg-gray-50">
         次へ
         <i class="fas fa-chevron-right ml-1 text-sm"></i>
-=======
-      <a
-        href="?page={{ page_obj.next_page_number }}"
-        class="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center"
-      >
-        次へ
-        <i class="fas fa-chevron-right text-sm ml-1"></i>
->>>>>>> f90f472f779ded703043cc530673e37325ac95f1
       </a>
     </li>
     {% endif %}
   </ul>
-<<<<<<< HEAD
 </nav>
-=======
-</nav>
->>>>>>> f90f472f779ded703043cc530673e37325ac95f1

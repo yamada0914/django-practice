@@ -2,17 +2,8 @@
 <div class="container mx-auto px-4 py-8">
   <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
     <!-- 商品画像 -->
-<<<<<<< HEAD
     <div class="overflow-hidden rounded-lg bg-white shadow-sm">
       <img src="/{{ object.image }}" class="aspect-square h-auto w-full object-contain p-4" alt="{{ object.name }}" />
-=======
-    <div class="bg-white rounded-lg overflow-hidden shadow-sm">
-      <img
-        src="/{{ object.image }}"
-        class="w-full h-auto object-contain aspect-square p-4"
-        alt="{{ object.name }}"
-      />
->>>>>>> f90f472f779ded703043cc530673e37325ac95f1
     </div>
 
     <!-- 商品情報 -->
@@ -21,7 +12,6 @@
       <div class="space-y-4">
         <!-- カテゴリーとタグ -->
         <div class="flex flex-wrap gap-2">
-<<<<<<< HEAD
           <a href="/categories/{{object.category.slug}}/"
             class="inline-flex items-center rounded-full bg-yellow-100 px-3 py-1 text-sm font-medium text-yellow-800">
             {{object.category.name}}
@@ -29,19 +19,6 @@
           {% for tag in object.tags.all %}
           <a href="/tags/{{tag.slug}}/"
             class="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-800">
-=======
-          <a
-            href="/categories/{{object.category.slug}}/"
-            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800"
-          >
-            {{object.category.name}}
-          </a>
-          {% for tag in object.tags.all %}
-          <a
-            href="/tags/{{tag.slug}}/"
-            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800"
-          >
->>>>>>> f90f472f779ded703043cc530673e37325ac95f1
             #{{tag}}
           </a>
           {% endfor %}
@@ -52,15 +29,8 @@
           残り
           <span class="font-medium text-gray-800">{{object.stock}}</span> 個
         </p>
-<<<<<<< HEAD
         <p class="text-primary-500 text-xl font-bold">
           ¥{{object.price}}<span class="ml-1 text-sm font-normal text-gray-600">（税別）</span>
-=======
-        <p class="text-xl font-bold text-primary-500">
-          ¥{{object.price}}<span class="text-sm font-normal text-gray-600 ml-1"
-            >（税別）</span
-          >
->>>>>>> f90f472f779ded703043cc530673e37325ac95f1
         </p>
         <p class="text-gray-600">{{object.description}}</p>
 
@@ -69,7 +39,6 @@
           {% csrf_token %}
           <input type="hidden" name="item_pk" value="{{object.pk}}" />
           <div class="flex items-center space-x-2">
-<<<<<<< HEAD
             <input type="number"
               class="focus:ring-primary-500 focus:border-primary-500 w-24 rounded-lg border border-gray-300 px-3 py-2 transition-colors focus:ring-2"
               name="quantity" value="1" max="{{object.stock}}" />
@@ -84,30 +53,6 @@
           {% else %}
           <button type="submit"
             class="bg-primary-500 hover:bg-primary-600 w-full rounded-lg px-6 py-2 text-white transition-colors sm:w-auto">
-=======
-            <input
-              type="number"
-              class="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-              name="quantity"
-              value="1"
-              max="{{object.stock}}"
-            />
-            <span class="text-gray-600">点</span>
-          </div>
-          {% if object.stock == 0 %}
-          <button
-            type="submit"
-            class="w-full sm:w-auto px-6 py-2 bg-yellow-100 text-yellow-800 rounded-lg cursor-not-allowed opacity-75"
-            disabled
-          >
-            売り切れ
-          </button>
-          {% else %}
-          <button
-            type="submit"
-            class="w-full sm:w-auto px-6 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors"
-          >
->>>>>>> f90f472f779ded703043cc530673e37325ac95f1
             カートに追加
           </button>
           {% endif %}
