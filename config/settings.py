@@ -1,6 +1,5 @@
 from pathlib import Path
 import environ
-from django.contrib import messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -141,16 +140,6 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_URL = '/account/logout/'
 
 LOGOUT_REDIRECT_URL = '/account/login/'
-
-
-# messages
-MESSAGE_TAGS = {
-    messages.ERROR: 'rounded-0 alert alert-danger',
-    messages.WARNING: 'rounded-0 alert alert-warning',
-    messages.SUCCESS: 'rounded-0 alert alert-success',
-    messages.INFO: 'rounded-0 alert alert-info',
-    messages.DEBUG: 'rounded-0 alert alert-secondary',
-}
 
 # custom_context_processors
 TITLE = 'ポケカ通販'

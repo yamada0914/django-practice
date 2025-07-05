@@ -40,10 +40,10 @@
 
 <body class="min-h-screen font-sans">
     <header class="sticky top-0 z-50 h-14 bg-red-600 shadow-lg backdrop-blur-md">
-        {% block header %} {% include 'snippets/messages.html' %} {% include 'snippets/header.html' %} {% endblock %}
+        {% include 'snippets/header.html' %}
     </header>
 
-    <main class="flex-grow max-w-4xl mx-auto">{% block main %} {% endblock %}</main>
+    <main class="flex-grow mx-auto">{% block main %} {% endblock %}</main>
 
     <footer>
         {% block footer %} {% include 'snippets/footer.html' %} {% endblock %}

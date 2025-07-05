@@ -4,8 +4,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from base.models import Profile
 from base.forms import UserCreationForm
-from django.contrib import messages
-from django.shortcuts import redirect
 
 
 class SignUpView(CreateView):
@@ -14,7 +12,6 @@ class SignUpView(CreateView):
     template_name = 'pages/signup.html'
 
     def form_valid(self, form):
-        messages.success(self.request, '新規登録が完了しました。続けてログインしてください。')
         return super().form_valid(form)
 
 
@@ -22,11 +19,9 @@ class Login(LoginView):
     template_name = 'pages/login_signup.html'
 
     def form_valid(self, form):
-        messages.success(self.request, 'ログインしました。')
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, 'エラーでログインできません。')
         return super().form_invalid(form)
 
 
@@ -55,7 +50,6 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
         profile.save()
 
         user.save()
-        messages.success(self.request, 'アカウント情報を更新しました。')
         return super().form_valid(form)
 
 
