@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from base.models import Item, Category, Tag
 import csv
 import os
@@ -73,3 +73,7 @@ class TagListView(ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = f"Tag #{self.tag.name}"
         return context
+
+
+class HelpView(TemplateView):
+    template_name = 'pages/help.html'

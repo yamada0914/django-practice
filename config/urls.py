@@ -33,4 +33,8 @@ urlpatterns = [
     path('tags/<str:pk>/', views.TagListView.as_view()),
 
     path('', views.IndexListView.as_view()),  # トップページ
+
+    # Pages
+    path('pages/help/', views.HelpView.as_view()),
+
 ]
