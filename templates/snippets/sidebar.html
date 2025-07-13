@@ -1,0 +1,18 @@
+<aside class="w-full lg:w-1/4 flex-shrink-0">
+    <div class="flex mb-3">
+        <div class="w-1 h-11 bg-red-500 mr-3"></div>
+        <h3 class="place-self-center">商品カテゴリ一覧</h3>
+    </div>
+    <img src="https://cdn.shopify.com/s/files/1/0763/0536/7360/files/hare2_pokeca_zukan_small_b8b9cc5d-e696-454b-94a0-0adfd21dba75.jpg?v=1708322907"
+        alt="ポケカ全シリーズ図鑑" class="mb-4 rounded shadow" />
+    <ul class="bg-white rounded shadow p-2 divide-y text-sm">
+        {% for category in CATEGORIES %}
+        <li>
+            <a href="#" class="flex items-center justify-between px-3 py-2 hover:bg-red-50">
+                {{ category }}
+                <span class="text-xl text-gray-400">&gt;</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</aside>

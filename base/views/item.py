@@ -13,7 +13,7 @@ class IndexListView(ListView):
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
-        context['CATEGORIES'] = range(1, 13)
+        context['CATEGORIES'] = Category.objects.all()
         # バナーCSV読み込み
         banners = []
         csv_path = os.path.join(settings.BASE_DIR, 'data/csv', 'banners.csv')
@@ -43,6 +43,11 @@ class IndexListView(ListView):
 class ItemDetailView(DetailView):
     model = Item
     template_name = 'pages/item.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['CATEGORIES'] = Category.objects.all()
+        return context
 
 
 class CategoryListView(ListView):
