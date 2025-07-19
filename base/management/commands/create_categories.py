@@ -10,7 +10,7 @@ CSV からカテゴリを一括登録する Django 管理コマンド。
 import csv
 import os
 from django.core.management.base import BaseCommand
-from base.models.item_models import Category
+from base.models.Card_models import Category
 from django.conf import settings
 
 

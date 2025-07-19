@@ -27,8 +27,8 @@ urlpatterns = [
     path('cart/add/', views.AddCartView.as_view()),
     path('cart/', views.CartListView.as_view()),  # カートページ
 
-    # Items
-    path('items/<str:pk>/', views.ItemDetailView.as_view()),
+    # Cards
+    path('products/<str:pk>/', views.CardDetailView.as_view()),
     path('categories/<str:pk>/', views.CategoryListView.as_view()),
     path('tags/<str:pk>/', views.TagListView.as_view()),
 

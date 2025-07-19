@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.views.generic import View, TemplateView
 from django.conf import settings
-from base.models import Item, Order
+from base.models import Card, Order
 import stripe
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
@@ -61,7 +61,7 @@ class PayCancelView(LoginRequiredMixin, TemplateView):
         for order in orders:
             # 在庫数と販売数を元の状態に戻す
             for elem in json.loads(order.items):
-                item = Item.objects.get(pk=elem['pk'])
+                item = Card.objects.get(pk=elem['pk'])
                 item.sold_count -= elem['quantity']
                 item.stock += elem['quantity']
                 item.save()
@@ -111,7 +111,7 @@ class PayWithStripe(LoginRequiredMixin, View):
         items = []  # Orderモデル用に追記
         line_items = []
         for item_pk, quantity in cart['items'].items():
-            item = Item.objects.get(pk=item_pk)
+            item = Card.objects.get(pk=item_pk)
             line_item = create_line_item(
                 item.price, item.name, quantity)
             line_items.append(line_item)

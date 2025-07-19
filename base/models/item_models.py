@@ -28,10 +28,23 @@ class Category(models.Model):
         return self.name
 
 
-class Item(models.Model):
+class Pack(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, unique=True)
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name='packs')
+
+    def __str__(self):
+        return self.name
+
+
+class Card(models.Model):
     id = models.CharField(default=create_id, primary_key=True,
                           max_length=22, editable=False)
+    pokemon_id = models.CharField(default='', max_length=50)
     name = models.CharField(default='', max_length=50)
+    pokemon_name = models.CharField(default='', max_length=50)
+    english_name = models.CharField(default='', max_length=50)
     price = models.PositiveIntegerField(default=0)
     stock = models.PositiveIntegerField(default=0)
     description = models.TextField(default='', blank=True)
@@ -41,9 +54,8 @@ class Item(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(default='', blank=True,
                               upload_to=upload_image_to)
-
-    category = models.ForeignKey(
-        Category, on_delete=models.SET_NULL, null=True, blank=True)
+    pack = models.ForeignKey(
+        Pack, on_delete=models.SET_NULL, null=True, blank=True, related_name='cards')
     tags = models.ManyToManyField(Tag)
 
     def __str__(self):

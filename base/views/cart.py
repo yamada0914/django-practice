@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.conf import settings
 from django.views.generic import View, ListView
-from base.models import Item
+from base.models import Card
 from collections import OrderedDict
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 
 class CartListView(LoginRequiredMixin, ListView):
-    model = Item
+    model = Card
     template_name = 'pages/cart.html'
 
     def get_queryset(self):
@@ -19,7 +19,7 @@ class CartListView(LoginRequiredMixin, ListView):
         self.queryset = []
         self.total = 0
         for item_pk, quantity in cart['items'].items():
-            obj = Item.objects.get(pk=item_pk)
+            obj = Card.objects.get(pk=item_pk)
             obj.quantity = quantity
             obj.subtotal = int(obj.price * quantity)
             self.queryset.append(obj)

@@ -1,9 +1,9 @@
 from django.conf import settings
-from base.models import Item
+from base.models import Card
 
 
 def base(request):
-    items = Item.objects.filter(is_published=True)
+    items = Card.objects.filter(is_published=True)
     return {
         'TITLE': settings.TITLE,
         'ADDTIONAL_ITEMS': items,

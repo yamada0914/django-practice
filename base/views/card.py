@@ -1,15 +1,15 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, TemplateView
-from base.models import Item, Category, Tag
+from base.models import Card, Category, Tag
 import csv
 import os
 from django.conf import settings
 
 
 class IndexListView(ListView):
-    model = Item
+    model = Card
     template_name = 'pages/index.html'
-    queryset = Item.objects.filter(is_published=True)
+    queryset = Card.objects.filter(is_published=True)
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
@@ -22,14 +22,14 @@ class IndexListView(ListView):
             for row in reader:
                 banners.append(row)
         context['BANNERS'] = banners
-        # POPULAR_ITEMSを直接取得し 12 件だけ使い 3 件ずつグループ化して 4 ページ表示
-        popular_items = list(Item.objects.filter(
+        # POPULAR_CARDSを直接取得し 12 件だけ使い 3 件ずつグループ化して 4 ページ表示
+        popular_cards = list(Card.objects.filter(
             is_published=True).order_by('-sold_count')[:12])
-        print('popular_items', popular_items)
+        print('popular_cards', popular_cards)
 
         def batch(lst, n):
             return [lst[i:i+n] for i in range(0, len(lst), n)]
-        context['POPULAR_GROUPS'] = batch(popular_items, 3)
+        context['POPULAR_GROUPS'] = batch(popular_cards, 3)
         # 4 カラムバナー
         context['FOUR_BANNERS'] = [
             {"src": "https://hareruya2-filepool.s3.amazonaws.com/banner/webp/4column/img_2209_hare2supB.webp", "url": "#"},
@@ -40,8 +40,8 @@ class IndexListView(ListView):
         return context
 
 
-class ItemDetailView(DetailView):
-    model = Item
+class CardDetailView(DetailView):
+    model = Card
     template_name = 'pages/item.html'
 
     def get_context_data(self, **kwargs):
@@ -51,13 +51,13 @@ class ItemDetailView(DetailView):
 
 
 class CategoryListView(ListView):
-    model = Item
+    model = Card
     template_name = 'pages/list.html'
     paginate_by = 2
 
     def get_queryset(self):
         self.category = Category.objects.get(slug=self.kwargs['pk'])
-        return Item.objects.filter(is_published=True, category=self.category)
+        return Card.objects.filter(is_published=True, pack__category=self.category)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -66,13 +66,13 @@ class CategoryListView(ListView):
 
 
 class TagListView(ListView):
-    model = Item
+    model = Card
     template_name = 'pages/list.html'
     paginate_by = 2
 
     def get_queryset(self):
         self.tag = Tag.objects.get(slug=self.kwargs['pk'])
-        return Item.objects.filter(is_published=True, tags=self.tag)
+        return Card.objects.filter(is_published=True, tags=self.tag)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -11,7 +11,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 from django.core.management.base import BaseCommand
-from base.views import Item
+from base.views import Card
 import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -73,7 +73,7 @@ class Command(BaseCommand):
 
                 # Djangoモデルに画像を登録
                 with open(save_path, 'rb') as f:
-                    Item.objects.create(
+                    Card.objects.create(
                         name=img_name, image=save_path, is_published=True, stock=100, price=200)
 
                 self.stdout.write(self.style.SUCCESS(
@@ -84,7 +84,7 @@ class Command(BaseCommand):
         finally:
             driver.quit()
 
-    def get_image_save_path(self, img_url, base_dir='static/items') -> str:
+    def get_image_save_path(self, img_url, base_dir='static/Cards') -> str:
         """画像の保存先パスを生成"""
         img_filename = os.path.basename(img_url)
         return os.path.join(base_dir, img_filename)

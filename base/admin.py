@@ -1,15 +1,15 @@
 from base.forms import UserCreationForm
 from django.contrib import admin
-from base.models import Item, Category, Tag, User, Profile, Order
+from base.models import Card, Category, Tag, User, Profile, Order
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 
 
 class TagInline(admin.TabularInline):
-    model = Item.tags.through
+    model = Card.tags.through
 
 
-class ItemAdmin(admin.ModelAdmin):
+class CardAdmin(admin.ModelAdmin):
     inlines = [TagInline]
     exclude = ['tags']
 
@@ -39,7 +39,7 @@ class CustomUserAdmin(UserAdmin):
     inlines = (ProfileInline,)
 
 
-admin.site.register(Item, ItemAdmin)
+admin.site.register(Card, CardAdmin)
 admin.site.register(Category)
 admin.site.register(Order)
 admin.site.register(Tag)
