@@ -42,7 +42,7 @@ class Card(models.Model):
     id = models.CharField(default=create_id, primary_key=True,
                           max_length=22, editable=False)
     pokemon_id = models.CharField(default='', max_length=50)
-    name = models.CharField(default='', max_length=50)
+    name = models.CharField(default='', max_length=100)
     pokemon_name = models.CharField(default='', max_length=50)
     english_name = models.CharField(default='', max_length=50)
     price = models.PositiveIntegerField(default=0)
@@ -57,6 +57,26 @@ class Card(models.Model):
     pack = models.ForeignKey(
         Pack, on_delete=models.SET_NULL, null=True, blank=True, related_name='cards')
     tags = models.ManyToManyField(Tag)
+    rarity = models.CharField(
+        max_length=10, blank=True, default='')
+    type = models.CharField(max_length=10, blank=True, default='')
+    number = models.CharField(
+        max_length=20, blank=True, default='')  # 例: 001/100
+    series_code = models.CharField(
+        max_length=20, blank=True, default='')  # 例: SV9
 
     def __str__(self):
         return self.name
+
+    @property
+    def display_name(self):
+        parts = [self.name]
+        if self.rarity:
+            parts.append(f'({self.rarity})')
+        if self.type:
+            parts.append(f'{{{self.type}}}')
+        if self.number:
+            parts.append(f'〈{self.number}〉')
+        if self.series_code:
+            parts.append(f'[{self.series_code}]')
+        return ''.join(parts)

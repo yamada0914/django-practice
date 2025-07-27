@@ -84,7 +84,7 @@ class Command(BaseCommand):
         finally:
             driver.quit()
 
-    def get_image_save_path(self, img_url, base_dir='static/Cards') -> str:
+    def get_image_save_path(self, img_url, base_dir='static/items') -> str:
         """画像の保存先パスを生成"""
         img_filename = os.path.basename(img_url)
         return os.path.join(base_dir, img_filename)

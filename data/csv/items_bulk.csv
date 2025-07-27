@@ -1,0 +1,11 @@
+name,pokemon_name,english_name,pokemon_id,price,stock,pack_slug,image
+ナンジャモのビリリダマ,ビリリダマ,Voltorb,100,50,10,battle-trainers,images/047033_P_HOERUO.jpg
+ナンジャモのマルマイン,マルマイン,Electrode,101,80,5,battle-trainers,images/electrode.jpg
+リーリエのピッピex,ピッピ,Clefairy,35,120,3,shiny-treasure,images/clefairy.jpg
+Nのバチュル,バチュル,Joltik,595,30,8,legendary-treasures,images/joltik.jpg
+ナンジャモのズピカ,ズピカ,Plusle,311,40,7,battle-trainers,images/plusle.jpg
+ナンジャモのハラバリーex,ハラバリー,Minun,312,60,6,battle-trainers,images/minun.jpg
+ナンジャモのカイデン,カイデン,Manectric,310,70,4,battle-trainers,images/manectric.jpg
+ナンジャモのタイカイデン,カイデン,Manectric,310,70,4,battle-trainers,images/manectric.jpg
+キャタピー,キャタピー,Caterpie,10,20,15,sv1a,images/caterpie.jpg
+トランセル,トランセル,Metapod,11,25,12,sv1a,images/metapod.jpg 
