@@ -1,130 +1,142 @@
-{% extends 'base.html' %}
-{% load humanize %}
-{% block main %}
-<div class="container mx-auto px-4 py-8">
-  <div class="flex flex-col lg:flex-row gap-8 justify-center items-start">
+{% extends 'base.html' %} {% load humanize %} {% block main %}
+<div x-data="{ showLoginNotification: false, qty: 1 }" class="container mx-auto px-4 py-8">
+  <div class="flex flex-col items-start justify-center gap-8 lg:flex-row">
     {% include 'snippets/sidebar.html' %}
-    <main class="flex-1 flex flex-col items-center">
+    <main class="flex flex-1 flex-col">
       <!-- パンクズリスト -->
-      <nav class="text-sm text-gray-500 mb-4 w-full max-w-2xl mx-auto" aria-label="Breadcrumb">
-        <ol class="list-reset flex">
-          <li><a href="/" class="hover:underline text-red-600 font-bold">ホーム</a></li>
-          {% if object.pack and object.pack.category %}
-          <li><span class="mx-2">›</span></li>
-          <li>
-            <a href="/category/{{ object.pack.category.slug }}/" class="hover:underline">
-              {{ object.pack.category.name }}
-            </a>
-          </li>
-          <li><span class="mx-2">›</span></li>
-          <li>
-            <a href="/pack/{{ object.pack.slug }}/" class="hover:underline">
-              {{ object.pack.name }}
-            </a>
-          </li>
-          {% endif %}
-          <li><span class="mx-2">›</span></li>
-          <li class="text-gray-700">{{ object.name }}</li>
-        </ol>
+      <nav class="mx-auto mb-4 w-full max-w-2xl text-gray-500" aria-label="Breadcrumb">
+        <a href="/" class="font-bold text-[#ff2626] hover:underline">ホーム</a>
+        {% if object.pack and object.pack.category %}
+        <span class="mx-2">›</span>
+
+        <a href="/category/{{ object.pack.category.slug }}/" class="font-bold text-[#ff2626] hover:underline">
+          {{ object.pack.category.name }}
+        </a>
+
+        <span class="mx-2">›</span>
+        <a href="/pack/{{ object.pack.slug }}/" class="font-bold text-[#ff2626] hover:underline">
+          {{ object.pack.name }}
+        </a>
+        {% endif %}
+        <span class="mx-2">›</span>
+        <span class="text-gray-700">{{ object.display_name }}</span>
       </nav>
-      <div class="bg-white border border-red-500 shadow p-6 w-full max-w-2xl mx-auto">
-        <!-- 2カラム：画像＋サムネイル／商品情報＋ボタン -->
-        <div class="flex flex-row mb-16">
+      <div
+        class="mx-auto mb-10 w-full max-w-2xl border border-red-500 bg-white p-6 shadow-[4px_4px_5px_-1px_rgba(0,0,0,0.4)]">
+        <!-- 2 カラム：画像＋サムネイル／商品情報＋ボタン -->
+        <div class="mb-16 flex flex-row">
           <!-- 左カラム：商品画像＋サムネイル -->
-          <div class="flex flex-col w-2/3 items-center">
-            <img src="/{{ object.image }}" class="aspect-square h-80 w-80 object-contain mx-auto mb-4"
-              alt="{{ object.name }}" />
-            <img src="/{{ object.image }}" class="h-16 w-16 object-contain border border-red-200 rounded mb-4"
-              alt="{{ object.name }} thumbnail" />
+          <div class="flex w-2/3 flex-col items-center">
+            <img src="/{{ object.image }}" class="mx-auto mb-4 aspect-square h-80 w-80 object-contain"
+              alt="{{ object.display_name }}" />
+            <img src="/{{ object.image }}" class="mb-4 h-16 rounded border border-red-200 object-contain"
+              alt="{{ object.display_name }} thumbnail" />
           </div>
           <!-- 右カラム：商品情報・カート・ボタン -->
-          <div class="flex flex-col w-1/3">
+          <div class="flex w-1/3 flex-col">
             <!-- 商品名（公式風・赤・太字・改行あり） -->
-            <h2 class="mb-4 font-bold text-red-600 break-words leading-tight">
-              {{ object.name }}
+            <h2 class="mb-4 break-words font-bold leading-tight text-red-600">
+              {{ object.display_name }}
             </h2>
             <!-- 価格（公式風） -->
             <div class="mb-4 text-gray-800">
               <span class="mr-2">販売価格:</span>
               <span class="font-extrabold text-black">¥{{ object.price|intcomma }}</span>
             </div>
-            <!-- 数量選択（Alpine.jsで公式風UI） -->
-            <div class="mb-2 text-xs">数量</div>
-            <div x-data="{ qty: 1 }" class="flex items-center mb-4">
-              <form action="/cart/add/" method="POST" class="">
-                {% csrf_token %}
+            <!-- 数量選択 -->
+            <div class="mb-2 text-gray-700">数量</div>
+            <form action="/cart/add/" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="item_pk" value="{{object.pk}}" />
+              <div class="mb-4 flex items-center">
+                <div class="flex h-12 rounded border border-gray-300">
+                  <button type="button"
+                    class="flex w-12 items-center justify-center border-r-0 bg-[rgb(250,250,249)] text-gray-700 hover:bg-gray-50"
+                    @click="if(qty>1) qty--">
+                    −
+                  </button>
+                  <input type="number" name="quantity" :value="qty" min="1" max="{{ object.stock }}"
+                    class="w-14 border-gray-300 bg-[rgb(250,250,249)] text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
+                  <button type="button"
+                    class="flex w-12 items-center justify-center bg-[rgb(250,250,249)] text-gray-700 hover:bg-gray-50"
+                    @click="if(qty<{{ object.stock }}) qty++">
+                    ＋
+                  </button>
+                </div>
+              </div>
+              <!-- 在庫 -->
+              <div class="mb-4 text-xs font-bold text-gray-600">
+                在庫{{ object.stock }}
+              </div>
+              {% if object.stock == 0 %}
+              <button type="submit"
+                class="w-full cursor-not-allowed rounded bg-yellow-100 px-6 py-3 font-bold text-yellow-800 opacity-75"
+                disabled>
+                売り切れ
+              </button>
+              {% else %}
+              <button type="submit"
+                class="mb-6 w-full rounded bg-red-600 px-6 py-3 text-lg font-bold text-white transition hover:bg-red-700">
+                <i class="fas fa-shopping-cart mr-1"></i>カートに追加
+              </button>
+              {% endif %}
+            </form>
 
-                <button type="button"
-                  class="w-10 h-10 border border-gray-300 rounded-l text-2xl font-bold bg-gray-50 hover:bg-gray-100"
-                  @click="if(qty>1) qty--">−</button>
-                <input type="hidden" name="item_pk" value="{{object.pk}}" />
-                <input type="number" name="quantity" :value="qty" min="1" max="{{ object.stock }}"
-                  class="w-14 h-10 border-t border-b border-gray-300 text-center text-lg font-bold" readonly>
-                <button type="button"
-                  class="w-10 h-10 border border-gray-300 rounded-r text-2xl font-bold bg-gray-50 hover:bg-gray-100"
-                  @click="if(qty<{{ object.stock }}) qty++">＋</button>
-              </form>
-            </div>
-            <!-- 在庫（公式風） -->
-            <div class="mb-4 text-xs text-gray-600 font-bold">在庫{{ object.stock }}</div>
-            {% if object.stock == 0 %}
-            <button type="submit"
-              class="w-full rounded bg-yellow-100 px-6 py-3 text-yellow-800 font-bold opacity-75 cursor-not-allowed"
-              disabled>売り切れ</button>
-            {% else %}
-            <button type="submit"
-              class="w-full rounded bg-red-600 hover:bg-red-700 px-6 py-3 text-white font-bold text-lg transition mb-6"><i
-                class="fas fa-shopping-cart mr-1"></i>カートに追加</button>
-            {% endif %}
-
-            <a href="#"
-              class="w-full rounded bg-[#3B9AD2] hover:bg-blue-600 items-center py-2 text-white font-bold text-center mb-6 flex items-center justify-center">
-              <!-- Heroicons: Magnifying Glass -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99a1 1 0 001.41-1.41l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-              </svg>
-              同じポケモンを探す
-            </a>
-            <a href="#"
-              class="w-full rounded bg-[#d13a59] hover:bg-pink-200 px-6 py-2 text-white font-bold text-center border border-pink-300 flex items-center justify-center">
-              <!-- Heroicons: Heart -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24"
+            <button type="button"
+              class="mb-6 flex w-full items-center justify-center rounded bg-[#3B9AD2] py-4 text-center font-bold text-white hover:bg-blue-600">
+              <a href="#" class="flex w-full items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 h-5 w-5" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99a1 1 0 001.41-1.41l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                </svg>
+                同じポケモンを探す
+              </a>
+            </button>
+            {% if is_authenticated %}
+            <button type="button"
+              class="flex w-full items-center justify-center rounded border border-pink-300 bg-[#d13a59] px-6 py-3 text-center font-bold text-white hover:bg-pink-200">
+              <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 h-5 w-5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21.364l-7.682-7.682a4.5 4.5 0 010-6.364z" />
               </svg>
               お気に入りに追加
-            </a>
+            </button>
+            {% else %}
+            <button type="button"
+              @click="showLoginNotification = true; setTimeout(() => { showLoginNotification = false; }, 5000)"
+              class="flex w-full items-center justify-center rounded border border-pink-300 bg-[#d13a59] px-6 py-3 text-center font-bold text-white hover:bg-pink-200">
+              <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21.364l-7.682-7.682a4.5 4.5 0 010-6.364z" />
+              </svg>
+              お気に入りに追加
+            </button>
+            {% endif %}
           </div>
         </div>
-        <!-- 商品詳細・注意書き（赤枠内） -->
-        <div class="w-full mt-8">
-          <div class="border rounded-lg items-center mb-4 p-2">
+        <!-- 商品詳細・注意書き -->
+        <div class="mt-8 w-full">
+          <div class="mb-4 items-center rounded-lg border p-2">
             <h3 class="">商品詳細</h3>
           </div>
           <div class="text-xs">
-            <div>
-              図鑑番号：{{object.pokemon_id}}
-            </div>
-            <div>
-              名前：{{object.pokemon_name}}
-            </div>
-            <div class="mb-4">
-              英語名：{{object.english_name}}
-            </div>
-            <div class="text-gray-700 text-sm leading-relaxed">
-              状態表記の無いカードは状態Aとなります。<br>
+            <div>図鑑番号：{{object.pokemon_id}}</div>
+            <div>名前：{{object.pokemon_name}}</div>
+            <div class="mb-4">英語名：{{object.english_name}}</div>
+            <div class="text-xs leading-relaxed text-gray-700">
+              状態表記の無いカードは状態Aとなります。<br />
               ※当店の詳細な状態表記については
-              <a href="/pages/condition" class="text-red-600 font-bold">こちら</a>
-              をご覧ください。<br>
+              <a href="/pages/card-condition" class="font-bold text-red-600">こちら</a>
+              をご覧ください。<br />
               ※当店では、初版・<span class="font-bold">1st
-                edition</span>（以下「1ED」表記）が存在するカードにつきましては、商品名に「初版」、「1ED」、「再版」と表記されている商品のみ、区別して販売しております。<br>
+                edition</span>（以下「1ED」表記）が存在するカードにつきましては、商品名に「初版」、「1ED」、「再版」と表記されている商品のみ、区別して販売しております。<br />
               特に記載がない商品に関しましては、商品画像に関係なく同じ商品として区別せず販売しております。
             </div>
-            <div class="flex justify-end mt-2">
-              <a href="/pages/return-policy" class="text-red-600 font-bold text-sm">
+            <div class="mt-10 flex justify-end">
+              <a href="/pages/pages-returns-policy" class="text-sm font-bold text-[#ff2626]">
                 ※ 返金特約に関する重要事項の詳細はこちら
               </a>
             </div>
@@ -132,15 +144,53 @@
         </div>
       </div>
       <!-- おすすめ商品 -->
-      <div class="mt-12 w-full max-w-5xl mx-auto">
-        <h2 class="mb-6 text-2xl font-bold text-gray-800">おすすめ</h2>
-        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {% for object in ADDTIONAL_ITEMS %}
-          <div>{% include 'snippets/item_add_box.html' %}</div>
+      <div
+        class="relative mx-auto mb-6 w-full max-w-2xl border border-red-500 bg-white px-2 shadow-[4px_4px_5px_-1px_rgba(0,0,0,0.4)]">
+        {% include 'snippets/slider.html' with title="あなたへのオススメアイテム" slides_data=RECOMMEND_SLIDER_DATA %}
+      </div>
+      <div class="mb-6 mt-6 flex items-center">
+        <div class="mr-3 h-11 w-1 bg-red-500"></div>
+        <h2 class="">最近チェックした商品</h2>
+      </div>
+
+      <!-- 最近チェックした商品のグリッド -->
+      <div class="mx-auto mb-10 w-full max-w-2xl">
+        <div class="grid grid-cols-6 gap-2">
+          {% for card in RECENT_CARDS %}
+          <div class="text-center">
+            <a href="/products/{{ card.pk }}/" class="block">
+              <img src="/{{ card.image }}" alt="{{ card.name }}"
+                class="h-auto w-full rounded bg-white object-contain transition-all duration-200 hover:brightness-110" />
+            </a>
+          </div>
           {% endfor %}
         </div>
       </div>
     </main>
   </div>
+
+  <!-- ログイン通知 -->
+  {% if not is_authenticated %}
+  <div x-show="showLoginNotification" x-cloak x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 transform translate-x-full"
+    x-transition:enter-end="opacity-100 transform translate-x-0" x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 transform translate-x-0"
+    x-transition:leave-end="opacity-0 transform translate-x-full"
+    class="fixed bottom-4 right-2 z-50 max-w-sm rounded-lg border border-gray-300 bg-white p-8 shadow-lg">
+    <div class="flex items-start justify-between">
+      <div class="flex-1">
+        <p class="text-xs text-gray-700">
+          この商品をお気に入りに追加するには、<a href="/account/login/" class="text-blue-600 underline">ログイン</a>してください。
+        </p>
+      </div>
+      <button @click="showLoginNotification = false" class="ml-2 text-gray-400 hover:text-gray-600">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+  {% endif %}
 </div>
+
 {% endblock %}

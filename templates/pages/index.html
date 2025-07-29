@@ -53,7 +53,7 @@
 
   <!-- メイン -->
   <main class="flex-1">
-    <div class="bg-white relative mb-6">
+    <div class="bg-white mb-6">
       <!-- 特集バナー -->
       <div class="flex">
         <a href="#"
@@ -68,66 +68,8 @@
         <h2 class="">新着商品販売中!!</h2>
       </div>
       <!-- スライダー -->
-      <div x-data='{
-          slides: [
-            {% for group in POPULAR_GROUPS %}
-              [
-                {% for item in group %}
-                  {
-                    name: "{{ item.name|escapejs }}",
-                    pk: "{{ item.pk }}",
-                    image: "{{ item.image.url|default:'' }}",
-                    price: {{ item.price|default:0 }},
-                    stock: {{ item.stock|default:0 }}
-                  }{% if not forloop.last %},{% endif %}
-                {% endfor %}
-              ]{% if not forloop.last %},{% endif %}
-            {% endfor %}
-          ],
-          current: 0,
-          next() { this.current = (this.current + 1) % this.slides.length },
-          prev() { this.current = (this.current - 1 + this.slides.length) % this.slides.length }
-        }' class="relative px-6 h-96">
-        <!-- スライド本体 -->
-        <div class="flex justify-center items-end">
-          <template x-for="item in slides[current]" :key="item.name">
-            <div class="basis-1/3 px-4 text-center">
-              <a :href="`/products/${item.pk}/`">
-                <img :src="item.image" alt="" class="w-36 mb-2 rounded bg-white object-contain mx-auto" />
-              </a>
-              <div class="font-bold text-red-600 text-base mt-2" x-text="item.name"></div>
-              <div class="font-bold text-2xl mt-1" x-text="'¥' + item.price.toLocaleString()"></div>
-              <div class="text-sm text-gray-600" x-text="'在庫' + item.stock"></div>
-            </div>
-          </template>
-        </div>
-        <!-- 左矢印 -->
-        <button @click="prev()"
-          class="h-full absolute left-2 top-1/2 -translate-y-1/2 bg-opacity-80 w-8 flex items-center justify-center text-2xl text-red-500 shadow border border-gray-300 bg-gray-100"
-          aria-label="前へ">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-            stroke-width="4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        <!-- 右矢印 -->
-        <button @click="next()"
-          class="h-full absolute right-2 top-1/2 -translate-y-1/2 w-8 flex items-center justify-center text-2xl text-red-500 shadow border bg-gray-100"
-          aria-label="次へ">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-            stroke-width="4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-        <!-- インジケーター -->
-        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-4">
-          <template x-for="(group, idx) in slides" :key="idx">
-            <span :class="{'bg-red-500': current === idx, 'border-2': current !== idx}"
-              class="block w-3 h-3 rounded-full"></span>
-          </template>
-        </div>
-      </div>
-      <div class="border-b-2 border-gray-200 mt-1 mb-6"></div>
+      {% include 'snippets/slider.html' with slides_data=POPULAR_SLIDER_DATA %}
+      <div class="border-b-2 border-gray-200 mt-1 mb-6 mx-6"></div>
     </div>
 
 
