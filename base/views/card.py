@@ -151,7 +151,8 @@ class BaseCardView:
 
     def get_categories_context(self) -> ContextData:
         """カテゴリーデータをコンテキストに追加"""
-        return {'CATEGORIES': Category.objects.all()}
+        categories = Category.objects.prefetch_related('packs').all()
+        return {'CATEGORIES': categories}
 
 
 class IndexListView(BaseCardView, ListView):

@@ -1,6 +1,6 @@
 from base.forms import UserCreationForm
 from django.contrib import admin
-from base.models import Card, Category, Tag, User, Profile, Order
+from base.models import Card, Category, Tag, User, Profile, Order, Pack
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 
@@ -12,6 +12,17 @@ class TagInline(admin.TabularInline):
 class CardAdmin(admin.ModelAdmin):
     inlines = [TagInline]
     exclude = ['tags']
+
+
+class PackAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'category', 'card_count')
+    list_filter = ('category',)
+    search_fields = ('name', 'slug')
+    prepopulated_fields = {'slug': ('name',)}
+
+    def card_count(self, obj):
+        return obj.cards.count()
+    card_count.short_description = 'カード数'
 
 
 class ProfileInline(admin.StackedInline):
@@ -41,6 +52,7 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(Card, CardAdmin)
 admin.site.register(Category)
+admin.site.register(Pack, PackAdmin)
 admin.site.register(Order)
 admin.site.register(Tag)
 admin.site.register(User, CustomUserAdmin)

@@ -1,18 +1,35 @@
-<aside class="w-full lg:w-1/4 flex-shrink-0">
-    <div class="flex mb-3">
-        <div class="w-1 h-11 bg-red-500 mr-3"></div>
+<aside class="w-full flex-shrink-0 lg:w-1/4">
+    <div class="mb-3 flex">
+        <div class="mr-3 h-11 w-1 bg-red-500"></div>
         <h3 class="place-self-center">商品カテゴリ一覧</h3>
     </div>
     <img src="https://cdn.shopify.com/s/files/1/0763/0536/7360/files/hare2_pokeca_zukan_small_b8b9cc5d-e696-454b-94a0-0adfd21dba75.jpg?v=1708322907"
         alt="ポケカ全シリーズ図鑑" class="mb-4 rounded shadow" />
-    <ul class="bg-white rounded shadow p-2 divide-y text-sm">
+
+    <!-- アコーディオンサイドバー -->
+    <div class="rounded bg-white text-sm shadow" x-data="{ openCategory: null }">
         {% for category in CATEGORIES %}
-        <li>
-            <a href="#" class="flex items-center justify-between px-3 py-2 hover:bg-red-50">
-                {{ category }}
-                <span class="text-xl text-gray-400">&gt;</span>
-            </a>
-        </li>
+        <div class="{% if not forloop.last %}border-b border-gray-200{% endif %}">
+            <button @click="openCategory = openCategory === '{{ category.slug }}' ? null : '{{ category.slug }}'"
+                class="relative flex w-full items-center justify-between px-4 py-3 after:absolute after:bottom-0 after:right-4 after:top-0 after:my-auto after:h-2 after:w-2 after:rotate-45 after:border-r-2 after:border-t-2 after:border-gray-600 after:transition-transform after:duration-200 hover:bg-gray-50"
+                :class="{ 'after:rotate-[135deg]': openCategory === '{{ category.slug }}' }">
+                <span>{{ category.name }}</span>
+            </button>
+
+            <!-- サブカテゴリ -->
+            <div x-show="openCategory === '{{ category.slug }}'" class="bg-gray-50">
+                <a href="/categories/{{ category.slug }}/"
+                    class="block px-6 py-2 text-gray-700 hover:bg-gray-100 hover:text-red-600">
+                    全商品 ({{ category.name }})
+                </a>
+                {% if category.packs.all %} {% for pack in category.packs.all %}
+                <a href="/packs/{{ pack.slug }}/"
+                    class="block px-6 py-2 text-gray-700 hover:bg-gray-100 hover:text-red-600">
+                    {{ pack.name }}
+                </a>
+                {% endfor %} {% endif %}
+            </div>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
 </aside>
