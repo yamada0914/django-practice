@@ -183,7 +183,7 @@ class CardDetailView(BaseCardView, DetailView):
     """カード詳細ページのビュー"""
 
     model = Card
-    template_name = 'pages/item.html'
+    template_name = 'pages/card.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
