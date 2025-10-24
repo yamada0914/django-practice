@@ -29,7 +29,7 @@ urlpatterns = [
 
     # Cards
     path('products/<str:pk>/', views.CardDetailView.as_view()),
-    path('categories/<str:pk>/', views.CategoryListView.as_view()),
+    path('collections/<str:identifier>/', views.PackDetailView.as_view()),
     path('tags/<str:pk>/', views.TagListView.as_view()),
 
     path('', views.IndexListView.as_view()),  # トップページ

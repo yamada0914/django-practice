@@ -18,12 +18,12 @@
 
             <!-- サブカテゴリ -->
             <div x-show="openCategory === '{{ category.slug }}'" class="bg-gray-50">
-                <a href="/categories/{{ category.slug }}/"
+                <a href="/collections/{{ category.slug }}"
                     class="block px-6 py-2 text-gray-700 hover:bg-gray-100 hover:text-red-600">
                     全商品 ({{ category.name }})
                 </a>
                 {% if category.packs.all %} {% for pack in category.packs.all %}
-                <a href="/packs/{{ pack.slug }}/"
+                <a href="/collections/{{ pack.series_code }}"
                     class="block px-6 py-2 text-gray-700 hover:bg-gray-100 hover:text-red-600">
                     {{ pack.name }}
                 </a>
