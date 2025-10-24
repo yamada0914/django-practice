@@ -15,9 +15,9 @@
     python manage.py load_packs --file data/csv/test_packs.csv --dry-run
 
 CSVファイル形式:
-    name,slug,category_slug
-    拡張パック「ブラックボルト」,black-bolt,sv
-    拡張パック「ホワイトフレア」,white-flare,sv
+    name,slug,category_slug,series_code
+    拡張パック「ブラックボルト」,black-bolt,sv,sv11b
+    拡張パック「ホワイトフレア」,white-flare,sv,sv11w
 """
 
 from django.core.management.base import BaseCommand
@@ -33,6 +33,7 @@ logger = logging.getLogger(__name__)
 # 定数定義
 DEFAULT_CSV_PATH = 'data/csv/packs_bulk.csv'
 REQUIRED_FIELDS = ['name', 'slug', 'category_slug']
+OPTIONAL_FIELDS = ['series_code']
 
 
 class Command(BaseCommand):
@@ -113,6 +114,7 @@ class Command(BaseCommand):
             name = row['name'].strip()
             slug = row['slug'].strip()
             category_slug = row['category_slug'].strip()
+            series_code = row.get('series_code', '').strip()
 
             # 必須フィールドの検証
             if not all([name, slug, category_slug]):
@@ -135,7 +137,8 @@ class Command(BaseCommand):
             # パックの作成または更新
             if dry_run:
                 self.stdout.write(
-                    self.style.SUCCESS(f'行{row_num}: パックを作成/更新します: {name}')
+                    self.style.SUCCESS(
+                        f'行{row_num}: パックを作成/更新します: {name} ({series_code})')
                 )
                 return 'created'
 
@@ -144,7 +147,8 @@ class Command(BaseCommand):
                     slug=slug,
                     defaults={
                         'name': name,
-                        'category': category
+                        'category': category,
+                        'series_code': series_code
                     }
                 )
 
@@ -152,7 +156,8 @@ class Command(BaseCommand):
                 message = f'パックを作成しました' if created else f'パックを更新しました'
 
                 self.stdout.write(
-                    self.style.SUCCESS(f'行{row_num}: {message}: {name}')
+                    self.style.SUCCESS(
+                        f'行{row_num}: {message}: {name} ({series_code})')
                 )
 
                 return action

@@ -15,9 +15,9 @@ class CardAdmin(admin.ModelAdmin):
 
 
 class PackAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'category', 'card_count')
+    list_display = ('name', 'slug', 'category', 'series_code', 'card_count')
     list_filter = ('category',)
-    search_fields = ('name', 'slug')
+    search_fields = ('name', 'slug', 'series_code')
     prepopulated_fields = {'slug': ('name',)}
 
     def card_count(self, obj):

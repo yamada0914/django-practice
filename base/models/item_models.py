@@ -21,7 +21,7 @@ class Tag(models.Model):
 
 
 class Category(models.Model):
-    slug = models.CharField(max_length=32, primary_key=True)
+    series_code = models.CharField(max_length=32, primary_key=True)
     name = models.CharField(max_length=32)
 
     def __str__(self):
@@ -33,6 +33,7 @@ class Pack(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name='packs')
+    series_code = models.CharField(max_length=20, blank=True, default='')
 
     def __str__(self):
         return self.name
