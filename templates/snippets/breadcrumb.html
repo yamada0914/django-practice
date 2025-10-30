@@ -1,0 +1,15 @@
+<nav class="mx-auto mb-4 w-full max-w-2xl text-gray-500" aria-label="Breadcrumb">
+    <a href="/" class="font-bold text-[#ff2626] hover:underline">ホーム</a>
+
+    {% for item in breadcrumb_items %}
+    <span class="mx-2">›</span>
+    {% if item.url and not item.is_active %}
+    <a href="{{ item.url }}" class="font-bold text-[#ff2626] hover:underline">
+        {{ item.name }}
+    </a>
+    {% else %}
+    <span class="{% if item.is_active %}text-gray-700{% else %}text-gray-500{% endif %}">
+        {{ item.name }}
+    </span>
+    {% endif %} {% endfor %}
+</nav>
