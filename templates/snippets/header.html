@@ -96,6 +96,7 @@
   </div>
 
   <!-- 公式風ナビゲーションタブ -->
+  {% if request.resolver_match.url_name != 'login' %}
   <div class="flex h-24 w-full justify-center bg-white text-sm font-bold text-red-600">
     <ul class="flex w-full max-w-[960px] items-center justify-center">
       <li class="h-full w-1/6 place-items-center leading-[80px] transition hover:bg-[#e60012] hover:text-white">
@@ -130,4 +131,5 @@
       </li>
     </ul>
   </div>
+  {% endif %}
 </nav>

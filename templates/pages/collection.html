@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col items-start justify-center gap-8 lg:flex-row">
+        {% include 'snippets/sidebar.html' %}
+        <main class="flex flex-1 flex-col">
+            <!-- パンくずリスト -->
+            {% include 'snippets/breadcrumb.html' with breadcrumb_items=collection_breadcrumb_items %}
+
+            <!-- フィルターとソート -->
+            <div class="mx-auto mb-4 w-full border border-gray-300 bg-white p-2">
+                <div class="flex items-center space-x-4 border border-gray-300 p-2">
+                    <div class="flex items-center space-x-2">
+                        <label class="text-sm font-medium text-gray-700">絞り込み:</label>
+                        <select class="border border-gray-300 rounded px-3 py-1 text-sm bg-white">
+                            <option>在庫状況</option>
+                            <option>在庫あり</option>
+                            <option>在庫なし</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center space-x-2">
+                        <label class="text-sm font-medium text-gray-700">セール絞り込み</label>
+                    </div>
+
+                    <div class="flex items-center space-x-2">
+                        <label class="text-sm font-medium text-gray-700">並び順:</label>
+                        <select id="sort-select" class="border border-gray-300 rounded px-3 py-1 text-sm bg-white"
+                            onchange="changeSort(this.value)">
+                            <option value="default" {% if not current_sort %}selected{% endif %}>選択してください</option>
+                            <option value="price_asc" {% if is_price_asc %}selected{% endif %}>価格の安い順</option>
+                            <option value="price_desc" {% if is_price_desc %}selected{% endif %}>価格の高い順</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- 商品件数表示 -->
+                <p class="text-sm text-gray-600 mt-3">{{ page_obj.paginator.count }}件</p>
+
+                <!-- 商品グリッド -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                    {% for card in page_obj %}
+                    <div
+                        class="bg-white border border-gray-800 overflow-hidden hover:shadow-md transition-shadow duration-200 px-2 pt-2 pb-5">
+                        <a href="/products/{{ card.pk }}/" class="block">
+                            <div class="flex">
+                                <!-- カード画像（左側） -->
+                                <div class="relative flex-shrink-0 max-w-[90px] min-w-[90px]">
+                                    {% if card.image %}
+                                    <img src="/{{ card.image }}" alt="{{ card.display_name }}"
+                                        class="w-full h-32 object-contain bg-gray-50">
+                                    {% else %}
+                                    <div class="w-full h-32 bg-gray-100 flex items-center justify-center">
+                                        <span class="text-gray-400 text-xs">画像なし</span>
+                                    </div>
+                                    {% endif %}
+
+                                    <!-- セールバッジ -->
+                                    {% if card.price < 1000 %} <div
+                                        class="absolute top-1 left-1 bg-red-500 text-white text-xs px-1 py-0.5 rounded font-bold">
+                                        Sale
+                                </div>
+                                {% endif %}
+
+                                <!-- 売り切れオーバーレイ -->
+                                {% if card.stock == 0 %}
+                                <div
+                                    class="absolute inset-0 bg-gray-100 bg-opacity-50 flex items-center justify-center">
+                                    <span class="text-black text-sm font-bold">SOLD OUT</span>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- カード情報（右側） -->
+                            <div class="flex-1 px-2 flex flex-col justify-between">
+                                <div>
+                                    <h3 class="font-bold text-gray-800 mb-8 text-[63%] break-all">
+                                        {{ card.name }}
+                                        {% if card.rarity %}({{ card.rarity }}){% endif %}
+                                        {% if card.type %}{{ '{' }}{{ card.type }}{{ '}' }}{% endif %}
+                                        {% if card.number %}〈{{ card.number }}〉{% endif %}
+                                        {% if card.series_code %}[{{ card.series_code }}]{% endif %}
+                                    </h3>
+                                    <p class="text-base font-bold text-black mb-1">¥{{ card.price|floatformat:0 }}</p>
+                                    <div class="text-xs font-bold text-gray-600">
+                                        {% if card.stock > 0 %}
+                                        在庫{{ card.stock }}
+                                        {% else %}
+                                        在庫なし
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </a>
+                    <!-- カートに追加ボタン（在庫がある場合のみ表示） -->
+                    {% if card.stock > 0 %}
+                    <button
+                        class="w-full bg-red-600 text-white py-2 px-3 rounded font-bold hover:bg-red-700 transition-colors duration-200 text-sm mt-2">
+                        カートに追加
+                    </button>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <div class="col-span-full text-center py-12">
+                    <p class="text-gray-500 text-lg">このパックには商品がありません。</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- ページネーション -->
+            {% if page_obj.has_other_pages %}
+            <div class="flex justify-center">
+                <nav class="flex items-center space-x-2">
+                    {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}"
+                        class="px-3 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-50">
+                        前へ
+                    </a>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <span class="px-3 py-2 bg-red-600 text-white rounded">{{ num }}</span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a
+                        href="?page={{ num }}"
+                        class="px-3 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-50">
+                        {{ num }}
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}"
+                            class="px-3 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-50">
+                            次へ
+                        </a>
+                        {% endif %}
+                </nav>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="{% static 'js/collection.js' %}"></script>
+{% endblock %}
+
+{% endblock %}

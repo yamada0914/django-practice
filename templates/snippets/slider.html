@@ -34,13 +34,13 @@
             <div class="flex justify-center">
                 <template x-for="item in slides[current]" :key="item.name">
                     <div class="basis-1/3 px-4">
-                        <a :href="`/products/${item.pk}/`">
+                        <a :href="`/products/${item.pk}/`" class="block">
                             <img :src="item.image" alt=""
                                 class="mx-auto mb-2 w-36 rounded bg-white object-contain transition-all duration-200 hover:opacity-80" />
+                            <div class="mt-2 text-sm font-bold text-red-600" x-text="item.name"></div>
+                            <div class="mt-1 font-bold" x-text="'¥' + item.price.toLocaleString()"></div>
+                            <div class="text-xs text-gray-600" x-text="'在庫' + item.stock"></div>
                         </a>
-                        <div class="mt-2 text-sm font-bold text-red-600" x-text="item.name"></div>
-                        <div class="mt-1 font-bold" x-text="'¥' + item.price.toLocaleString()"></div>
-                        <div class="text-xs text-gray-600" x-text="'在庫' + item.stock"></div>
                     </div>
                 </template>
             </div>
