@@ -5,7 +5,7 @@ import logging
 from django.views.generic import ListView
 from django.core.exceptions import ObjectDoesNotExist
 from base.models import Card, Category, Pack
-from .base_views import BaseCardView
+from .base import BaseCardView
 
 logger = logging.getLogger(__name__)
 

@@ -1,9 +1,9 @@
 """
 ビューモジュールの初期化
 """
-from .base_views import BaseCardView
-from .card_views import IndexListView, CardDetailView, CategoryListView, TagListView, HelpView
-from .collection_views import PackDetailView
+from .base import BaseCardView
+from .card import IndexListView, CardDetailView, CategoryListView, TagListView, HelpView
+from .collection import PackDetailView
 from .account import Login, SignUpView, AccountUpdateView, ProfileUpdateView
 from .order import OrderIndexView, OrderDetailView
 from .pay import PayWithStripe, PaySuccessView, PayCancelView
