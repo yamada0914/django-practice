@@ -121,6 +121,12 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
+# Media files (ユーザーアップロードファイル)
+# https://docs.djangoproject.com/en/3.1/topics/files/
+
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+
 # 消費税率
 TAX_RATE = 0.1
 

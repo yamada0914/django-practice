@@ -48,7 +48,7 @@
                                 <!-- カード画像（左側） -->
                                 <div class="relative flex-shrink-0 max-w-[90px] min-w-[90px]">
                                     {% if card.image %}
-                                    <img src="/{{ card.image }}" alt="{{ card.display_name }}"
+                                    <img src="{{ card.image.url }}" alt="{{ card.display_name }}"
                                         class="w-full h-32 object-contain bg-gray-50">
                                     {% else %}
                                     <div class="w-full h-32 bg-gray-100 flex items-center justify-center">

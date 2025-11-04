@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from base.models import Card, Pack
+from django.core.files import File
 import csv
 import os
 from django.conf import settings
@@ -36,39 +37,102 @@ class Command(BaseCommand):
                     f"画像マッピングファイルの読み込みに失敗: {e}"
                 ))
 
-    def _get_image_path(self, csv_image_path, pokemon_name=None):
-        """CSVの画像パスをstatic/items/内の実際のファイルパスに変換"""
+    def _get_search_directories(self):
+        """検索対象ディレクトリのリストを取得"""
         static_items_dir = Path(settings.BASE_DIR) / 'static' / 'items'
+        media_items_dir = Path(settings.MEDIA_ROOT) / 'items'
+        search_dirs = [static_items_dir]
+        if media_items_dir.exists():
+            search_dirs.append(media_items_dir)
+        return search_dirs
 
-        # 1. マッピングファイルでポケモン名から直接取得（最優先）
+    def _search_file_in_directories(self, filename, search_dirs):
+        """指定されたファイル名を検索ディレクトリ内で探す"""
+        for search_dir in search_dirs:
+            file_path = search_dir / filename
+            if file_path.exists() and file_path.is_file():
+                return file_path
+        return None
+
+    def _find_image_file(self, csv_image_path, pokemon_name=None):
+        """CSVの画像パスからstatic/items/またはmedia/items/内のファイルを検索"""
+        search_dirs = self._get_search_directories()
+
         if pokemon_name and pokemon_name in self.image_mapping:
-            mapped_filename = self.image_mapping[pokemon_name]
-            full_path = static_items_dir / mapped_filename
-            if full_path.exists() and full_path.is_file():
-                return f"static/items/{mapped_filename}"
+            mapped_file = self._search_file_in_directories(
+                self.image_mapping[pokemon_name], search_dirs
+            )
+            if mapped_file:
+                return mapped_file
 
-        # 2. CSVの画像パスからファイル名を抽出して検索
-        if csv_image_path:
-            filename = os.path.basename(csv_image_path)
+        if not csv_image_path:
+            return None
 
-            # ファイル名がそのまま存在するか確認
-            full_path = static_items_dir / filename
-            if full_path.exists() and full_path.is_file():
-                return f"static/items/{filename}"
+        filename = os.path.basename(csv_image_path)
+        file_path = self._search_file_in_directories(filename, search_dirs)
+        if file_path:
+            return file_path
 
-            # 拡張子なしで検索
-            base_name = os.path.splitext(filename)[0]
-            for ext in ['.jpg', '.jpeg', '.png', '.webp']:
-                full_path = static_items_dir / f"{base_name}{ext}"
-                if full_path.exists() and full_path.is_file():
-                    return f"static/items/{full_path.name}"
+        base_name = os.path.splitext(filename)[0]
+        for ext in ['.jpg', '.jpeg', '.png', '.webp']:
+            file_path = self._search_file_in_directories(
+                f"{base_name}{ext}", search_dirs)
+            if file_path:
+                return file_path
 
-        # 3. 見つからない場合
         if pokemon_name:
             self.stdout.write(self.style.WARNING(
                 f"画像ファイルが見つかりません: {csv_image_path} (ポケモン: {pokemon_name})"
             ))
-        return csv_image_path if csv_image_path else ''
+        return None
+
+    def _get_pack(self, pack_series_code):
+        """パックを取得"""
+        if not pack_series_code:
+            return None
+        pack = Pack.objects.filter(series_code=pack_series_code).first()
+        if not pack:
+            self.stdout.write(self.style.WARNING(
+                f"パックが見つかりません: {pack_series_code}"
+            ))
+        return pack
+
+    def _create_or_update_card(self, row, pack):
+        """カードを作成または更新"""
+        return Card.objects.update_or_create(
+            name=row['name'],
+            defaults={
+                'pokemon_name': row['pokemon_name'],
+                'english_name': row['english_name'],
+                'pokemon_id': row['pokemon_id'],
+                'price': int(row['price']),
+                'stock': int(row['stock']),
+                'pack': pack,
+                'rarity': row.get('rarity', '').strip(),
+                'type': row.get('type', '').strip(),
+                'number': row.get('number', '').strip(),
+                'series_code': row.get('series_code', '').strip(),
+                'is_published': True,
+            }
+        )
+
+    def _save_card_image(self, item, row):
+        """カードの画像を保存"""
+        csv_image_path = row.get('image', '').strip()
+        source_image_file = self._find_image_file(
+            csv_image_path,
+            pokemon_name=row.get('pokemon_name', '').strip()
+        )
+
+        if source_image_file:
+            filename = os.path.basename(source_image_file.name)
+            with open(source_image_file, 'rb') as f:
+                item.image.save(filename, File(f), save=False)
+            item.save()
+        elif not item.image:
+            self.stdout.write(self.style.WARNING(
+                f"画像が見つかりません（画像なしで登録）: {item.name}"
+            ))
 
     def handle(self, *args, **options):
         csv_path = os.path.join(
@@ -83,47 +147,12 @@ class Command(BaseCommand):
             updated_count = 0
 
             for row in reader:
-                # パック取得または作成
-                pack = None
-                if row['pack_series_code']:
-                    pack = Pack.objects.filter(
-                        series_code=row['pack_series_code']).first()
-                    if not pack:
-                        self.stdout.write(self.style.WARNING(
-                            f"パックが見つかりません: {row['pack_series_code']}（商品: {row['name']}）"))
-                        continue
+                pack = self._get_pack(row.get('pack_series_code', '').strip())
+                if not pack:
+                    continue
 
-                # 新しいフィールドの値を取得（空の場合は空文字列）
-                rarity = row.get('rarity', '').strip()
-                card_type = row.get('type', '').strip()
-                number = row.get('number', '').strip()
-                series_code = row.get('series_code', '').strip()
-
-                # 画像パスを変換（CSVのパス → static/items/内の実際のファイルパス）
-                csv_image_path = row.get('image', '').strip()
-                image_path = self._get_image_path(
-                    csv_image_path,
-                    pokemon_name=row.get('pokemon_name', '').strip()
-                )
-
-                # 商品作成または更新
-                item, created = Card.objects.update_or_create(
-                    name=row['name'],
-                    defaults={
-                        'pokemon_name': row['pokemon_name'],
-                        'english_name': row['english_name'],
-                        'pokemon_id': row['pokemon_id'],
-                        'price': int(row['price']),
-                        'stock': int(row['stock']),
-                        'pack': pack,
-                        'image': image_path,
-                        'rarity': rarity,
-                        'type': card_type,
-                        'number': number,
-                        'series_code': series_code,
-                        'is_published': True,
-                    }
-                )
+                item, created = self._create_or_update_card(row, pack)
+                self._save_card_image(item, row)
 
                 if created:
                     created_count += 1

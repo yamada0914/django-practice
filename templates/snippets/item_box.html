@@ -2,7 +2,8 @@
   <div
     class="h-full transform overflow-hidden rounded-md bg-white shadow-sm transition-all duration-200 group-hover:-translate-y-1 group-hover:shadow-lg">
     <div class="relative bg-gray-50 pt-[60%]">
-      <img src="/{{object.image}}" class="absolute inset-0 h-full w-full object-contain p-1.5" alt="{{object.name}}" />
+      <img src="{{ object.image.url }}" class="absolute inset-0 h-full w-full object-contain p-1.5"
+        alt="{{object.name}}" />
     </div>
     <div class="p-2">
       <h5 class="mb-1 line-clamp-2 text-xs leading-tight text-gray-800">
