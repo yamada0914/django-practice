@@ -123,9 +123,9 @@ class Command(BaseCommand):
                 )
                 return 'skipped'
 
-            # カテゴリーの取得
+            # カテゴリーの取得（series_codeで検索）
             try:
-                category = Category.objects.get(slug=category_slug)
+                category = Category.objects.get(series_code=category_slug)
             except Category.DoesNotExist:
                 self.stdout.write(
                     self.style.WARNING(
@@ -136,11 +136,14 @@ class Command(BaseCommand):
 
             # パックの作成または更新
             if dry_run:
+                # 既存チェック（dry-runでは実際の更新は行わない）
+                existing = Pack.objects.filter(slug=slug).exists()
+                action = '更新' if existing else '作成'
                 self.stdout.write(
                     self.style.SUCCESS(
-                        f'行{row_num}: パックを作成/更新します: {name} ({series_code})')
+                        f'行{row_num}: パックを{action}します: {name} ({series_code})')
                 )
-                return 'created'
+                return 'created' if not existing else 'updated'
 
             try:
                 pack, created = Pack.objects.update_or_create(
