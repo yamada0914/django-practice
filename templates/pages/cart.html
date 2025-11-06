@@ -1,115 +1,164 @@
-{% extends 'base.html' %} {% block main %}
-<div class="container mx-auto px-4 py-8">
-  <div class="mx-auto max-w-5xl">
-    <h2 class="mb-6 text-2xl font-bold text-gray-800">カート</h2>
+{% extends 'base.html' %}
+{% block main %}
+<div class="container mx-auto px-4 py-8 max-w-[960px]">
+  <!-- タイトル -->
+  <h2 class="mb-8 text-2xl font-bold text-gray-800">買い物かご</h2>
+  <div class="mb-5 border-b border-black"></div>
 
-    {% if object_list|length != 0 %}
-    <!-- カートアイテム一覧 -->
-    <div class="mb-8 overflow-hidden rounded-xl bg-white shadow-sm">
-      <div class="overflow-x-auto">
-        <table class="w-full">
-          <thead class="border-b border-gray-200 bg-gray-50">
-            <tr>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                #
-              </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                品名
-              </th>
-              <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-                単価
-              </th>
-              <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-                個数
-              </th>
-              <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-                計
-              </th>
-              <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-              </th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200">
-            {% for object in object_list %}
-            <tr class="hover:bg-gray-50">
-              <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                No.{{forloop.counter}}
-              </td>
-              <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-800">
-                {{object.name}}
-              </td>
-              <td class="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-800">
-                ¥{{object.price}}
-              </td>
-              <td class="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-800">
-                {{object.quantity}}
-              </td>
-              <td class="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-800">
-                ¥{{object.subtotal}}
-              </td>
-              <td class="whitespace-nowrap px-6 py-4 text-right">
-                <a href="/cart/remove/{{object.pk}}/"
-                  class="inline-flex items-center rounded-lg border border-red-500 px-3 py-1 text-sm text-red-500 transition-colors hover:bg-red-50">
-                  削除
-                </a>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="mb-4 text-center">
+    <img src="https://hareruya2-filepool.s3.amazonaws.com/cart/order_step1.jpg" alt="STEP1 買い物かごの確認" class="mx-auto"
+      style="width: 480px;" />
+  </div>
 
-    <!-- 合計金額 -->
-    <div class="mb-8 space-y-2 text-right">
-      <p class="text-lg text-gray-600">
-        小計 - <span class="font-medium text-gray-800">¥{{total}}</span>
-      </p>
-      <p class="text-xl font-medium text-gray-800">
-        税込計 -
-        <span class="text-primary-500 font-bold">¥{{tax_included_total}}</span>
-      </p>
-    </div>
+  <!-- 説明テキスト -->
+  <div class="mb-10 text-center">
+    <p class="text-gray-700">
+      商品の数量を変更する場合は、リストボックスで数量を変更してください。
+    </p>
+    <p class="text-gray-700">
+      商品を削除する場合は数量の右側の「削除」ボタンをクリックしてください。
+    </p>
+  </div>
 
-    <!-- Checkoutボタン -->
-    <div class="mb-12 text-right">
-      <form action="/pay/checkout/" method="POST">
-        {% csrf_token %}
-        <button type="submit"
-          class="bg-primary-500 hover:bg-primary-600 rounded-lg px-8 py-3 font-medium text-white transition-colors">
-          レジに進む
-        </button>
-      </form>
-    </div>
 
-    {% else %}
-    <div class="mb-12 rounded-xl bg-white p-8 text-center shadow-sm">
-      <p class="text-gray-600">ショッピングカートにアイテムがありません。</p>
-    </div>
-    {% endif %}
 
-    <!-- おすすめ商品 -->
-    <div class="mt-12">
-      <h2 class="mb-6 text-2xl font-bold text-gray-800">おすすめ</h2>
-      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {% for object in ADDTIONAL_ITEMS %}
-        <div>{% include 'snippets/item_add_box.html' %}</div>
-        {% endfor %}
-      </div>
+  {% if object_list|length != 0 %}
+  <!-- カートアイテム一覧 -->
+  <div class="mb-8 overflow-hidden rounded-xl bg-white shadow-sm">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="border-b border-gray-200 bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              #
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              品名
+            </th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+              単価
+            </th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+              個数
+            </th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+              計
+            </th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          {% for object in object_list %}
+          <tr class="hover:bg-gray-50">
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+              No.{{forloop.counter}}
+            </td>
+            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-800">
+              {{object.name}}
+            </td>
+            <td class="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-800">
+              ¥{{object.price}}
+            </td>
+            <td class="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-800">
+
+            </td>
+            <td class="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-800">
+              ¥{{object.subtotal}}
+            </td>
+            <td class="whitespace-nowrap px-6 py-4 text-right">
+              <a href="/cart/remove/{{object.pk}}/"
+                class="inline-flex items-center rounded-lg border border-red-500 px-3 py-1 text-sm text-red-500 transition-colors hover:bg-red-50">
+                削除
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
+
+  <!-- 合計金額 -->
+  <div class="mb-8 space-y-2 text-right">
+    <p class="text-lg text-gray-600">
+      小計 - <span class="font-medium text-gray-800">¥{{total}}</span>
+    </p>
+    <p class="text-xl font-medium text-gray-800">
+      税込計 -
+      <span class="text-red-600 font-bold">¥{{tax_included_total}}</span>
+    </p>
+  </div>
+
+  <!-- Checkoutボタン -->
+  <div class="mb-12 text-right">
+    <form action="/pay/checkout/" method="POST">
+      {% csrf_token %}
+      <button type="submit"
+        class="bg-red-600 hover:bg-red-700 rounded-lg px-8 py-3 font-medium text-white transition-colors">
+        レジに進む
+      </button>
+    </form>
+  </div>
+
+  {% else %}
+  <!-- カートが空の場合のメッセージ -->
+  <div class="max-w-[720px] mx-auto text-center">
+    <div class="mb-8 m-auto w-fit text-left border border-black bg-gray-50 px-[20px] py-[10px] font-bold">
+      <p class="text-gray-700">
+        現在、買い物かごには商品が入っておりません。
+      </p>
+      <p class="text-gray-700">
+        お買い物を続けるには下の「他の商品を見る」をクリックしてください。
+      </p>
+    </div>
+    <a href="/collections/all"
+      class="inline-block mx-auto max-w-[22rem] w-full rounded bg-red-600 px-8 py-3 text-white font-bold transition-colors hover:bg-red-700 mb-10">
+      他の商品を見る
+    </a>
+  </div>
+  {% endif %}
+
+</div>
 </div>
 
-<!-- ブラウザバックへの対応 -->
 <script>
-  document.addEventListener(
-    "visibilitychange",
-    () => {
-      if (document.visibilityState === "visible") {
-        window.location = "/pay/cancel/";
-      }
-    },
-    false,
-  );
+  function updateQuantity(itemPk, quantity) {
+    // フォームを作成してPOSTリクエストを送信
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/cart/add/';
+
+    // CSRFトークンを取得（ページ内のhidden inputから）
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+    if (csrfToken) {
+      const csrfInput = document.createElement('input');
+      csrfInput.type = 'hidden';
+      csrfInput.name = 'csrfmiddlewaretoken';
+      csrfInput.value = csrfToken.value;
+      form.appendChild(csrfInput);
+    }
+
+    const itemInput = document.createElement('input');
+    itemInput.type = 'hidden';
+    itemInput.name = 'item_pk';
+    itemInput.value = itemPk;
+    form.appendChild(itemInput);
+
+    const quantityInput = document.createElement('input');
+    quantityInput.type = 'hidden';
+    quantityInput.name = 'quantity';
+    quantityInput.value = quantity;
+    form.appendChild(quantityInput);
+
+    const updateInput = document.createElement('input');
+    updateInput.type = 'hidden';
+    updateInput.name = 'update';
+    updateInput.value = 'true';
+    form.appendChild(updateInput);
+
+    document.body.appendChild(form);
+    form.submit();
+  }
 </script>
 {% endblock %}
