@@ -21,33 +21,43 @@ class PackDetailView(BaseCardView, ListView):
         super().__init__(*args, **kwargs)
         self.pack = None
         self.category = None
+        self.url_parameter = None
 
     def get_queryset(self):
         try:
-            url_parameter = self.kwargs['identifier']
+            self.url_parameter = self.kwargs['identifier']
+            url_parameter = self.url_parameter
 
-            # まずカテゴリーの series_code で検索
-            try:
-                self.category = Category.objects.get(series_code=url_parameter)
-                queryset = Card.objects.filter(
-                    is_published=True,
-                    pack__category=self.category
-                )
+            # 'all' の場合はすべてのアイテムを表示
+            if url_parameter == 'all':
                 self.pack = None
-                logger.info(f"カテゴリー '{url_parameter}' でフィルタリング")
-            except ObjectDoesNotExist:
-                # カテゴリーが見つからない場合、パックの series_code で検索
+                self.category = None
+                queryset = Card.objects.filter(is_published=True)
+                logger.info("すべてのアイテムを表示")
+            else:
+                # まずカテゴリーの series_code で検索
                 try:
-                    self.pack = Pack.objects.get(series_code=url_parameter)
+                    self.category = Category.objects.get(
+                        series_code=url_parameter)
                     queryset = Card.objects.filter(
                         is_published=True,
-                        pack=self.pack
+                        pack__category=self.category
                     )
-                    self.category = None
-                    logger.info(f"パック '{url_parameter}' でフィルタリング")
+                    self.pack = None
+                    logger.info(f"カテゴリー '{url_parameter}' でフィルタリング")
                 except ObjectDoesNotExist:
-                    logger.error(f"カテゴリーまたはパックが見つかりません: {url_parameter}")
-                    return Card.objects.none()
+                    # カテゴリーが見つからない場合、パックの series_code で検索
+                    try:
+                        self.pack = Pack.objects.get(series_code=url_parameter)
+                        queryset = Card.objects.filter(
+                            is_published=True,
+                            pack=self.pack
+                        )
+                        self.category = None
+                        logger.info(f"パック '{url_parameter}' でフィルタリング")
+                    except ObjectDoesNotExist:
+                        logger.error(f"カテゴリーまたはパックが見つかりません: {url_parameter}")
+                        return Card.objects.none()
 
             # ソート機能
             sort_by = self.request.GET.get('sort', 'default')
@@ -60,6 +70,7 @@ class PackDetailView(BaseCardView, ListView):
                 if self.pack:
                     queryset = queryset.order_by('number', 'name')
                 else:
+                    # 'all' やカテゴリーの場合はパック順も含めてソート
                     queryset = queryset.order_by(
                         'pack__series_code', 'number', 'name')
 
@@ -72,7 +83,12 @@ class PackDetailView(BaseCardView, ListView):
         context = super().get_context_data(**kwargs)
         context.update(self.get_categories_context())
 
-        if self.pack:
+        url_parameter = self.url_parameter or ''
+        if url_parameter == 'all':
+            context['title'] = 'すべての商品'
+            context['pack'] = None
+            context['category'] = None
+        elif self.pack:
             pack_name = getattr(self, "pack", None)
             context['title'] = f'Pack #{pack_name.name if pack_name else "Unknown"}'
             context['pack'] = pack_name
@@ -84,7 +100,8 @@ class PackDetailView(BaseCardView, ListView):
         # パンくずリストのデータを準備
         breadcrumb_items = self._prepare_breadcrumb_items(
             pack=self.pack,
-            category=self.category
+            category=self.category,
+            url_parameter=url_parameter
         )
 
         # 現在のソート順をコンテキストに追加

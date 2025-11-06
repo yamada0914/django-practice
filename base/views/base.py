@@ -31,9 +31,18 @@ class BaseCardView:
             'POPULAR_SLIDER_DATA': slider_data,
         }
 
-    def _prepare_breadcrumb_items(self, pack=None, category=None, card=None) -> List[Dict]:
+    def _prepare_breadcrumb_items(self, pack=None, category=None, card=None, url_parameter=None) -> List[Dict]:
         """パンくずリストのデータを準備する共通メソッド"""
         breadcrumb_items = []
+
+        # 'all' の場合は特別な処理
+        if url_parameter == 'all':
+            breadcrumb_items.append({
+                'name': 'all',
+                'url': '/collections/all/',
+                'is_active': False
+            })
+            return breadcrumb_items
 
         if pack and pack.category:
             # カテゴリー
