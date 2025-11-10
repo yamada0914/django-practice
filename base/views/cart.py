@@ -12,7 +12,6 @@ class CartListView(ListView):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.total = 0
-        self.tax_included_total = 0
 
     def _get_cart_from_session(self):
         """セッションからカートを取得"""
@@ -38,15 +37,12 @@ class CartListView(ListView):
 
     def _calculate_totals(self, cart):
         """合計金額を計算してセッションに保存"""
-        self.tax_included_total = int(self.total * (settings.TAX_RATE + 1))
         cart['total'] = self.total
-        cart['tax_included_total'] = self.tax_included_total
         self.request.session['cart'] = cart
 
     def get_queryset(self):
         cart = self._get_cart_from_session()
         self.total = 0
-        self.tax_included_total = 0
 
         if self._is_cart_empty(cart):
             return []
@@ -58,8 +54,10 @@ class CartListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["total"] = self.total
-        context["tax_included_total"] = self.tax_included_total
         context["quantity_range"] = list(range(1, 21))
+        # 送料無料までの残り金額
+        context["remaining_for_free_shipping"] = max(
+            0, settings.FREE_SHIPPING_THRESHOLD - self.total)
         return context
 
 
@@ -85,9 +83,22 @@ class AddCartView(View):
         item_pk = request.POST.get('item_pk')
         quantity = int(request.POST.get('quantity', 1))
         update = request.POST.get('update', 'false').lower() == 'true'
+        operation = request.POST.get('operation')
 
         cart = self._get_or_create_cart(request)
-        self._update_cart_item(cart, item_pk, quantity, update)
+
+        # 増減ボタンの処理
+        if operation == 'increase' and item_pk in cart.get('items', {}):
+            current_qty = cart['items'][item_pk]
+            max_stock = int(request.POST.get('max_stock', 999))
+            cart['items'][item_pk] = min(current_qty + 1, max_stock)
+        elif operation == 'decrease' and item_pk in cart.get('items', {}):
+            current_qty = cart['items'][item_pk]
+            cart['items'][item_pk] = max(current_qty - 1, 1)
+        else:
+            # 通常の更新処理
+            self._update_cart_item(cart, item_pk, quantity, update)
+
         request.session['cart'] = cart
 
         return redirect('/cart/')

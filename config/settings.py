@@ -130,6 +130,9 @@ MEDIA_URL = '/media/'
 # 消費税率
 TAX_RATE = 0.1
 
+# 送料無料の閾値
+FREE_SHIPPING_THRESHOLD = 30000
+
 # Stripe API Key
 STRIPE_API_SECRET_KEY = env.str('STRIPE_API_SECRET_KEY')
 

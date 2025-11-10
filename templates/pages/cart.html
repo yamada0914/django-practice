@@ -1,164 +1,154 @@
-{% extends 'base.html' %}
-{% block main %}
-<div class="container mx-auto px-4 py-8 max-w-[960px]">
+{% extends 'base.html' %} {% load humanize %} {% block main %}
+<div class="container mx-auto max-w-[960px] px-4 pt-10">
   <!-- タイトル -->
   <h2 class="mb-8 text-2xl font-bold text-gray-800">買い物かご</h2>
   <div class="mb-5 border-b border-black"></div>
 
-  <div class="mb-4 text-center">
-    <img src="https://hareruya2-filepool.s3.amazonaws.com/cart/order_step1.jpg" alt="STEP1 買い物かごの確認" class="mx-auto"
-      style="width: 480px;" />
-  </div>
-
-  <!-- 説明テキスト -->
-  <div class="mb-10 text-center">
-    <p class="text-gray-700">
-      商品の数量を変更する場合は、リストボックスで数量を変更してください。
-    </p>
-    <p class="text-gray-700">
-      商品を削除する場合は数量の右側の「削除」ボタンをクリックしてください。
-    </p>
-  </div>
-
-
-
-  {% if object_list|length != 0 %}
-  <!-- カートアイテム一覧 -->
-  <div class="mb-8 overflow-hidden rounded-xl bg-white shadow-sm">
-    <div class="overflow-x-auto">
-      <table class="w-full">
-        <thead class="border-b border-gray-200 bg-gray-50">
-          <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-              #
-            </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-              品名
-            </th>
-            <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-              単価
-            </th>
-            <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-              個数
-            </th>
-            <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-              計
-            </th>
-            <th scope="col" class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-            </th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200">
-          {% for object in object_list %}
-          <tr class="hover:bg-gray-50">
-            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-              No.{{forloop.counter}}
-            </td>
-            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-800">
-              {{object.name}}
-            </td>
-            <td class="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-800">
-              ¥{{object.price}}
-            </td>
-            <td class="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-800">
-
-            </td>
-            <td class="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-800">
-              ¥{{object.subtotal}}
-            </td>
-            <td class="whitespace-nowrap px-6 py-4 text-right">
-              <a href="/cart/remove/{{object.pk}}/"
-                class="inline-flex items-center rounded-lg border border-red-500 px-3 py-1 text-sm text-red-500 transition-colors hover:bg-red-50">
-                削除
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+  <div class="mx-auto max-w-[720px]">
+    <!-- ステップ画像 -->
+    <div class="mb-4 text-center">
+      <img src="https://hareruya2-filepool.s3.amazonaws.com/cart/order_step1.jpg" alt="STEP1 買い物かごの確認"
+        class="mx-auto w-[480px]" />
     </div>
-  </div>
 
-  <!-- 合計金額 -->
-  <div class="mb-8 space-y-2 text-right">
-    <p class="text-lg text-gray-600">
-      小計 - <span class="font-medium text-gray-800">¥{{total}}</span>
-    </p>
-    <p class="text-xl font-medium text-gray-800">
-      税込計 -
-      <span class="text-red-600 font-bold">¥{{tax_included_total}}</span>
-    </p>
-  </div>
+    <!-- 説明テキスト -->
+    <div class="mb-10 text-center">
+      <p class="text-gray-700">
+        商品の数量を変更する場合は、リストボックスで数量を変更してください。
+      </p>
+      <p class="text-gray-700">
+        商品を削除する場合は数量の右側の「削除」ボタンをクリックしてください。
+      </p>
+    </div>
 
-  <!-- Checkoutボタン -->
-  <div class="mb-12 text-right">
-    <form action="/pay/checkout/" method="POST">
-      {% csrf_token %}
-      <button type="submit"
-        class="bg-red-600 hover:bg-red-700 rounded-lg px-8 py-3 font-medium text-white transition-colors">
-        レジに進む
+    {% if object_list|length != 0 %}
+    <!-- カートアイテム一覧 -->
+    <div class="overflow-hidden rounded-xl bg-white shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <tbody class="divide-y divide-gray-200">
+            {% for object in object_list %}
+            <tr>
+              <td class="border-t border-dotted border-black py-3">
+                {% if object.image %}
+                <img src="{{ object.image.url }}" alt="{{ object.display_name }}"
+                  class="mx-auto h-20 rounded object-contain" />
+                {% else %}
+                <div class="mx-auto flex h-32 w-32 items-center justify-center rounded bg-gray-100">
+                  <span class="text-xs text-gray-400">画像なし</span>
+                </div>
+                {% endif %}
+              </td>
+              <td class="border-t border-dotted border-black px-6 py-3 align-top text-sm text-gray-800">
+                <div>
+                  <a href="/products/{{ object.pk }}/" class="hover:pointer">
+                    {{ object.display_name }}
+                  </a>
+                </div>
+                <div class="font-bold text-red-600">
+                  ¥{{ object.price|intcomma:False }}
+                </div>
+              </td>
+              <td
+                class="whitespace-nowrap border-t border-dotted border-black py-4 text-right align-top text-sm text-gray-800">
+                <form action="/cart/add/" method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" name="item_pk" value="{{object.pk}}" />
+                  <input type="hidden" name="update" value="true" />
+                  <input type="hidden" name="max_stock" value="{{object.stock}}" />
+                  <div class="mb-4 flex items-center">
+                    <div class="flex h-12 rounded border border-gray-300">
+                      <button type="submit" name="operation" value="decrease"
+                        class="flex w-12 items-center justify-center border-r-0 bg-[rgb(250,250,249)] text-gray-700 hover:bg-gray-50">
+                        −
+                      </button>
+                      <input type="number" name="quantity" value="{{ object.quantity }}" min="1"
+                        max="{{ object.stock }}" readonly
+                        class="w-14 border-gray-300 bg-[rgb(250,250,249)] text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
+                      <button type="submit" name="operation" value="increase"
+                        class="flex w-12 items-center justify-center bg-[rgb(250,250,249)] text-gray-700 hover:bg-gray-50">
+                        ＋
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </td>
+              <td class="whitespace-nowrap border-t border-dotted border-black px-6 py-4 text-right align-top">
+                <a href="/cart/remove/{{ object.pk }}/" class="text-red-600 hover:text-red-700">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </td>
+              <td
+                class="whitespace-nowrap border-t border-dotted border-black py-4 text-right align-top font-bold text-red-600">
+                ¥{{ object.subtotal|intcomma:False }}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 合計金額 -->
+    <div class="mb-5 flex items-center justify-end border-b border-t border-dotted border-black py-5">
+      {% if remaining_for_free_shipping %}
+      <p class="mr-auto text-xs">
+        送料無料まであと ¥{{ remaining_for_free_shipping|intcomma:False }} です
+      </p>
+      {% endif %}
+      <p class="text-lg">
+        商品合計:<span class="ml-6 font-bold text-red-600">¥{{ total|intcomma:False }}</span>
+      </p>
+    </div>
+
+    <div class="mb-10 text-right">
+      <p class="text-sm">配送料は税込で購入手続き時に計算されます</p>
+    </div>
+
+    <!-- Checkoutボタン -->
+    <div class="mb-28 flex flex-col items-center gap-4">
+      <form action="/pay/checkout/" method="POST" class="w-full max-w-sm">
+        {% csrf_token %}
+        <button type="submit"
+          class="flex w-full items-center justify-center gap-2 rounded bg-[#e60012] px-8 py-4 font-bold text-white transition-colors hover:bg-[#bf000f]">
+          <i class="fas fa-home"></i>
+          購入して自宅へ届ける
+        </button>
+      </form>
+      <button type="button"
+        class="flex w-full max-w-sm items-center justify-center gap-2 rounded border-2 border-red-600 px-8 py-4 font-bold text-red-600 transition-colors hover:bg-red-50">
+        <i class="fas fa-shopping-bag"></i>
+        店頭受取で注文する
       </button>
-    </form>
-  </div>
-
-  {% else %}
-  <!-- カートが空の場合のメッセージ -->
-  <div class="max-w-[720px] mx-auto text-center">
-    <div class="mb-8 m-auto w-fit text-left border border-black bg-gray-50 px-[20px] py-[10px] font-bold">
-      <p class="text-gray-700">
-        現在、買い物かごには商品が入っておりません。
-      </p>
-      <p class="text-gray-700">
-        お買い物を続けるには下の「他の商品を見る」をクリックしてください。
-      </p>
     </div>
-    <a href="/collections/all"
-      class="inline-block mx-auto max-w-[22rem] w-full rounded bg-red-600 px-8 py-3 text-white font-bold transition-colors hover:bg-red-700 mb-10">
-      他の商品を見る
-    </a>
+
+    <!-- 他の商品を見る -->
+    <div class="mb-8">
+      <a href="/collections/all"
+        class="flex items-center gap-2 font-bold text-red-600 hover:text-red-700 hover:underline">
+        <i class="fas fa-chevron-left"></i>
+        他の商品を見る
+      </a>
+    </div>
+
+    {% else %}
+    <!-- カートが空の場合のメッセージ -->
+    <div class="mx-auto max-w-[720px] text-center">
+      <div class="m-auto mb-10 w-fit border border-black bg-gray-50 px-[20px] py-[10px] text-left font-bold">
+        <p class="text-gray-700">
+          現在、買い物かごには商品が入っておりません。
+        </p>
+        <p class="text-gray-700">
+          お買い物を続けるには下の「他の商品を見る」をクリックしてください。
+        </p>
+      </div>
+      <a href="/collections/all"
+        class="mx-auto mb-16 inline-block w-full max-w-[22rem] rounded bg-[#e60012] px-8 py-3 font-bold text-white transition-colors hover:bg-[#bf000f]">
+        他の商品を見る
+      </a>
+    </div>
+    {% endif %}
   </div>
-  {% endif %}
-
-</div>
 </div>
 
-<script>
-  function updateQuantity(itemPk, quantity) {
-    // フォームを作成してPOSTリクエストを送信
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '/cart/add/';
-
-    // CSRFトークンを取得（ページ内のhidden inputから）
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
-    if (csrfToken) {
-      const csrfInput = document.createElement('input');
-      csrfInput.type = 'hidden';
-      csrfInput.name = 'csrfmiddlewaretoken';
-      csrfInput.value = csrfToken.value;
-      form.appendChild(csrfInput);
-    }
-
-    const itemInput = document.createElement('input');
-    itemInput.type = 'hidden';
-    itemInput.name = 'item_pk';
-    itemInput.value = itemPk;
-    form.appendChild(itemInput);
-
-    const quantityInput = document.createElement('input');
-    quantityInput.type = 'hidden';
-    quantityInput.name = 'quantity';
-    quantityInput.value = quantity;
-    form.appendChild(quantityInput);
-
-    const updateInput = document.createElement('input');
-    updateInput.type = 'hidden';
-    updateInput.name = 'update';
-    updateInput.value = 'true';
-    form.appendChild(updateInput);
-
-    document.body.appendChild(form);
-    form.submit();
-  }
-</script>
 {% endblock %}
