@@ -131,14 +131,16 @@ class PayWithStripe(LoginRequiredMixin, View):
             item.sold_count += quantity
             item.save()
 
-        # 仮注文を作成（is_confirmed=False）
+        # 仮注文を作成
+        tax_included_amount = int(cart['total'] * (settings.TAX_RATE + 1))
+
         order = Order.objects.create(
             user=request.user,
             uid=request.user.pk,
             items=json.dumps(items),
             shipping=serializers.serialize("json", [request.user.profile]),
             amount=cart['total'],
-            tax_included=cart['tax_included_total']
+            tax_included=tax_included_amount
         )
 
         checkout_session = stripe.checkout.Session.create(
