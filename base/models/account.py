@@ -62,6 +62,18 @@ class User(AbstractBaseUser):
 class Profile(models.Model):
     user = models.OneToOneField(
         User, primary_key=True, on_delete=models.CASCADE)
+    # 名前関連
+    last_name = models.CharField(
+        default='', blank=True, max_length=50, verbose_name='姓')
+    first_name = models.CharField(
+        default='', blank=True, max_length=50, verbose_name='名')
+    last_name_kana = models.CharField(
+        default='', blank=True, max_length=50, verbose_name='姓（フリガナ）')
+    first_name_kana = models.CharField(
+        default='', blank=True, max_length=50, verbose_name='名（フリガナ）')
+    company = models.CharField(
+        default='', blank=True, max_length=100, verbose_name='会社名')
+    # 既存フィールド
     name = models.CharField(default='', blank=True, max_length=50)
     zipcode = models.CharField(default='', blank=True, max_length=8)
     prefecture = models.CharField(default='', blank=True, max_length=50)

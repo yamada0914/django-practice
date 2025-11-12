@@ -71,9 +71,9 @@
           <i class="fas fa-question-circle mr-1"></i>ヘルプ
         </a>
         {% if user.is_authenticated %}
-        <a href="/account/logout"
+        <a href="/account/"
           class="ml-3 flex h-7 items-center rounded border-2 border-white px-2 text-xs font-bold text-white transition hover:bg-white hover:text-[#e60012]">
-          <i class="fas fa-sign-out-alt mr-1"></i>ログアウト
+          <i class="fas fa-user mr-1"></i>マイページ
         </a>
         {% else %}
         <a href="/account/login"
@@ -96,7 +96,7 @@
   </div>
 
   <!-- 公式風ナビゲーションタブ -->
-  {% if '/account/login' not in request.path and '/cart' not in request.path %}
+  {% if show_navigation %}
   <div class="flex h-24 w-full justify-center bg-white text-sm font-bold text-red-600">
     <ul class="flex w-full max-w-[960px] items-center justify-center">
       <li class="h-full w-1/6 place-items-center leading-[80px] transition hover:bg-[#e60012] hover:text-white">

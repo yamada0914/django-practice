@@ -1,63 +1,126 @@
 {% extends 'base.html' %} {% block main %}
-<div class="mx-auto max-w-2xl px-2 py-12">
-    <h2 class="mb-6 text-2xl font-bold text-gray-800">アカウントを作成する</h2>
-    <div class="mb-8 rounded border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-gray-700">
+<div class="mx-auto max-w-[764px] py-16">
+    <h2 class="mb-3 border-b border-black pb-5 text-2xl font-bold text-gray-800">
+        アカウントを作成する
+    </h2>
+    <div class="mb-10 rounded border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-gray-700">
         ・会員登録にあたってはご本人様のお名前、住所、メールアドレス、電話番号等をご入力ください。虚偽の内容を入力した場合は会員資格の停止、あるいは取引が停止させて頂く場合がございます。
     </div>
-    <form method="POST" class="space-y-6 rounded bg-white p-6 shadow">
+    <form method="POST" x-data="{ 
+        validateKana(input) {
+            const value = input.value.trim();
+            if (value && !/^[ァ-ヶー]+$/.test(value)) {
+                input.setCustomValidity('指定されている形式で入力してください。');
+            } else {
+                input.setCustomValidity('');
+            }
+        },
+        validateForm(event) {
+            const inputs = ['id_last_name_kana', 'id_first_name_kana'];
+            let errorInput = null;
+            
+            inputs.forEach(id => {
+                const input = document.getElementById(id);
+                this.validateKana(input);
+                if (input.validity.customError) {
+                    if (!errorInput) errorInput = input;
+                }
+            });
+            
+            if (errorInput) {
+                event.preventDefault();
+                errorInput.reportValidity();
+                return false;
+            }
+        }
+    }" @submit="validateForm($event)">
         {% csrf_token %}
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div>
-                <label class="mb-1 block text-sm font-bold text-gray-700">お名前 <span
-                        class="text-red-600">[必須]</span></label>
-                <input type="text" name="last_name" placeholder="姓" required
-                    class="mb-2 w-full rounded border border-gray-300 px-3 py-2" />
-            </div>
-            <div>
-                <label class="invisible mb-1 block text-sm font-bold text-gray-700">名</label>
-                <input type="text" name="first_name" placeholder="名" required
-                    class="mb-2 w-full rounded border border-gray-300 px-3 py-2" />
-            </div>
-            <div>
-                <label class="mb-1 block text-sm font-bold text-gray-700">お名前（フリガナ） <span
-                        class="text-red-600">[必須]</span></label>
-                <input type="text" name="last_name_kana" placeholder="姓（フリガナ）" required
-                    class="mb-2 w-full rounded border border-gray-300 px-3 py-2" />
-            </div>
-            <div>
-                <label class="invisible mb-1 block text-sm font-bold text-gray-700">名（フリガナ）</label>
-                <input type="text" name="first_name_kana" placeholder="名（フリガナ）" required
-                    class="mb-2 w-full rounded border border-gray-300 px-3 py-2" />
+        <div class="field_data mb-10">
+            <label class="mb-2 block border-b pb-1 text-sm text-gray-700">お名前
+                <span class="text-xs font-bold text-red-600">[必須]</span></label>
+            <div class="ml-2 flex w-full gap-4">
+                <div class="relative flex-1">
+                    <input type="text" name="last_name" id="id_last_name" required placeholder=" "
+                        class="peer h-[45px] w-full rounded border border-gray-300 bg-gray-50 px-3 pb-2 pt-6 text-base text-gray-700 transition focus:outline-none focus:ring-2 focus:ring-[#e60012]" />
+                    <label for="id_last_name"
+                        class="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-base text-gray-500 transition-all duration-200 peer-valid:top-0 peer-valid:-translate-y-0 peer-valid:text-[10px] peer-valid:text-gray-700 peer-focus:top-0 peer-focus:-translate-y-0 peer-focus:text-[10px] peer-focus:text-gray-700 peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-0 peer-[&:not(:placeholder-shown)]:text-[10px] peer-[&:not(:placeholder-shown)]:text-gray-700">姓</label>
+                </div>
+                <div class="relative flex-1">
+                    <input type="text" name="first_name" id="id_first_name" required placeholder=" "
+                        class="peer h-[45px] w-full rounded border border-gray-300 bg-gray-50 px-3 pb-2 pt-6 text-base text-gray-700 transition focus:outline-none focus:ring-2 focus:ring-[#e60012]" />
+                    <label for="id_first_name"
+                        class="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-base text-gray-500 transition-all duration-200 peer-valid:top-0 peer-valid:-translate-y-0 peer-valid:text-[10px] peer-valid:text-gray-700 peer-focus:top-0 peer-focus:-translate-y-0 peer-focus:text-[10px] peer-focus:text-gray-700 peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-0 peer-[&:not(:placeholder-shown)]:text-[10px] peer-[&:not(:placeholder-shown)]:text-gray-700">名</label>
+                </div>
             </div>
         </div>
-        <div>
-            <label class="mb-1 block text-sm font-bold text-gray-700">会社名 ※法人の方のみ</label>
-            <input type="text" name="company" placeholder="会社名"
-                class="w-full rounded border border-gray-300 px-3 py-2" />
+        <div class="field_data mb-10">
+            <label class="mb-2 block border-b pb-1 text-sm text-gray-700">お名前（フリガナ）
+                <span class="text-xs font-bold text-red-600">[必須]</span></label>
+            <div class="ml-2 flex w-full gap-4">
+                <div class="relative flex-1">
+                    <input type="text" name="last_name_kana" id="id_last_name_kana" required placeholder=" "
+                        @input="validateKana($el)"
+                        class="peer h-[45px] w-full rounded border border-gray-300 bg-gray-50 px-3 pb-2 pt-6 text-base text-gray-700 transition focus:outline-none focus:ring-2 focus:ring-[#e60012]" />
+                    <label for="id_last_name_kana"
+                        class="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-base text-gray-500 transition-all duration-200 peer-valid:top-0 peer-valid:-translate-y-0 peer-valid:text-[10px] peer-valid:text-gray-700 peer-focus:top-0 peer-focus:-translate-y-0 peer-focus:text-[10px] peer-focus:text-gray-700 peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-0 peer-[&:not(:placeholder-shown)]:text-[10px] peer-[&:not(:placeholder-shown)]:text-gray-700">姓（フリガナ）</label>
+                </div>
+                <div class="relative flex-1">
+                    <input type="text" name="first_name_kana" id="id_first_name_kana" required placeholder=" "
+                        @input="validateKana($el)"
+                        class="peer h-[45px] w-full rounded border border-gray-300 bg-gray-50 px-3 pb-2 pt-6 text-base text-gray-700 transition focus:outline-none focus:ring-2 focus:ring-[#e60012]" />
+                    <label for="id_first_name_kana"
+                        class="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-base text-gray-500 transition-all duration-200 peer-valid:top-0 peer-valid:-translate-y-0 peer-valid:text-[10px] peer-valid:text-gray-700 peer-focus:top-0 peer-focus:-translate-y-0 peer-focus:text-[10px] peer-focus:text-gray-700 peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-0 peer-[&:not(:placeholder-shown)]:text-[10px] peer-[&:not(:placeholder-shown)]:text-gray-700">名（フリガナ）</label>
+                </div>
+            </div>
         </div>
-        <div>
-            <label class="mb-1 block text-sm font-bold text-gray-700">メール <span class="text-red-600">[必須]</span></label>
-            <input type="email" name="email" placeholder="メール" required
-                class="w-full rounded border border-gray-300 px-3 py-2" />
+        <div class="field_data mb-10">
+            <label class="mb-2 block border-b pb-1 text-sm text-gray-700">会社名 ※法人の方のみ</label>
+            <div class="relative ml-2 block max-w-lg">
+                <input type="text" name="company" id="id_company" placeholder=" "
+                    class="peer h-[45px] w-full rounded border border-gray-300 bg-gray-50 px-3 pb-2 pt-6 text-base text-gray-700 transition focus:outline-none focus:ring-2 focus:ring-[#e60012]" />
+                <label for="id_company"
+                    class="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-base text-gray-500 transition-all duration-200 peer-focus:top-0 peer-focus:-translate-y-0 peer-focus:text-[10px] peer-focus:text-gray-700 peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-0 peer-[&:not(:placeholder-shown)]:text-[10px] peer-[&:not(:placeholder-shown)]:text-gray-700">会社名</label>
+            </div>
         </div>
-        <div>
-            <label class="mb-1 block text-sm font-bold text-gray-700">電話番号 <span
-                    class="text-red-600">[必須]</span></label>
-            <input type="tel" name="tel" placeholder="電話番号" required
-                class="w-full rounded border border-gray-300 px-3 py-2" />
+        <div class="field_data mb-10">
+            <label class="mb-2 block border-b pb-1 text-sm text-gray-700">メール
+                <span class="text-xs font-bold text-red-600">[必須]</span></label>
+            <div class="relative ml-2 block max-w-lg">
+                <input type="email" name="email" id="id_email" required placeholder=" "
+                    class="peer h-[45px] w-full rounded border border-gray-300 bg-gray-50 px-3 pb-2 pt-6 text-base text-gray-700 transition focus:outline-none focus:ring-2 focus:ring-[#e60012]" />
+                <label for="id_email"
+                    class="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-base text-gray-500 transition-all duration-200 peer-valid:top-0 peer-valid:-translate-y-0 peer-valid:text-[10px] peer-valid:text-gray-700 peer-focus:top-0 peer-focus:-translate-y-0 peer-focus:text-[10px] peer-focus:text-gray-700 peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-0 peer-[&:not(:placeholder-shown)]:text-[10px] peer-[&:not(:placeholder-shown)]:text-gray-700">メール</label>
+            </div>
         </div>
-        <div>
-            <label class="mb-1 block text-sm font-bold text-gray-700">パスワード <span
-                    class="text-red-600">[必須]</span></label>
-            <input type="password" name="password" placeholder="パスワード" required
-                class="w-full rounded border border-gray-300 px-3 py-2" />
+        <div class="field_data mb-10">
+            <label class="mb-2 block border-b pb-1 text-sm text-gray-700">電話番号
+                <span class="text-xs font-bold text-red-600">[必須]</span></label>
+            <div class="relative ml-2 block max-w-lg">
+                <input type="tel" name="tel" id="id_tel" required placeholder=" "
+                    class="peer h-[45px] w-full rounded border border-gray-300 bg-gray-50 px-3 pb-2 pt-6 text-base text-gray-700 transition focus:outline-none focus:ring-2 focus:ring-[#e60012]" />
+                <label for="id_tel"
+                    class="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-base text-gray-500 transition-all duration-200 peer-valid:top-0 peer-valid:-translate-y-0 peer-valid:text-[10px] peer-valid:text-gray-700 peer-focus:top-0 peer-focus:-translate-y-0 peer-focus:text-[10px] peer-focus:text-gray-700 peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-0 peer-[&:not(:placeholder-shown)]:text-[10px] peer-[&:not(:placeholder-shown)]:text-gray-700">電話番号</label>
+            </div>
         </div>
-        <div class="pt-4">
-            <button type="submit"
-                class="mx-auto block h-11 w-40 rounded bg-[#e60012] py-2 font-bold text-white transition hover:bg-[#c20010]">
-                作成する
-            </button>
+        <div class="field_data mb-10">
+            <label class="mb-2 block border-b pb-1 text-sm text-gray-700">パスワード
+                <span class="text-xs font-bold text-red-600">[必須]</span></label>
+            <div class="relative ml-2 block max-w-lg" x-data="{ showPassword: false }">
+                <input :type="showPassword ? 'text' : 'password'" name="password" id="id_password" required
+                    placeholder=" "
+                    class="peer h-[45px] w-full rounded border border-gray-300 bg-gray-50 px-3 pb-2 pr-10 pt-6 text-base text-gray-700 transition focus:outline-none focus:ring-2 focus:ring-[#e60012]" />
+                <label for="id_password"
+                    class="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-base text-gray-500 transition-all duration-200 peer-valid:top-0 peer-valid:-translate-y-0 peer-valid:text-[10px] peer-valid:text-gray-700 peer-focus:top-0 peer-focus:-translate-y-0 peer-focus:text-[10px] peer-focus:text-gray-700 peer-[&:not(:placeholder-shown)]:top-0 peer-[&:not(:placeholder-shown)]:-translate-y-0 peer-[&:not(:placeholder-shown)]:text-[10px] peer-[&:not(:placeholder-shown)]:text-gray-700">パスワード</label>
+                <button type="button" @click="showPassword = !showPassword"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                    <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-lg"></i>
+                </button>
+            </div>
         </div>
+        <button type="submit"
+            class="mx-auto block h-11 w-44 rounded bg-[#e60012] py-2 text-white transition hover:bg-[#c20010]">
+            作成する
+        </button>
     </form>
 </div>
 {% endblock %}

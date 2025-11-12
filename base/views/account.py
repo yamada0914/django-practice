@@ -1,18 +1,37 @@
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
+from django.shortcuts import redirect
 from base.models import Profile
 from base.forms import UserCreationForm
 
 
 class SignUpView(CreateView):
     form_class = UserCreationForm
-    success_url = '/login/'
+    success_url = '/'
     template_name = 'pages/signup.html'
 
     def form_valid(self, form):
-        return super().form_valid(form)
+        # User を保存
+        user = form.save()
+
+        # Profile 情報を保存
+        profile = user.profile
+        profile.last_name = self.request.POST.get('last_name', '')
+        profile.first_name = self.request.POST.get('first_name', '')
+        profile.last_name_kana = self.request.POST.get('last_name_kana', '')
+        profile.first_name_kana = self.request.POST.get('first_name_kana', '')
+        profile.company = self.request.POST.get('company', '')
+        profile.tel = self.request.POST.get('tel', '')
+        # 姓と名を結合して name に保存
+        profile.name = f"{profile.last_name} {profile.first_name}".strip()
+        profile.save()
+
+        # 自動ログイン
+        login(self.request, user)
+
+        return redirect('/')
 
 
 class Login(LoginView):
