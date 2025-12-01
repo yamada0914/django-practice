@@ -111,6 +111,36 @@ django-practice/
 
    ブラウザで `http://127.0.0.1:8000` にアクセス
 
+## ✅ テスト（pytest）
+
+1. 依存関係に `pytest` / `pytest-django` が含まれているので、初回のみ再度インストールしておきます。
+
+   ```bash
+   source venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+2. そのまま `pytest` を実行すると Django 設定（`config.settings`）が読み込まれ、DB を再利用したテストが走ります。
+
+   ```bash
+   pytest                    # すべてのテスト
+   pytest base/tests -k db   # モジュール/キーワードを絞って実行
+   ```
+
+3. CLI から自動実行したい場合は、用意したスクリプトを叩くだけです。並び替えたいオプションは引数で渡せます。
+
+   ```bash
+   ./scripts/run_tests.sh             # 依存関係→pytest をまとめて実行
+   ./scripts/run_tests.sh -q --ff     # 例: 失敗テストを優先表示
+   ```
+
+`pytest.ini` には以下を設定済みです：
+
+- `DJANGO_SETTINGS_MODULE=config.settings`
+- `pythonpath=.` でルートを解決
+- `addopts=--reuse-db --nomigrations -v`
+- Django 5.0 で削除予定の警告を非表示
+
 ## 📊 データのインポート
 
 ### カテゴリーの登録
