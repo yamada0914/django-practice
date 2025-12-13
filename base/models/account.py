@@ -36,6 +36,7 @@ class User(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    points = models.PositiveIntegerField(default=0)
     objects = UserManager()
     USERNAME_FIELD = 'email'
 
@@ -83,6 +84,7 @@ class Profile(models.Model):
     tel = models.CharField(default='', blank=True, max_length=15)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    points = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name

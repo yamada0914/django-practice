@@ -66,6 +66,7 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
         profile.address1 = self.request.POST.get('address1')
         profile.address2 = self.request.POST.get('address2')
         profile.tel = self.request.POST.get('tel')
+        profile.points = self.request.POST.get('points')
         profile.save()
 
         user.save()
@@ -76,7 +77,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
     template_name = 'pages/profile.html'
     fields = ('name', 'zipcode', 'prefecture',
-              'city', 'address1', 'address2', 'tel')
+              'city', 'address1', 'address2', 'tel', 'points')
     success_url = '/profile/'
 
     def get_object(self):

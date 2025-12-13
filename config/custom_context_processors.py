@@ -7,6 +7,7 @@ def base(request):
 
     # ナビゲーションを非表示にするパス
     hide_navigation_paths = [
+        '/account/',
         '/account/login',
         '/account/signup',
         '/cart',
