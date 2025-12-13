@@ -3,48 +3,62 @@
   <div>
     <div class="overflow-hidden rounded-xl bg-white">
       <div>
-        <h2 class="mb-4 text-2xl font-bold text-gray-800 border-b border-black pb-6">マイページ</h2>
+        <h2 class="mb-4 border-b border-black pb-6 text-2xl font-bold text-gray-800">
+          マイページ
+        </h2>
 
-        <p class="mb-4 text-gray-700 border p-2 rounded">
+        <p class="mb-4 rounded border p-2 text-gray-700">
           {{ user.profile.name|default:user.username }}さんのマイページ
         </p>
 
-        <div class="space-y-10 mx-3">
+        <div class="mx-3 space-y-10">
           <!-- 現在の保有ポイント -->
           <div class="">
-            <h3 class="mb-4 font-semibold text-gray-800 border-b border-gray-200 pb-4">現在の保有ポイント</h3>
-            <p class="font-bold text-[#990000] ml-2"><span class="text-xl">{{ user.points|default:0 }}</span>ポイント</p>
+            <h3 class="mb-4 border-b border-gray-200 pb-4 font-semibold text-gray-800">
+              現在の保有ポイント
+            </h3>
+            <p class="ml-2 font-bold text-[#990000]">
+              <span class="text-xl">{{ user.points|default:0 }}</span>ポイント
+            </p>
           </div>
 
           <!-- 過去のご購入履歴 -->
           <div>
-            <h3 class="mb-4 font-semibold text-gray-800 border-b border-gray-200 pb-2">過去のご購入履歴</h3>
+            <h3 class="mb-4 border-b border-gray-200 pb-2 font-semibold text-gray-800">
+              過去のご購入履歴
+            </h3>
             <a href="/orders/"
-              class="ml-2 inline-flex items-center text-[#ff2626] font-bold hover:underline before:content-['\f054'] before:mr-1 before:font-['FontAwesome'] before:text-gray-500">
+              class="ml-2 inline-flex items-center font-bold text-[#ff2626] before:mr-1 before:font-['FontAwesome'] before:text-gray-500 before:content-['\f054'] hover:underline">
               <span>購入履歴確認</span>
             </a>
           </div>
 
           <div>
-            <h3 class="mb-4 font-semibold text-gray-800 border-b border-gray-200 pb-2">お客様情報の確認</h3>
+            <h3 class="mb-4 border-b border-gray-200 pb-2 font-semibold text-gray-800">
+              お客様情報の確認
+            </h3>
             <a href="/profile/"
-              class="ml-2 inline-flex items-center text-[#ff2626] font-bold hover:underline before:content-['\f054'] before:mr-1 before:font-['FontAwesome'] before:text-gray-500">
+              class="ml-2 inline-flex items-center font-bold text-[#ff2626] before:mr-1 before:font-['FontAwesome'] before:text-gray-500 before:content-['\f054'] hover:underline">
               <span>お客様情報の確認</span>
             </a>
           </div>
 
           <div>
-            <h3 class="mb-4 font-semibold text-gray-800 border-b border-gray-200 pb-2">お届け先の登録、変更、削除</h3>
+            <h3 class="mb-4 border-b border-gray-200 pb-2 font-semibold text-gray-800">
+              お届け先の登録、変更、削除
+            </h3>
             <a href="/account/addresses"
-              class="ml-2 inline-flex items-center text-[#ff2626] font-bold hover:underline before:content-['\f054'] before:mr-1 before:font-['FontAwesome'] before:text-gray-500">
+              class="ml-2 inline-flex items-center font-bold text-[#ff2626] before:mr-1 before:font-['FontAwesome'] before:text-gray-500 before:content-['\f054'] hover:underline">
               <span>お届け先登録、変更、削除</span>
             </a>
           </div>
 
           <div>
-            <h3 class="mb-4 font-semibold text-gray-800 border-b border-gray-200 pb-2">お気に入り登録商品一覧</h3>
+            <h3 class="mb-4 border-b border-gray-200 pb-2 font-semibold text-gray-800">
+              お気に入り登録商品一覧
+            </h3>
             <a href="/apps/advanced-wishlist"
-              class="ml-2 inline-flex items-center text-[#ff2626] font-bold hover:underline before:content-['\f054'] before:mr-1 before:font-['FontAwesome'] before:text-gray-500">
+              class="ml-2 inline-flex items-center font-bold text-[#ff2626] before:mr-1 before:font-['FontAwesome'] before:text-gray-500 before:content-['\f054'] hover:underline">
               <span>お気に入り登録商品一覧</span>
             </a>
           </div>
@@ -52,7 +66,7 @@
 
         <div class="mt-8 pt-4">
           <a href="/account/logout"
-            class="inline-flex items-center text-[#ff2626] font-bold hover:underline before:content-['\f2f5'] before:mr-2 before:font-['FontAwesome']">
+            class="inline-flex items-center font-bold text-[#ff2626] before:mr-2 before:font-['FontAwesome'] before:content-['\f2f5'] hover:underline">
             <span>ログアウト</span>
           </a>
         </div>
