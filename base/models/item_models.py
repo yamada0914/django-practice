@@ -1,10 +1,7 @@
 from django.db import models
-from django.utils.crypto import get_random_string
 import os
-
-
-def create_id() -> str:
-    return get_random_string(22)
+from base.utils import create_id
+from base.constants import ID_LENGTH
 
 
 def upload_image_to(instance, filename):
@@ -40,7 +37,7 @@ class Pack(models.Model):
 
 class Card(models.Model):
     id = models.CharField(default=create_id, primary_key=True,
-                          max_length=22, editable=False)
+                          max_length=ID_LENGTH, editable=False)
     pokemon_id = models.CharField(default='', max_length=50)
     name = models.CharField(default='', max_length=100)
     pokemon_name = models.CharField(default='', max_length=50)

@@ -1,11 +1,6 @@
 from django.db import models
-import datetime
 from django.contrib.auth import get_user_model
-
-
-def custom_timestamp_id():
-    dt = datetime.datetime.now()
-    return dt.strftime('%Y%m%d%H%M%S%f')
+from base.utils import custom_timestamp_id
 
 
 class Order(models.Model):

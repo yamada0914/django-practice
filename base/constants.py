@@ -3,6 +3,9 @@
 """
 import os
 
+# ID 生成関連の定数
+ID_LENGTH = 22  # ランダム ID の文字数
+
 # スライダー関連の定数
 SLIDER_ITEMS_PER_GROUP = 3
 MAX_POPULAR_CARDS = 12

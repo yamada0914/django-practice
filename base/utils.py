@@ -5,16 +5,30 @@ import csv
 import json
 import logging
 import os
+import datetime
 from typing import List, Dict, Union
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.crypto import get_random_string
 from base.models import Card
 from base.constants import (
-    SLIDER_ITEMS_PER_GROUP, MAX_POPULAR_CARDS,
+    ID_LENGTH, SLIDER_ITEMS_PER_GROUP, MAX_POPULAR_CARDS,
     RECENT_CARDS_SESSION_KEY, BANNER_CSV_PATH, FOUR_BANNERS_CONFIG
 )
 
 logger = logging.getLogger(__name__)
+
+
+def create_id() -> str:
+    """ランダムなIDを生成"""
+    return get_random_string(ID_LENGTH)
+
+
+def custom_timestamp_id() -> str:
+    """タイムスタンプベースの ID を生成"""
+    dt = datetime.datetime.now()
+    return dt.strftime('%Y%m%d%H%M%S%f')
+
 
 # 型定義
 SliderItem = Dict[str, Union[str, int]]
