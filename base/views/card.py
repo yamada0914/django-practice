@@ -78,7 +78,7 @@ class CategoryListView(BaseCardView, ListView):
 
     def get_queryset(self):
         try:
-            self.category = Category.objects.get(slug=self.kwargs['pk'])
+            self.category = Category.objects.get(series_code=self.kwargs['pk'])
             return Card.objects.filter(
                 is_published=True,
                 pack__category=self.category
@@ -89,8 +89,8 @@ class CategoryListView(BaseCardView, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(self.get_categories_context())
-        category_name = getattr(self, "category", None)
-        context['title'] = f'Category #{category_name.name if category_name else "Unknown"}'
+        category = getattr(self, "category", None)
+        context['title'] = f'Category #{category.name if category else "Unknown"}'
         return context
 
 
@@ -111,8 +111,8 @@ class TagListView(BaseCardView, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(self.get_categories_context())
-        tag_name = getattr(self, 'tag', None)
-        context["title"] = f"Tag #{tag_name.name if tag_name else 'Unknown'}"
+        tag = getattr(self, 'tag', None)
+        context["title"] = f"Tag #{tag.name if tag else 'Unknown'}"
         return context
 
 

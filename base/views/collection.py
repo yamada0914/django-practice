@@ -89,13 +89,11 @@ class PackDetailView(BaseCardView, ListView):
             context['pack'] = None
             context['category'] = None
         elif self.pack:
-            pack_name = getattr(self, "pack", None)
-            context['title'] = f'Pack #{pack_name.name if pack_name else "Unknown"}'
-            context['pack'] = pack_name
+            context['title'] = f'Pack #{self.pack.name if self.pack else "Unknown"}'
+            context['pack'] = self.pack
         else:
-            category_name = getattr(self, "category", None)
-            context['title'] = f'Category #{category_name.name if category_name else "Unknown"}'
-            context['category'] = category_name
+            context['title'] = f'Category #{self.category.name if self.category else "Unknown"}'
+            context['category'] = self.category
 
         # パンくずリストのデータを準備
         breadcrumb_items = self._prepare_breadcrumb_items(
