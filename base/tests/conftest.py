@@ -1,8 +1,11 @@
 """共通の pytest fixture を定義"""
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.contrib.auth import get_user_model
 
 from base.models import Card, Category, Pack, Tag
+
+User = get_user_model()
 
 
 @pytest.fixture
@@ -60,4 +63,36 @@ def unpublished_card(pack, image_file):
         pack=pack,
         image=image_file("raichu.jpg"),
     )
+
+
+@pytest.fixture
+def user(db):
+    """テスト用のユーザーを作成"""
+    return User.objects.create_user(
+        email='test@example.com',
+        password='testpass123',
+        username='testuser'
+    )
+
+
+@pytest.fixture
+def user_with_profile(user):
+    """プロフィール情報が入力済みのユーザーを作成"""
+    profile = user.profile
+    profile.name = 'テスト ユーザー'
+    profile.zipcode = '1000001'
+    profile.prefecture = '東京都'
+    profile.city = '千代田区'
+    profile.address1 = '千代田1-1-1'
+    profile.address2 = ''
+    profile.tel = '09012345678'
+    profile.save()
+    return user
+
+
+@pytest.fixture
+def authenticated_client(client, user_with_profile):
+    """認証済みのクライアントを作成"""
+    client.force_login(user_with_profile)
+    return client
 
