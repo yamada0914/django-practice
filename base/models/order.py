@@ -4,6 +4,7 @@ from base.utils import custom_timestamp_id
 
 
 class Order(models.Model):
+    """注文モデル"""
     id = models.CharField(default=custom_timestamp_id,
                           editable=False, primary_key=True, max_length=50)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
@@ -21,3 +22,11 @@ class Order(models.Model):
 
     def __str__(self):
         return self.id
+
+    def confirm(self):
+        """注文を確定"""
+        if self.is_confirmed:
+            return False
+        self.is_confirmed = True
+        self.save()
+        return True
