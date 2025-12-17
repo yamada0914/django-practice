@@ -37,16 +37,16 @@
               <div>
                 <dt class="text-sm font-medium text-gray-500">配送先住所</dt>
                 <dd class="text-gray-800">
-                  〒{{shipping.0.fields.zipcode}}<br />
-                  {{shipping.0.fields.prefecture}}{{shipping.0.fields.city}}<br />
-                  {{shipping.0.fields.address1}}<br />
-                  {% if shipping.0.fields.address2 %}
-                  {{shipping.0.fields.address2}} {% endif %}
+                  〒{{shipping.zipcode}}<br />
+                  {{shipping.prefecture}}{{shipping.city}}<br />
+                  {{shipping.address1}}<br />
+                  {% if shipping.address2 %}
+                  {{shipping.address2}} {% endif %}
                 </dd>
               </div>
               <div>
                 <dt class="text-sm font-medium text-gray-500">電話番号</dt>
-                <dd class="text-gray-800">{{shipping.0.fields.tel}}</dd>
+                <dd class="text-gray-800">{{shipping.tel}}</dd>
               </div>
             </dl>
           </div>
