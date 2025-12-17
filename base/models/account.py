@@ -2,7 +2,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from base.models import create_id
+from base.utils import create_id
+from base.constants import ID_LENGTH
 
 
 class UserManager(BaseUserManager):
@@ -30,7 +31,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    id = models.CharField(default=create_id, primary_key=True, max_length=22)
+    id = models.CharField(
+        default=create_id, primary_key=True, max_length=ID_LENGTH)
     username = models.CharField(
         max_length=50, unique=True, blank=True, default='匿名')
     email = models.EmailField(max_length=255, unique=True)
