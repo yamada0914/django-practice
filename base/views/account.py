@@ -22,7 +22,7 @@ class SignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
 
-        # Profile情報を保存
+        # Profile 情報を保存
         profile = user.profile
         profile.last_name = self.request.POST.get('last_name', '')
         profile.first_name = self.request.POST.get('first_name', '')
@@ -30,7 +30,7 @@ class SignUpView(CreateView):
         profile.first_name_kana = self.request.POST.get('first_name_kana', '')
         profile.company = self.request.POST.get('company', '')
         profile.tel = self.request.POST.get('tel', '')
-        # 姓と名を結合してnameに保存
+        # 姓と名を結合して name に保存
         profile.name = f"{profile.last_name} {profile.first_name}".strip()
         profile.save()
 
@@ -59,7 +59,7 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         user = form.save()
 
-        # プロフィール情報の更新（pointsは除外）
+        # プロフィール情報の更新（points は除外）
         profile = self.request.user.profile
         profile.name = self.request.POST.get('name', profile.name)
         profile.zipcode = self.request.POST.get('zipcode', profile.zipcode)
@@ -69,7 +69,7 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
         profile.address1 = self.request.POST.get('address1', profile.address1)
         profile.address2 = self.request.POST.get('address2', profile.address2)
         profile.tel = self.request.POST.get('tel', profile.tel)
-        # pointsは直接POSTから取得しない（セキュリティ上の理由）
+        # points は直接 POST から取得しない（セキュリティ上の理由）
         profile.save()
 
         logger.info(f"アカウント情報を更新: {user.email}")
