@@ -82,7 +82,7 @@ class CategoryListView(BaseCardView, ListView):
             return Card.objects.filter(
                 is_published=True,
                 pack__category=self.category
-            )
+            ).order_by('id')
         except ObjectDoesNotExist:
             return Card.objects.none()
 
@@ -104,7 +104,7 @@ class TagListView(BaseCardView, ListView):
     def get_queryset(self):
         try:
             self.tag = Tag.objects.get(slug=self.kwargs['pk'])
-            return Card.objects.filter(is_published=True, tags=self.tag)
+            return Card.objects.filter(is_published=True, tags=self.tag).order_by('id')
         except ObjectDoesNotExist:
             return Card.objects.none()
 
