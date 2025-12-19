@@ -8,7 +8,7 @@ import json
 import logging
 import os
 import datetime
-from typing import List, Dict, Union
+from typing import List, Dict, Union, TYPE_CHECKING
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.crypto import get_random_string
@@ -16,6 +16,9 @@ from base.constants import (
     ID_LENGTH, SLIDER_ITEMS_PER_GROUP, MAX_POPULAR_CARDS,
     RECENT_CARDS_SESSION_KEY, BANNER_CSV_PATH, FOUR_BANNERS_CONFIG
 )
+
+if TYPE_CHECKING:
+    from base.models import Card
 
 logger = logging.getLogger(__name__)
 
