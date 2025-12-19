@@ -1,6 +1,8 @@
 """
 ビューで使用されるユーティリティ関数
 """
+from __future__ import annotations
+
 import csv
 import json
 import logging
@@ -10,7 +12,6 @@ from typing import List, Dict, Union
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.crypto import get_random_string
-from base.models import Card
 from base.constants import (
     ID_LENGTH, SLIDER_ITEMS_PER_GROUP, MAX_POPULAR_CARDS,
     RECENT_CARDS_SESSION_KEY, BANNER_CSV_PATH, FOUR_BANNERS_CONFIG
@@ -77,6 +78,7 @@ def get_popular_cards() -> List[Card]:
     Returns:
         売上順でソートされた人気カードのリスト
     """
+    from base.models import Card
     return list(Card.objects.filter(
         is_published=True
     ).order_by('-sold_count')[:MAX_POPULAR_CARDS])
@@ -100,3 +102,9 @@ def load_banners_from_csv() -> List[BannerData]:
     except Exception as e:
         logger.error(f"バナー CSV ファイルの読み込み中にエラーが発生: {e}")
         return []
+
+
+def clear_cart(request):
+    """カート情報をセッションから削除"""
+    if 'cart' in request.session:
+        del request.session['cart']
