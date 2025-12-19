@@ -21,7 +21,7 @@ class BaseCardView:
         categories = Category.objects.prefetch_related('packs').all()
         return {'CATEGORIES': categories}
 
-    def _prepare_slider_context(self):
+    def _prepare_slider_context(self) -> Dict[str, str]:
         """スライダー関連のコンテキストを準備"""
         popular_cards = get_popular_cards()
         slider_data = prepare_slider_data(popular_cards)

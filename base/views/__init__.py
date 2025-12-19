@@ -7,7 +7,7 @@ from .collection import PackDetailView
 from .account import Login, SignUpView, AccountUpdateView, ProfileUpdateView
 from .order import OrderIndexView, OrderDetailView
 from .pay import PayWithStripe, PaySuccessView, PayCancelView
-from .cart import CartListView, AddCartView, remove_from_cart
+from .cart import CartListView, AddCartView, RemoveFromCartView
 
 __all__ = [
     'BaseCardView',
@@ -27,6 +27,6 @@ __all__ = [
     'PayCancelView',
     'CartListView',
     'AddCartView',
-    'remove_from_cart',
+    'RemoveFromCartView',
     'HelpView',
 ]
