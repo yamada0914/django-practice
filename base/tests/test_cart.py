@@ -99,7 +99,7 @@ def test_cart_remove_item(client, published_card):
     client.post('/cart/add/', {'item_pk': published_card.pk, 'quantity': 1})
 
     # 削除
-    response = client.get(f'/cart/remove/{published_card.pk}/')
+    response = client.post(f'/cart/remove/{published_card.pk}/')
     assert response.status_code == 302
     assert response.url == '/cart/'
 
