@@ -2,6 +2,9 @@
 *.pyc
 __pycache__/
 
+# macOS
+.DS_Store
+
 # 仮想環境
 venv/
 .venv/
@@ -12,8 +15,7 @@ venv/
 # SQLiteデータベース
 db.sqlite3
 
-# 静的ファイルとメディアファイル
-static/
+# メディアファイル（ユーザーアップロードファイル）
 media/
 
 # ログファイル
