@@ -7,11 +7,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 root = environ.Path(BASE_DIR / 'secrets')  # type: ignore
 
-# 本番環境用
-# env.read_env(root('.env.prod'))
-
 # 開発環境用
 env.read_env(root('.env.dev'))
+# 本番環境用の場合は以下を使用
+# env.read_env(root('.env.prod'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -135,6 +134,9 @@ FREE_SHIPPING_THRESHOLD = 30000
 
 # Stripe API Key
 STRIPE_API_SECRET_KEY = env.str('STRIPE_API_SECRET_KEY')
+# Stripe TaxRate ID (Stripeダッシュボードで手動で作成したTaxRateのIDを設定)
+# オプショナル: 設定されていない場合はエラーを表示
+STRIPE_TAX_RATE_ID = env('STRIPE_TAX_RATE_ID', default='')
 
 # スキーマ＆ドメイン
 MY_URL = env.str('MY_URL')
