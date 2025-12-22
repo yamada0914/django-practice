@@ -41,19 +41,6 @@ SliderData = List[SliderGroup]
 BannerData = Dict[str, str]
 
 
-def batch(lst: List[Card], n: int) -> List[List[Card]]:
-    """リストを指定した数ずつグループ化する関数
-
-    Args:
-        lst: グループ化するリスト
-        n: 各グループの要素数
-
-    Returns:
-        グループ化されたリストのリスト
-    """
-    return [lst[i:i+n] for i in range(0, len(lst), n)]
-
-
 def prepare_slider_data(cards: list[Card], n: int = SLIDER_ITEMS_PER_GROUP) -> str:
     """カード一覧を n 件ずつグループ化しスライダー用の JSON 文字列に変換"""
     groups = [cards[i:i + n] for i in range(0, len(cards), n)]
@@ -111,3 +98,4 @@ def clear_cart(request):
     """カート情報をセッションから削除"""
     if 'cart' in request.session:
         del request.session['cart']
+        request.session.save()
