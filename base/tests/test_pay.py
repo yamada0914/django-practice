@@ -145,7 +145,7 @@ def test_pay_success_view_missing_order_id(authenticated_client):
     """注文 ID が指定されていない場合、注文一覧にリダイレクトされる"""
     response = authenticated_client.get('/pay/success/')
     assert response.status_code == 302
-    assert response.url == '/orders/'
+    assert response.url == '/pages/orders-history/'
 
 
 @pytest.mark.django_db
@@ -153,7 +153,7 @@ def test_pay_success_view_invalid_order_id(authenticated_client, user_with_profi
     """存在しない注文IDの場合、注文一覧にリダイレクトされる"""
     response = authenticated_client.get('/pay/success/?order_id=invalid_id')
     assert response.status_code == 302
-    assert response.url == '/orders/'
+    assert response.url == '/pages/orders-history/'
 
 
 @pytest.mark.django_db
@@ -173,7 +173,7 @@ def test_pay_success_view_already_confirmed(authenticated_client, user_with_prof
 
     response = authenticated_client.get(f'/pay/success/?order_id={order.pk}')
     assert response.status_code == 302
-    assert response.url == '/orders/'
+    assert response.url == '/pages/orders-history/'
 
 
 @pytest.mark.django_db

@@ -9,14 +9,14 @@ from django.utils import timezone
 @pytest.mark.django_db
 def test_order_index_view_requires_login(client):
     """注文一覧ページはログインが必要"""
-    response = client.get('/orders/')
+    response = client.get('/pages/orders-history/')
     assert response.status_code == 302  # ログインページにリダイレクト
 
 
 @pytest.mark.django_db
 def test_order_index_view_empty(authenticated_client, user_with_profile):
     """注文がない場合の一覧表示を確認"""
-    response = authenticated_client.get('/orders/')
+    response = authenticated_client.get('/pages/orders-history/')
     assert response.status_code == 200
     assert len(response.context['object_list']) == 0
 
@@ -51,7 +51,7 @@ def test_order_index_view_shows_user_orders(authenticated_client, user_with_prof
         shipping={'name': '他のユーザー', 'zipcode': '2000001'}
     )
 
-    response = authenticated_client.get('/orders/')
+    response = authenticated_client.get('/pages/orders-history/')
     assert response.status_code == 200
 
     # 自分の注文のみが表示されることを確認
@@ -88,7 +88,7 @@ def test_order_index_view_ordered_by_created_at(authenticated_client, user_with_
     order2.created_at = timezone.now() - timezone.timedelta(days=1)
     order2.save()
 
-    response = authenticated_client.get('/orders/')
+    response = authenticated_client.get('/pages/orders-history/')
     assert response.status_code == 200
 
     orders = list(response.context['object_list'])
@@ -110,7 +110,7 @@ def test_order_detail_view_requires_login(client, user_with_profile, published_c
         shipping={'name': 'テスト ユーザー'}
     )
 
-    response = client.get(f'/orders/{order.id}/')
+    response = client.get(f'/pages/orders-history/{order.id}/')
     assert response.status_code == 302  # ログインページにリダイレクト
 
 
@@ -127,7 +127,7 @@ def test_order_detail_view_shows_order(authenticated_client, user_with_profile, 
         shipping={'name': 'テスト ユーザー', 'zipcode': '1000001'}
     )
 
-    response = authenticated_client.get(f'/orders/{order.id}/')
+    response = authenticated_client.get(f'/pages/orders-history/{order.id}/')
     assert response.status_code == 200
     assert response.context['object'].id == order.id
 
@@ -157,5 +157,5 @@ def test_order_detail_view_prevents_access_to_other_user_order(authenticated_cli
         shipping={'name': '他のユーザー'}
     )
 
-    response = authenticated_client.get(f'/orders/{order.id}/')
+    response = authenticated_client.get(f'/pages/orders-history/{order.id}/')
     assert response.status_code == 404  # アクセスできない

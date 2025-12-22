@@ -27,15 +27,15 @@ class PaySuccessView(LoginRequiredMixin, TemplateView):
 
         if not order_id:
             logger.warning(f"注文IDが指定されていません: {request.user}")
-            return redirect('/orders/')
+            return redirect('/pages/orders-history/')
 
         order = self._get_order(request.user, order_id)
         if not order:
-            return redirect('/orders/')
+            return redirect('/pages/orders-history/')
 
         if order.is_confirmed:
             logger.info(f"注文は既に確定済みです: {order_id}")
-            return redirect('/orders/')
+            return redirect('/pages/orders-history/')
 
         if order.confirm():
             logger.info(f"注文を確定しました: {order_id}")

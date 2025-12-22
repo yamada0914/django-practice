@@ -15,10 +15,6 @@ urlpatterns = [
     path('account/', views.AccountUpdateView.as_view()),
     path('profile/', views.ProfileUpdateView.as_view()),
 
-    # Order
-    path('orders/<str:pk>/', views.OrderDetailView.as_view()),
-    path('orders/', views.OrderIndexView.as_view()),
-
     # Pay
     path('pay/checkout/', views.PayWithStripe.as_view()),
     path('pay/success/', views.PaySuccessView.as_view()),
@@ -37,6 +33,8 @@ urlpatterns = [
     path('', views.IndexListView.as_view()),  # トップページ
 
     # Pages
+    path('pages/orders-history/<str:pk>/', views.OrderDetailView.as_view()),
+    path('pages/orders-history/', views.OrderIndexView.as_view()),
     path('pages/help/', views.HelpView.as_view()),
 
 ]
