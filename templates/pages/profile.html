@@ -1,49 +1,67 @@
 {% extends 'base.html' %} {% block main %}
+<div class="container mx-auto px-4 py-8">
+  <div class="mx-auto max-w-5xl">
+    <h1 class="mb-6 border-b border-black pb-6 text-2xl font-bold text-gray-800">
+      お客様情報の確認
+    </h1>
 
-<div class="container my-5">
-  <div class="row">
-    <div class="col-12">
-      <h1>Profile</h1>
-      <form method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-          <label>Name</label>
-          <input class="form-control" type="text" name="name" placeholder="name" value="{{user.profile.name}}" />
-        </div>
-        <div class="form-row">
-          <div class="form-group col-md-2">
-            <label>Zip</label>
-            <input class="form-control" type="text" name="zipcode" placeholder="zipcode"
-              value="{{user.profile.zipcode}}" />
-          </div>
-          <div class="form-group col-md-4">
-            <label>Prefecture</label>
-            <input class="form-control" type="text" name="prefecture" placeholder="prefecture"
-              value="{{user.profile.prefecture}}" />
-          </div>
-          <div class="form-group col-md-6">
-            <label>City</label>
-            <input class="form-control" type="text" name="city" placeholder="city" value="{{user.profile.city}}" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Address 1</label>
-          <input class="form-control" type="text" name="address1" placeholder="address1"
-            value="{{user.profile.address1}}" />
-        </div>
-        <div class="form-group">
-          <label>Address 2</label>
-          <input class="form-control" type="text" name="address2" placeholder="address2"
-            value="{{user.profile.address2}}" />
-        </div>
-        <div class="form-group">
-          <label>Tel</label>
-          <input class="form-control" type="tel" name="tel" placeholder="tel" value="{{user.profile.tel}}" />
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-      </form>
+    <p class="mb-4 rounded border p-2 text-gray-700">
+      {{ user.profile.name|default:user.username }}さんのマイページ
+    </p>
+
+    <div class="pl-3">
+      <!-- お名前 -->
+      <div>
+        <label class="block border-b border-gray-300 pb-3 text-sm font-medium text-gray-700">お名前</label>
+        <p class="mb-5 py-5 pl-2 text-gray-900">
+          {{ user.profile.name|default:"未登録" }}
+        </p>
+      </div>
+
+      <!-- お名前(フリガナ) -->
+      <div>
+        <label class="mb-2 block border-b border-gray-300 pb-3 text-sm font-medium text-gray-700">お名前(フリガナ)</label>
+        <p class="mb-5 py-4 pl-2 text-gray-900">
+          {% if user.profile.last_name_kana and user.profile.first_name_kana %}
+          {{ user.profile.last_name_kana }} {{ user.profile.first_name_kana }}
+          {% else %} 未登録 {% endif %}
+        </p>
+      </div>
+
+      <!-- 住所 -->
+      <div>
+        <label class="mb-2 block border-b border-gray-300 pb-3 text-sm font-medium text-gray-700">住所</label>
+        <p class="mb-5 py-4 pl-2">
+          ※<span class="font-bold text-[#ff2626]">お届け先の登録、変更、削除</span>をご確認ください
+        </p>
+      </div>
+
+      <!-- メールアドレス -->
+      <div>
+        <label class="mb-2 block border-b border-gray-300 pb-3 text-sm font-medium text-gray-700">メールアドレス</label>
+        <p class="mb-5 py-4 pl-2 text-gray-900">{{ user.email }}</p>
+      </div>
+
+      <!-- 電話番号 -->
+      <div>
+        <label class="mb-2 block border-b border-gray-300 pb-3 text-sm font-medium text-gray-700">電話番号</label>
+        <p class="mb-5 py-4 pl-2 text-gray-900">
+          {{ user.profile.tel|default:"未登録" }}
+        </p>
+      </div>
+    </div>
+
+    <p class="mt-6 text-gray-700">
+      ご登録内容に変更がございましたら、<a href="/pages/contact"
+        class="font-bold text-[#ff2626] hover:underline">お問い合わせフォーム</a>よりご連絡ください。
+    </p>
+
+    <div class="mb-12 mt-12 flex justify-center">
+      <a href="/account/"
+        class="inline-block min-w-[170px] rounded bg-[#858585] px-6 py-3 text-center font-bold text-white transition hover:bg-[#6d6d6d]">
+        マイページへ
+      </a>
     </div>
   </div>
 </div>
-
 {% endblock %}
