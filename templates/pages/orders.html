@@ -1,7 +1,15 @@
 {% extends 'base.html' %} {% block main %}
 <div class="container mx-auto px-4 py-8">
   <div class="mx-auto max-w-5xl">
-    <h1 class="mb-6 text-2xl font-bold text-gray-800">注文履歴</h1>
+    <h1 class="mb-6 border-b border-black pb-6 text-2xl font-bold text-gray-800">
+      購入履歴
+    </h1>
+
+    <p class="mb-4 rounded border p-2 text-gray-700">
+      {{ user.profile.name|default:user.username }}さんのマイページ
+    </p>
+
+    <p class="mb-4 pl-5 text-gray-700">{{ object_list|length }}件</p>
 
     {% if object_list %}
     <div class="overflow-hidden rounded-xl bg-white shadow-sm">
@@ -24,7 +32,8 @@
             {% for object in object_list %}
             <tr class="hover:bg-gray-50">
               <td class="whitespace-nowrap px-6 py-4">
-                <a href="/orders/{{object.pk}}/" class="text-primary-500 hover:text-primary-600 font-medium">
+                <a href="/pages/orders-history/{{object.pk}}/"
+                  class="text-primary-500 hover:text-primary-600 font-medium">
                   #{{object.pk}}
                 </a>
               </td>
@@ -41,10 +50,16 @@
       </div>
     </div>
     {% else %}
-    <div class="rounded-xl bg-white p-8 text-center shadow-sm">
-      <p class="text-gray-600">注文履歴がありません。</p>
+    <div class="ml-2 rounded-xl bg-white">
+      <p class="text-gray-600">注文はまだありません。</p>
     </div>
     {% endif %}
+    <div class="mb-12 mt-12 flex justify-center">
+      <a href="/account/"
+        class="inline-block min-w-[170px] rounded bg-[#858585] px-6 py-3 text-center font-bold text-white transition hover:bg-[#6d6d6d]">
+        マイページへ
+      </a>
+    </div>
   </div>
 </div>
 {% endblock %}
