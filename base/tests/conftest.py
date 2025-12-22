@@ -25,7 +25,12 @@ def category(db):
 
 @pytest.fixture
 def pack(category):
-    return Pack.objects.create(name="Starter Pack", slug="starter-pack", category=category)
+    return Pack.objects.create(
+        name="Starter Pack",
+        slug="starter-pack",
+        category=category,
+        series_code="sv1-starter"
+    )
 
 
 @pytest.fixture
@@ -95,4 +100,3 @@ def authenticated_client(client, user_with_profile):
     """認証済みのクライアントを作成"""
     client.force_login(user_with_profile)
     return client
-
