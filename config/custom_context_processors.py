@@ -12,6 +12,7 @@ def base(request):
         '/account/signup',
         '/cart',
         '/pages/orders-history',
+        '/profile'
     ]
 
     # 現在のパスが非表示対象かチェック
